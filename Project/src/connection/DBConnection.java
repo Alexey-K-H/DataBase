@@ -8,24 +8,12 @@ import java.util.TimeZone;
 public class DBConnection{
     private final Connection conn;
 
-    public DBConnection() throws SQLException {
+    public DBConnection(String url, Properties props) throws SQLException {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-
-        //Подключение к локальной базе данных
-        String url = "jdbc:oracle:thin:@127.0.0.1:1521:orcl";
-        Properties props = new Properties();
-        props.setProperty("user", "c##alexey");
-        props.setProperty("password", "nsu");
-
-//        //Подключение к серверу НГУ
-//        String url = "jdbc:oracle:thin:@84.237.50.81:1521:XE";
-//        Properties props = new Properties();
-//        props.setProperty("user", "18204_KHOROSHAVIN");
-//        props.setProperty("password", "442768");
 
         TimeZone timeZone = TimeZone.getTimeZone("GMT+7");
         TimeZone.setDefault(timeZone);
@@ -64,5 +52,6 @@ public class DBConnection{
         statement.executeUpdate("insert into Libraries values (3, 7)");
         statement.executeUpdate("insert into Libraries values (4, 15)");
         statement.executeUpdate("insert into Libraries values (5, 12)");
+        statement.executeUpdate("insert into Libraries values (6, 10)");
     }
 }

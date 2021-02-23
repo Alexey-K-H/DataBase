@@ -10,9 +10,11 @@ import java.sql.SQLSyntaxErrorException;
 
 public class Window extends JFrame {
     DBConnection connection;
+    String url;
 
-    public Window(DBConnection connection){
+    public Window(DBConnection connection, String url){
         this.connection = connection;
+        this.url = url;
     }
 
     public void run(){
@@ -34,7 +36,9 @@ public class Window extends JFrame {
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
-                System.exit(0);
+                setVisible(false);
+                ConnectionFrame connectionFrame = new ConnectionFrame();
+                connectionFrame.singIn();
             }
         });
 
@@ -42,7 +46,7 @@ public class Window extends JFrame {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
         this.setBounds(dimension.width/2 - 250, dimension.height/2 - 90, 500, 180);
-        this.setTitle("Connection to Data Base");
+        this.setTitle(url);
 
         JPanel panel = new JPanel();
         this.add(panel);
