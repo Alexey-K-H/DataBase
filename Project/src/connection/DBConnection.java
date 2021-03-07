@@ -25,6 +25,14 @@ public class DBConnection{
     public void close() throws SQLException {
         System.out.println("Delete tmp data...");
         Statement statement = conn.createStatement();
+        //second level
+        statement.executeUpdate("drop table Issued_books");
+
+        //Delete dependent tables 1 level
+        statement.executeUpdate("drop table Librarians");
+        statement.executeUpdate("drop table Readers");
+        statement.executeUpdate("drop table Editions");
+        //Delete independent tables
         statement.executeUpdate("drop table Libraries");
         System.out.println("Close connection...");
         conn.close();
@@ -46,7 +54,58 @@ public class DBConnection{
     public void initSchema() throws SQLException{
         System.out.println("Init schema....");
         Statement statement = conn.createStatement();
-        statement.executeUpdate("create table Libraries(id_library integer primary key , quantity_books integer not null)");
+        //zero level
+        statement.executeUpdate(
+                "create table Libraries(id_library integer primary key," +
+                " quantity_books integer not null)"
+        );
+        //first level
+        statement.executeUpdate(
+                "create table Librarians (" +
+                        "id_librarian integer primary key, " +
+                        "id_library integer not null , " +
+                        "hall_num integer not null," +
+                        "foreign key (id_library) references Libraries(id_library))"
+        );
+        statement.executeUpdate("" +
+                "create table Readers (" +
+                "id_reader integer primary key, " +
+                "id_library integer not null," +
+                "surname varchar(50) not null," +
+                "name varchar(40) not null," +
+                "patronymic varchar(60) not null," +
+                "status varchar(50) not null," +
+                "foreign key (id_library) references Libraries(id_library)" +
+                ")"
+        );
+        statement.executeUpdate(
+                "create table Editions(" +
+                        "id_edition integer primary key ," +
+                        "id_library integer not null," +
+                        "hall_num integer not null," +
+                        "rack_num integer not null," +
+                        "shelf_num integer not null," +
+                        "date_of_admission date not null," +
+                        "write_off_date date not null," +
+                        "foreign key (id_library) references Libraries(id_library)" +
+                        ")"
+        );
+        //second level
+        statement.executeUpdate(
+                "create table Issued_books(" +
+                        "id_record integer primary key," +
+                        "id_librarian integer not null," +
+                        "id_edition integer not null," +
+                        "id_reader integer not null," +
+                        "date_of_issue date not null," +
+                        "return_date date not null," +
+                        "is_returned varchar(3) not null," +
+                        "foreign key (id_librarian) references Librarians(id_librarian)," +
+                        "foreign key (id_edition) references Editions(id_edition)," +
+                        "foreign key (id_reader) references Readers(id_reader)" +
+                        ")"
+        );
+
         statement.executeUpdate("insert into Libraries values (1, 5)");
         statement.executeUpdate("insert into Libraries values (2, 10)");
         statement.executeUpdate("insert into Libraries values (3, 7)");
