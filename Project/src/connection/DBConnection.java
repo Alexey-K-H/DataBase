@@ -25,9 +25,17 @@ public class DBConnection{
     public void close() throws SQLException {
         System.out.println("Delete tmp data...");
         Statement statement = conn.createStatement();
+        //category
+        statement.executeUpdate("drop table Teachers");
+        statement.executeUpdate("drop table Researchers");
+        statement.executeUpdate("drop table SchoolChild");
+        statement.executeUpdate("drop table Students");
+        statement.executeUpdate("drop table Pensioners");
+        statement.executeUpdate("drop table Workers");
         //second level
         statement.executeUpdate("drop table Issued_books");
-
+        statement.executeUpdate("drop table Rules");
+        statement.executeUpdate("drop table Compositions");
         //Delete dependent tables 1 level
         statement.executeUpdate("drop table Librarians");
         statement.executeUpdate("drop table Readers");
@@ -104,6 +112,71 @@ public class DBConnection{
                         "foreign key (id_edition) references Editions(id_edition)," +
                         "foreign key (id_reader) references Readers(id_reader)" +
                         ")"
+        );
+        statement.executeUpdate("create table Rules(" +
+                "id_rule integer primary key," +
+                " id_edition integer not null," +
+                " rule_text varchar(500)," +
+                " foreign key (id_edition) references Editions(id_edition)" +
+                ")"
+        );
+        statement.executeUpdate("create table Compositions(" +
+                "id_record integer," +
+                " id_edition integer," +
+                " author varchar(100) not null," +
+                " title varchar(100) not null," +
+                " popularity integer not null," +
+                " genre varchar(50) not null," +
+                " primary key(id_record, id_edition)," +
+                " foreign key (id_edition) references Editions(id_edition)" +
+                ")"
+        );
+        //category
+        statement.executeUpdate("create table Teachers(" +
+                "id_reader integer primary key," +
+                "id_university integer not null," +
+                "faculty varchar(100) not null," +
+                "name_university varchar(100) not null," +
+                "foreign key (id_reader) references Readers (id_reader)" +
+                ")"
+        );
+        statement.executeUpdate("create table Researchers(" +
+                "id_reader integer primary key," +
+                "id_university integer not null," +
+                "address_university varchar(100) not null," +
+                "degree varchar(100) not null," +
+                "name_university varchar(200) not null," +
+                "foreign key (id_reader) references Readers(id_reader)" +
+                ")"
+        );
+        statement.executeUpdate("create table SchoolChild(" +
+                "id_reader integer primary key," +
+                "id_school integer not null," +
+                "grade integer not null," +
+                "name_school varchar(100) not null," +
+                "foreign key(id_reader) references Readers(id_reader)" +
+                ")"
+        );
+        statement.executeUpdate("create table Students(" +
+                "id_reader integer primary key," +
+                "id_university integer not null," +
+                "faculty varchar(100) not null," +
+                "name_university varchar(100) not null," +
+                "foreign key(id_reader) references Readers(id_reader)" +
+                ")"
+        );
+        statement.executeUpdate("create table Pensioners (" +
+                "id_reader integer primary key," +
+                "id_pensioner integer unique," +
+                "foreign key(id_reader) references Readers(id_reader)" +
+                ")"
+        );
+        statement.executeUpdate("create table Workers(" +
+                "id_reader integer primary key," +
+                "firm_address varchar(200)," +
+                "name_firm varchar(200)," +
+                "foreign key(id_reader) references Readers(id_reader)" +
+                ")"
         );
 
         statement.executeUpdate("insert into Libraries values (1, 5)");
