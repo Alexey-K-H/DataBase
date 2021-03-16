@@ -1,6 +1,7 @@
 package gui;
 
 import connection.DBConnection;
+import gui.tablesView.TableFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,6 +65,18 @@ public class MainWindow extends JFrame {
         librariesButton.setFont(new Font(librariesButton.getFont().getName(), Font.BOLD, 20));
         layout.putConstraint(SpringLayout.WEST, librariesButton, this.getWidth()/2 - librariesButton.getPreferredSize().width/2, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.NORTH, librariesButton, 40, SpringLayout.SOUTH, info);
+
+        librariesButton.addActionListener(e -> {
+            TableFrame tableFrame = new TableFrame("Libraries", connection);
+            try {
+                tableFrame.openTable();
+            } catch (SQLException exception) {
+                JLabel error = new JLabel("Ошибка!" + exception.getMessage());
+                error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
         panel.add(librariesButton);
 
 

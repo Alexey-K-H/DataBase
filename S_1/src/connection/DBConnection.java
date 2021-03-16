@@ -8,6 +8,10 @@ import java.util.TimeZone;
 public class DBConnection{
     private final Connection conn;
 
+    public Connection getConn() {
+        return conn;
+    }
+
     public DBConnection(String url, Properties props) throws SQLException {
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
