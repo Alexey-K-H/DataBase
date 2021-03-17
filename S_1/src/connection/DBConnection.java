@@ -50,26 +50,14 @@ public class DBConnection{
         conn.close();
     }
 
-    public int performSQLQuery() throws SQLException {
-        System.out.println("Perform SQL Query...");
-        String sql = "select count(*) from Libraries";
-
-        PreparedStatement preStatement = conn.prepareStatement(sql);
-        ResultSet result = preStatement.executeQuery();
-        int count = 0;
-        while (result.next()) {
-            count = result.getInt(1);
-        }
-        return count;
-    }
-
     public void initSchema() throws SQLException{
         System.out.println("Init schema....");
         Statement statement = conn.createStatement();
         //zero level
         statement.executeUpdate(
                 "create table Libraries(id_library integer primary key," +
-                " quantity_books integer not null)"
+                " quantity_books integer not null," +
+                        "check ( quantity_books >= 0 ))"
         );
         //first level
         statement.executeUpdate(

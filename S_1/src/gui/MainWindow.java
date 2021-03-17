@@ -1,6 +1,7 @@
 package gui;
 
 import connection.DBConnection;
+import controllers.TableController;
 import gui.tablesView.TableFrame;
 
 import javax.swing.*;
@@ -67,7 +68,8 @@ public class MainWindow extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, librariesButton, 40, SpringLayout.SOUTH, info);
 
         librariesButton.addActionListener(e -> {
-            TableFrame tableFrame = new TableFrame("Libraries", connection);
+            TableController tableController = new TableController("Libraries", connection);
+            TableFrame tableFrame = new TableFrame(tableController);
             try {
                 tableFrame.openTable();
             } catch (SQLException exception) {

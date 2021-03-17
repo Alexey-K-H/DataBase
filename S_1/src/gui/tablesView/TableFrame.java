@@ -1,30 +1,25 @@
 package gui.tablesView;
 
 import connection.DBConnection;
+import controllers.TableController;
+import gui.tablesView.insertViews.LibraryInsert;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
 public class TableFrame extends JFrame {
-    private String tableName;
+    private final String tableName;
     DBConnection connection;
+    private final TableController tableController;
 
-    public TableFrame(String tableName, DBConnection connection){
-        this.tableName = tableName;
-        this.connection = connection;
-    }
-
-    private String[] createColumnsHeaders(){
-        switch (tableName){
-            case "Libraries":
-                return new String[]{"Id", "Количество книг"};
-            default:
-                return null;
-        }
+    public TableFrame(TableController tableController){
+        this.tableName = tableController.getTableName();
+        this.connection = tableController.getConnection();
+        this.tableController = tableController;
     }
 
     private String translateTableName(){
@@ -47,26 +42,7 @@ public class TableFrame extends JFrame {
         jPanel.setLayout(layout);
         this.add(jPanel);
 
-        Object[] columnsHeaders = createColumnsHeaders();
-        if(columnsHeaders == null){
-            System.out.println("Нет таблицы с таким названием!");
-        }
-
-        DefaultTableModel tableModel = new DefaultTableModel();
-        tableModel.setColumnIdentifiers(columnsHeaders);
-
-        String sql = "select * from " + tableName;
-        PreparedStatement preStatement = connection.getConn().prepareStatement(sql);
-        ResultSet result = preStatement.executeQuery();
-
-
-        switch (tableName){
-            case "Libraries":{
-                while (result.next()) {
-                    tableModel.addRow(new Object[]{result.getInt("id_library"), result.getInt("quantity_books")});
-                }
-            }
-        }
+        DefaultTableModel tableModel = tableController.getTableSet();
 
         JLabel tableTitle = new JLabel("Таблица \""+ translateTableName() + "\"");
         tableTitle.setFont(new Font(tableTitle.getFont().getName(), Font.BOLD, 16));
@@ -92,6 +68,12 @@ public class TableFrame extends JFrame {
         insert.setFont(new Font(insert.getFont().getName(), Font.BOLD, 16));
         layout.putConstraint(SpringLayout.WEST, insert, 20, SpringLayout.EAST, scrollPane);
         layout.putConstraint(SpringLayout.NORTH, insert, 30, SpringLayout.SOUTH, infoTable);
+
+        insert.addActionListener(e -> {
+            LibraryInsert libraryInsert = new LibraryInsert(tableController);
+            libraryInsert.openInsertWindow();
+        });
+
         jPanel.add(insert);
 
         //Удаление данных из таблицы
