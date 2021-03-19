@@ -38,7 +38,7 @@ public class TableController {
     public DefaultTableModel getTableSet() throws SQLException {
         Object[] columnsHeaders = createColumnsHeaders();
         if(columnsHeaders == null){
-            System.out.println("Нет таблицы с таким названием!");
+            throw new SQLException("Нет таблицы с таким названием!");
         }
 
         DefaultTableModel tableModel = new DefaultTableModel();
@@ -65,10 +65,7 @@ public class TableController {
         for (String value : newValues){
            valuesSet.append(value).append(", ");
         }
-
         String values = valuesSet.substring(0, valuesSet.toString().length() - 2);
-        System.out.println("Insert values to table " + tableName + ": " + values);
-
         Statement statement = connection.getConn().createStatement();
         String sql = "insert into " + tableName + " values(" + values + ")";
         statement.executeUpdate(sql);
@@ -84,9 +81,14 @@ public class TableController {
     }
 
     public void deleteRecord(Object rowKey) throws SQLException {
-        System.out.println("Delete row from table with key: " + rowKey);
         Statement statement = connection.getConn().createStatement();
         String sql = "delete from " + tableName + " where " + getPrimaryKeyNameByTableName() + " = " + rowKey;
+        statement.executeUpdate(sql);
+    }
+
+    public void modifyRow(String sqlValuesSet) throws SQLException {
+        Statement statement = connection.getConn().createStatement();
+        String sql = "update " + tableName + " " + sqlValuesSet;
         statement.executeUpdate(sql);
     }
 }

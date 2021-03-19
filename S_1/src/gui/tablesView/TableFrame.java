@@ -3,13 +3,13 @@ package gui.tablesView;
 import connection.DBConnection;
 import controllers.TableController;
 import gui.tablesView.insertViews.LibraryInsert;
+import gui.tablesView.modifyViews.LibraryModify;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class TableFrame extends JFrame {
     private final String tableName;
@@ -101,6 +101,9 @@ public class TableFrame extends JFrame {
                 try {
                     tableController.deleteRecord(rowDataKey);
                     tableModel.removeRow(i);
+                    JLabel success = new JLabel("Запись удалена успешно!");
+                    success.setFont(new Font(success.getFont().getName(), Font.BOLD, 16));
+                    JOptionPane.showMessageDialog(null, success, "INSERT", JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException exception) {
                     JLabel error = new JLabel();
                     error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
@@ -115,6 +118,22 @@ public class TableFrame extends JFrame {
         modify.setFont(new Font(modify.getFont().getName(), Font.BOLD, 16));
         layout.putConstraint(SpringLayout.WEST, modify, 20, SpringLayout.EAST, scrollPane);
         layout.putConstraint(SpringLayout.NORTH, modify, 30, SpringLayout.SOUTH, delete);
+        modify.addActionListener(e -> {
+            int i = table.getSelectedRow();
+            if(i == -1){
+                JLabel error = new JLabel("Перед модификацией необходимо выбрать запись в таблице!");
+                error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                ArrayList<String> oldValues = new ArrayList<>();
+                for(int k = 0; k < table.getColumnCount(); k++){
+                    oldValues.add(table.getValueAt(i, k).toString());
+                }
+                LibraryModify libraryModify = new LibraryModify(tableController, oldValues, tableModel, i);
+                libraryModify.openModifyWindow();
+            }
+        });
         jPanel.add(modify);
 
         //Выход из окна просмотра

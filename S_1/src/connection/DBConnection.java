@@ -65,7 +65,8 @@ public class DBConnection{
                         "id_librarian integer primary key, " +
                         "id_library integer not null , " +
                         "hall_num integer not null," +
-                        "foreign key (id_library) references Libraries(id_library))"
+                        "foreign key (id_library) references Libraries(id_library) on delete cascade" +
+                        ")"
         );
         statement.executeUpdate("" +
                 "create table Readers (" +
@@ -75,7 +76,7 @@ public class DBConnection{
                 "name varchar(40) not null," +
                 "patronymic varchar(60) not null," +
                 "status varchar(50) not null," +
-                "foreign key (id_library) references Libraries(id_library)" +
+                "foreign key (id_library) references Libraries(id_library) on delete cascade " +
                 ")"
         );
         statement.executeUpdate(
@@ -87,7 +88,7 @@ public class DBConnection{
                         "shelf_num integer not null," +
                         "date_of_admission date not null," +
                         "write_off_date date not null," +
-                        "foreign key (id_library) references Libraries(id_library)" +
+                        "foreign key (id_library) references Libraries(id_library) on delete cascade " +
                         ")"
         );
         //second level
@@ -100,16 +101,16 @@ public class DBConnection{
                         "date_of_issue date not null," +
                         "return_date date not null," +
                         "is_returned varchar(3) not null," +
-                        "foreign key (id_librarian) references Librarians(id_librarian)," +
-                        "foreign key (id_edition) references Editions(id_edition)," +
-                        "foreign key (id_reader) references Readers(id_reader)" +
+                        "foreign key (id_librarian) references Librarians(id_librarian) on delete cascade ," +
+                        "foreign key (id_edition) references Editions(id_edition) on delete cascade ," +
+                        "foreign key (id_reader) references Readers(id_reader) on delete cascade " +
                         ")"
         );
         statement.executeUpdate("create table Rules(" +
                 "id_rule integer primary key," +
                 " id_edition integer not null," +
                 " rule_text varchar(500)," +
-                " foreign key (id_edition) references Editions(id_edition)" +
+                " foreign key (id_edition) references Editions(id_edition) on delete cascade " +
                 ")"
         );
         statement.executeUpdate("create table Compositions(" +
@@ -120,7 +121,7 @@ public class DBConnection{
                 " popularity integer not null," +
                 " genre varchar(50) not null," +
                 " primary key(id_record, id_edition)," +
-                " foreign key (id_edition) references Editions(id_edition)" +
+                " foreign key (id_edition) references Editions(id_edition) on delete cascade " +
                 ")"
         );
         //category
@@ -129,7 +130,7 @@ public class DBConnection{
                 "id_university integer not null," +
                 "faculty varchar(100) not null," +
                 "name_university varchar(100) not null," +
-                "foreign key (id_reader) references Readers (id_reader)" +
+                "foreign key (id_reader) references Readers (id_reader) on delete cascade " +
                 ")"
         );
         statement.executeUpdate("create table Researchers(" +
@@ -138,7 +139,7 @@ public class DBConnection{
                 "address_university varchar(100) not null," +
                 "degree varchar(100) not null," +
                 "name_university varchar(200) not null," +
-                "foreign key (id_reader) references Readers(id_reader)" +
+                "foreign key (id_reader) references Readers(id_reader) on delete cascade " +
                 ")"
         );
         statement.executeUpdate("create table SchoolChild(" +
@@ -146,7 +147,7 @@ public class DBConnection{
                 "id_school integer not null," +
                 "grade integer not null," +
                 "name_school varchar(100) not null," +
-                "foreign key(id_reader) references Readers(id_reader)" +
+                "foreign key(id_reader) references Readers(id_reader) on delete cascade " +
                 ")"
         );
         statement.executeUpdate("create table Students(" +
@@ -154,20 +155,20 @@ public class DBConnection{
                 "id_university integer not null," +
                 "faculty varchar(100) not null," +
                 "name_university varchar(100) not null," +
-                "foreign key(id_reader) references Readers(id_reader)" +
+                "foreign key(id_reader) references Readers(id_reader) on delete cascade " +
                 ")"
         );
         statement.executeUpdate("create table Pensioners (" +
                 "id_reader integer primary key," +
                 "id_pensioner integer unique," +
-                "foreign key(id_reader) references Readers(id_reader)" +
+                "foreign key(id_reader) references Readers(id_reader) on delete cascade " +
                 ")"
         );
         statement.executeUpdate("create table Workers(" +
                 "id_reader integer primary key," +
                 "firm_address varchar(200)," +
                 "name_firm varchar(200)," +
-                "foreign key(id_reader) references Readers(id_reader)" +
+                "foreign key(id_reader) references Readers(id_reader) on delete cascade " +
                 ")"
         );
 
