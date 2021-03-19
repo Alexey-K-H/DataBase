@@ -3,17 +3,20 @@ package gui.tablesView.insertViews;
 import controllers.TableController;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class LibraryInsert extends JFrame implements InsertFrame {
-    private TableController tableController;
+    private final TableController tableController;
+    private ArrayList<String> currValues;
+    private final DefaultTableModel tableModel;
 
-    public LibraryInsert(TableController tableController){
+    public LibraryInsert(TableController tableController, DefaultTableModel tableModel){
         this.tableController = tableController;
+        this.tableModel = tableModel;
     }
-
 
     @Override
     public void openInsertWindow() {
@@ -64,13 +67,28 @@ public class LibraryInsert extends JFrame implements InsertFrame {
         layout.putConstraint(SpringLayout.NORTH, confirmInsert, 50, SpringLayout.SOUTH, quantityBooksTextField);
         layout.putConstraint(SpringLayout.EAST, confirmInsert, -20, SpringLayout.EAST, jPanel);
         confirmInsert.addActionListener(e -> {
-            ArrayList<String> currValues = new ArrayList<>();
+            currValues = new ArrayList<>();
             currValues.add(idLibTextField.getText());
             currValues.add(quantityBooksTextField.getText());
             try {
                 performInsertOperation(currValues);
+                idLibTextField.setText("");
+                quantityBooksTextField.setText("");
+                Object[] values = new Object[]{currValues.get(0), currValues.get(1)};
+                tableModel.addRow(values);
+                JLabel success = new JLabel("Запись добавлена успешно!");
+                success.setFont(new Font(success.getFont().getName(), Font.BOLD, 16));
+                JOptionPane.showMessageDialog(null, success, "INSERT", JOptionPane.INFORMATION_MESSAGE);
             } catch (SQLException exception) {
-                JLabel error = new JLabel("Ошибка!" + exception.getMessage());
+                JLabel error = new JLabel();
+                switch (exception.getErrorCode()){
+                    case 1:{
+                        error.setText("Ошибка добавления записи! Нарушена уникальность идентифкаторов библиотек!");
+                    }
+                    case 2290:{
+                        error.setText("Ошибка добавления записи! Количество книг в библиотеке не может быть отрицательным!");
+                    }
+                }
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }

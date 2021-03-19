@@ -53,6 +53,7 @@ public class TableController {
                 while (result.next()) {
                     tableModel.addRow(new Object[]{result.getInt("id_library"), result.getInt("quantity_books")});
                 }
+                result.close();
             }
         }
 
@@ -70,6 +71,22 @@ public class TableController {
 
         Statement statement = connection.getConn().createStatement();
         String sql = "insert into " + tableName + " values(" + values + ")";
+        statement.executeUpdate(sql);
+    }
+
+    private String getPrimaryKeyNameByTableName(){
+        switch (tableName){
+            case "Libraries":{
+                return "id_library";
+            }
+        }
+        return null;
+    }
+
+    public void deleteRecord(Object rowKey) throws SQLException {
+        System.out.println("Delete row from table with key: " + rowKey);
+        Statement statement = connection.getConn().createStatement();
+        String sql = "delete from " + tableName + " where " + getPrimaryKeyNameByTableName() + " = " + rowKey;
         statement.executeUpdate(sql);
     }
 }

@@ -7,9 +7,9 @@ import gui.tablesView.insertViews.LibraryInsert;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Vector;
 
 public class TableFrame extends JFrame {
     private final String tableName;
@@ -63,6 +63,7 @@ public class TableFrame extends JFrame {
         layout.putConstraint(SpringLayout.WEST, infoTable, 20, SpringLayout.EAST, scrollPane);
         jPanel.add(infoTable);
 
+
         //ввод данных в таблицу
         JButton insert = new JButton("Добавить запись");
         insert.setFont(new Font(insert.getFont().getName(), Font.BOLD, 16));
@@ -70,17 +71,43 @@ public class TableFrame extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, insert, 30, SpringLayout.SOUTH, infoTable);
 
         insert.addActionListener(e -> {
-            LibraryInsert libraryInsert = new LibraryInsert(tableController);
+            LibraryInsert libraryInsert = new LibraryInsert(tableController, tableModel);
             libraryInsert.openInsertWindow();
         });
 
         jPanel.add(insert);
 
+        JLabel beforeDelOrUpdateInfo = new JLabel("<html>Перед удалением<br>или изменением данных<br>" +
+                "выберите строку в таблице</html>");
+        beforeDelOrUpdateInfo.setFont(new Font(beforeDelOrUpdateInfo.getFont().getName(), Font.BOLD, 16));
+        layout.putConstraint(SpringLayout.NORTH, beforeDelOrUpdateInfo, 40, SpringLayout.NORTH, insert);
+        layout.putConstraint(SpringLayout.WEST, beforeDelOrUpdateInfo, 20, SpringLayout.EAST, scrollPane);
+        jPanel.add(beforeDelOrUpdateInfo);
+
         //Удаление данных из таблицы
         JButton delete = new JButton("Удалить запись");
         delete.setFont(new Font(delete.getFont().getName(), Font.BOLD, 16));
         layout.putConstraint(SpringLayout.WEST, delete, 20, SpringLayout.EAST, scrollPane);
-        layout.putConstraint(SpringLayout.NORTH, delete, 30, SpringLayout.SOUTH, insert);
+        layout.putConstraint(SpringLayout.NORTH, delete, 30, SpringLayout.SOUTH, beforeDelOrUpdateInfo);
+        delete.addActionListener(e -> {
+            int i = table.getSelectedRow();
+            if(i == -1){
+                JLabel error = new JLabel("Перед удалением необходимо выбрать запись в таблице!");
+                error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                Object rowDataKey = table.getValueAt(i,0);
+                try {
+                    tableController.deleteRecord(rowDataKey);
+                    tableModel.removeRow(i);
+                } catch (SQLException exception) {
+                    JLabel error = new JLabel();
+                    error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                    JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
         jPanel.add(delete);
 
         //Модификация данных таблицы
@@ -90,9 +117,7 @@ public class TableFrame extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, modify, 30, SpringLayout.SOUTH, delete);
         jPanel.add(modify);
 
-
-
-
+        //Выход из окна просмотра
         JButton exit = new JButton("Закрыть таблицу");
         exit.setFont(new Font(exit.getFont().getName(), Font.BOLD, 16));
         layout.putConstraint(SpringLayout.WEST, exit, 20, SpringLayout.EAST, scrollPane);
