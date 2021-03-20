@@ -8,6 +8,7 @@ import gui.tablesView.modifyViews.LibrarianModify;
 import gui.tablesView.modifyViews.LibraryModify;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.SQLException;
@@ -55,6 +56,7 @@ public class TableFrame extends JDialog {
         jPanel.add(tableTitle);
 
         JTable table = new JTable(tableModel);
+
         JScrollPane scrollPane = new JScrollPane(table);
         layout.putConstraint(SpringLayout.NORTH, scrollPane, 20, SpringLayout.NORTH, tableTitle);
         layout.putConstraint(SpringLayout.WEST, scrollPane, 20, SpringLayout.WEST, jPanel);
@@ -92,11 +94,16 @@ public class TableFrame extends JDialog {
 
         jPanel.add(insert);
 
-        JLabel beforeDelOrUpdateInfo = new JLabel("<html>Перед удалением<br>или изменением данных<br>" +
-                "выберите строку в таблице</html>");
-        beforeDelOrUpdateInfo.setFont(new Font(beforeDelOrUpdateInfo.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.NORTH, beforeDelOrUpdateInfo, 40, SpringLayout.NORTH, insert);
+        JLabel beforeDelOrUpdateInfo = new JLabel("<html><p>Перед <b>удалением</b><br> или <b>изменением</b> данных<br>" +
+                " выберите строку в таблице</html>");
+        beforeDelOrUpdateInfo.setFont(new Font(beforeDelOrUpdateInfo.getFont().getName(), Font.ITALIC, 16));
+        Icon icon = UIManager.getIcon("OptionPane.informationIcon");
+        Border solidBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
+        beforeDelOrUpdateInfo.setBorder(solidBorder);
+        beforeDelOrUpdateInfo.setIcon(icon);
+        layout.putConstraint(SpringLayout.NORTH, beforeDelOrUpdateInfo, 70, SpringLayout.NORTH, insert);
         layout.putConstraint(SpringLayout.WEST, beforeDelOrUpdateInfo, 20, SpringLayout.EAST, scrollPane);
+        layout.putConstraint(SpringLayout.EAST, beforeDelOrUpdateInfo, -10, SpringLayout.EAST, jPanel);
         jPanel.add(beforeDelOrUpdateInfo);
 
         //Удаление данных из таблицы
@@ -127,6 +134,7 @@ public class TableFrame extends JDialog {
             }
         });
         jPanel.add(delete);
+        delete.setVisible(false);
 
         //Модификация данных таблицы
         JButton modify = new JButton("Изменить запись");
@@ -162,6 +170,7 @@ public class TableFrame extends JDialog {
             }
         });
         jPanel.add(modify);
+        modify.setVisible(false);
 
         //Выход из окна просмотра
         JButton exit = new JButton("Закрыть таблицу");
@@ -170,6 +179,15 @@ public class TableFrame extends JDialog {
         layout.putConstraint(SpringLayout.SOUTH, exit, -20, SpringLayout.SOUTH, jPanel);
         exit.addActionListener(e -> setVisible(false));
         jPanel.add(exit);
+
+        //Делает доступными кнопки удаления и модификации
+        table.getSelectionModel().addListSelectionListener(event -> {
+            if (!event.getValueIsAdjusting() && table.getSelectedRow() != -1){
+                delete.setVisible(true);
+                modify.setVisible(true);
+                repaint();
+            }
+        });
 
         this.setModal(true);
         this.setResizable(false);

@@ -1,6 +1,8 @@
-package gui;
+package gui.signIn;
 
 import connection.DBConnection;
+import gui.MainWindow;
+
 import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;

@@ -2,6 +2,7 @@ package gui;
 
 import connection.DBConnection;
 import controllers.TableController;
+import gui.signIn.ConnectionFrame;
 import gui.tablesView.TableFrame;
 
 import javax.swing.*;
