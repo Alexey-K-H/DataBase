@@ -78,7 +78,6 @@ public class MainWindow extends JFrame {
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
-
         panel.add(librariesButton);
 
 
@@ -86,6 +85,17 @@ public class MainWindow extends JFrame {
         librariansButton.setFont(new Font(librariansButton.getFont().getName(), Font.BOLD, 20));
         layout.putConstraint(SpringLayout.WEST, librariansButton, 20, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.NORTH, librariansButton, 40, SpringLayout.SOUTH, librariesButton);
+        librariansButton.addActionListener(e -> {
+            TableController tableController = new TableController("Librarians", connection);
+            TableFrame tableFrame = new TableFrame(tableController);
+            try {
+                tableFrame.openTable();
+            } catch (SQLException exception) {
+                JLabel error = new JLabel("Ошибка!" + exception.getMessage());
+                error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        });
         panel.add(librariansButton);
 
 

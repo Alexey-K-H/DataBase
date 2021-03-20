@@ -2,7 +2,9 @@ package gui.tablesView;
 
 import connection.DBConnection;
 import controllers.TableController;
+import gui.tablesView.insertViews.LibrarianInsert;
 import gui.tablesView.insertViews.LibraryInsert;
+import gui.tablesView.modifyViews.LibrarianModify;
 import gui.tablesView.modifyViews.LibraryModify;
 
 import javax.swing.*;
@@ -11,7 +13,7 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class TableFrame extends JFrame {
+public class TableFrame extends JDialog {
     private final String tableName;
     DBConnection connection;
     private final TableController tableController;
@@ -26,6 +28,8 @@ public class TableFrame extends JFrame {
         switch (tableName){
             case "Libraries":
                 return "Библиотеки";
+            case "Librarians":
+                return "Библиотекари";
             default:
                 return null;
         }
@@ -71,8 +75,19 @@ public class TableFrame extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, insert, 30, SpringLayout.SOUTH, infoTable);
 
         insert.addActionListener(e -> {
-            LibraryInsert libraryInsert = new LibraryInsert(tableController, tableModel);
-            libraryInsert.openInsertWindow();
+            switch (tableName){
+                case "Libraries":{
+                    LibraryInsert libraryInsert = new LibraryInsert(tableController, tableModel);
+                    libraryInsert.openInsertWindow();
+                    break;
+                }
+                case "Librarians":{
+                    LibrarianInsert librarianInsert = new LibrarianInsert(tableController, tableModel);
+                    librarianInsert.openInsertWindow();
+                    break;
+                }
+            }
+
         });
 
         jPanel.add(insert);
@@ -103,7 +118,7 @@ public class TableFrame extends JFrame {
                     tableModel.removeRow(i);
                     JLabel success = new JLabel("Запись удалена успешно!");
                     success.setFont(new Font(success.getFont().getName(), Font.BOLD, 16));
-                    JOptionPane.showMessageDialog(null, success, "INSERT", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, success, "DELETE", JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException exception) {
                     JLabel error = new JLabel();
                     error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
@@ -130,8 +145,20 @@ public class TableFrame extends JFrame {
                 for(int k = 0; k < table.getColumnCount(); k++){
                     oldValues.add(table.getValueAt(i, k).toString());
                 }
-                LibraryModify libraryModify = new LibraryModify(tableController, oldValues, tableModel, i);
-                libraryModify.openModifyWindow();
+
+                switch (tableName){
+                    case "Libraries":{
+                        LibraryModify libraryModify = new LibraryModify(tableController, oldValues, tableModel, i);
+                        libraryModify.openModifyWindow();
+                        break;
+                    }
+                    case "Librarians":{
+                        LibrarianModify librarianModify = new LibrarianModify(tableController, oldValues, tableModel, i);
+                        librarianModify.openModifyWindow();
+                        break;
+                    }
+                }
+
             }
         });
         jPanel.add(modify);
@@ -144,6 +171,7 @@ public class TableFrame extends JFrame {
         exit.addActionListener(e -> setVisible(false));
         jPanel.add(exit);
 
+        this.setModal(true);
         this.setResizable(false);
         this.setVisible(true);
     }

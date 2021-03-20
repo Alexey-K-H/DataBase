@@ -30,6 +30,8 @@ public class TableController {
         switch (tableName){
             case "Libraries":
                 return new String[]{"Идентификатор", "Количество книг"};
+            case "Librarians":
+                return new String[]{"Идентификатор", "Id - Бибилиотека",  "Номер зала"};
             default:
                 return null;
         }
@@ -51,11 +53,24 @@ public class TableController {
         switch (tableName){
             case "Libraries":{
                 while (result.next()) {
-                    tableModel.addRow(new Object[]{result.getInt("id_library"), result.getInt("quantity_books")});
+                    tableModel.addRow(new Object[]{
+                            result.getInt("id_library"),
+                            result.getInt("quantity_books")});
                 }
-                result.close();
+                break;
+            }
+            case "Librarians":{
+                while (result.next()) {
+                    tableModel.addRow(new Object[]{
+                            result.getInt("id_librarian"),
+                            result.getInt("id_library"),
+                            result.getInt("hall_num")});
+                }
+                break;
             }
         }
+
+        result.close();
 
         return tableModel;
     }
@@ -75,6 +90,9 @@ public class TableController {
         switch (tableName){
             case "Libraries":{
                 return "id_library";
+            }
+            case "Librarians":{
+                return "id_librarian";
             }
         }
         return null;

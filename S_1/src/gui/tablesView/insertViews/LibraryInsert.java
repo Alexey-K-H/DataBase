@@ -8,7 +8,7 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class LibraryInsert extends JFrame implements InsertFrame {
+public class LibraryInsert extends JDialog implements InsertFrame {
     private final TableController tableController;
     private ArrayList<String> currValues;
     private final DefaultTableModel tableModel;
@@ -83,10 +83,16 @@ public class LibraryInsert extends JFrame implements InsertFrame {
                 JLabel error = new JLabel();
                 switch (exception.getErrorCode()){
                     case 1:{
-                        error.setText("Ошибка добавления записи! Нарушена уникальность идентифкаторов библиотек!");
+                        error.setText("Ошибка добавления записи! Нарушена уникальность идентификаторов библиотек!");
+                        break;
+                    }
+                    case 936:{
+                        error.setText("Ошибка добавленя записи! Незаполненные поля!");
+                        break;
                     }
                     case 2290:{
                         error.setText("Ошибка добавления записи! Количество книг в библиотеке не может быть отрицательным!");
+                        break;
                     }
                 }
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
@@ -106,7 +112,7 @@ public class LibraryInsert extends JFrame implements InsertFrame {
         });
         jPanel.add(cleanValues);
 
-
+        this.setModal(true);
         this.setResizable(false);
         this.setVisible(true);
     }

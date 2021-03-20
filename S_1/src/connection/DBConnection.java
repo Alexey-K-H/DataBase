@@ -65,8 +65,8 @@ public class DBConnection{
                         "id_librarian integer primary key, " +
                         "id_library integer not null , " +
                         "hall_num integer not null," +
-                        "foreign key (id_library) references Libraries(id_library) on delete cascade" +
-                        ")"
+                        "foreign key (id_library) references Libraries(id_library) on delete cascade," +
+                        " check ( hall_num > 0 ))"
         );
         statement.executeUpdate("" +
                 "create table Readers (" +
@@ -178,5 +178,11 @@ public class DBConnection{
         statement.executeUpdate("insert into Libraries values (4, 15)");
         statement.executeUpdate("insert into Libraries values (5, 12)");
         statement.executeUpdate("insert into Libraries values (6, 10)");
+
+        statement.executeUpdate("insert into LIBRARIANS values (1, 2, 102)");
+        statement.executeUpdate("insert into LIBRARIANS values (2, 3, 203)");
+        statement.executeUpdate("insert into LIBRARIANS values (3, 4, 521)");
+        statement.executeUpdate("insert into LIBRARIANS values (4, 6, 302)");
+        statement.executeUpdate("insert into LIBRARIANS values (5, 1, 434)");
     }
 }

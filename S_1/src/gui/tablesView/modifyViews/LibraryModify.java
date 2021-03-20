@@ -8,7 +8,7 @@ import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class LibraryModify extends JFrame implements ModifyView {
+public class LibraryModify extends JDialog implements ModifyView {
     private final TableController tableController;
     private final ArrayList<String> currValues;
     private final DefaultTableModel tableModel;
@@ -82,6 +82,7 @@ public class LibraryModify extends JFrame implements ModifyView {
         });
         jPanel.add(confirmUpdates);
 
+        this.setModal(true);
         this.setResizable(false);
         this.setVisible(true);
     }
