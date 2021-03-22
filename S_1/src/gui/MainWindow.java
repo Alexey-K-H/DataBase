@@ -2,6 +2,7 @@ package gui;
 
 import connection.DBConnection;
 import controllers.TableController;
+import gui.menuButtons.*;
 import gui.signIn.ConnectionFrame;
 import gui.tablesView.TableFrame;
 
@@ -62,13 +63,13 @@ public class MainWindow extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, info, 20, SpringLayout.NORTH, panel);
         panel.add(info);
 
-        //Кнопка-таблица
-        JButton librariesButton = new JButton("Библиотеки");
-        librariesButton.setFont(new Font(librariesButton.getFont().getName(), Font.BOLD, 20));
-        layout.putConstraint(SpringLayout.WEST, librariesButton, this.getWidth()/2 - librariesButton.getPreferredSize().width/2, SpringLayout.WEST, panel);
-        layout.putConstraint(SpringLayout.NORTH, librariesButton, 40, SpringLayout.SOUTH, info);
-
-        librariesButton.addActionListener(e -> {
+        //Библиотеки
+        Libraries lib = new Libraries();
+        layout.putConstraint(SpringLayout.WEST, lib, 5, SpringLayout.WEST, panel);
+        layout.putConstraint(SpringLayout.NORTH, lib, 20, SpringLayout.SOUTH, info);
+        layout.putConstraint(SpringLayout.EAST, lib, -this.getWidth()/2, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.SOUTH, lib, 90, SpringLayout.NORTH, lib);
+        lib.getOpenButton().addActionListener(e -> {
             TableController tableController = new TableController("Libraries", connection);
             TableFrame tableFrame = new TableFrame(tableController);
             try {
@@ -79,14 +80,15 @@ public class MainWindow extends JFrame {
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
-        panel.add(librariesButton);
+        panel.add(lib);
 
-
-        JButton librariansButton = new JButton("Библиотекари");
-        librariansButton.setFont(new Font(librariansButton.getFont().getName(), Font.BOLD, 20));
-        layout.putConstraint(SpringLayout.WEST, librariansButton, 20, SpringLayout.WEST, panel);
-        layout.putConstraint(SpringLayout.NORTH, librariansButton, 40, SpringLayout.SOUTH, librariesButton);
-        librariansButton.addActionListener(e -> {
+        //Библиотекари
+        Librarians librarians = new Librarians();
+        layout.putConstraint(SpringLayout.WEST, librarians, 5, SpringLayout.WEST, panel);
+        layout.putConstraint(SpringLayout.NORTH, librarians, 10, SpringLayout.SOUTH, lib);
+        layout.putConstraint(SpringLayout.EAST, librarians, -this.getWidth()/2, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.SOUTH, librarians, 90, SpringLayout.NORTH, librarians);
+        librarians.getOpenButton().addActionListener(e -> {
             TableController tableController = new TableController("Librarians", connection);
             TableFrame tableFrame = new TableFrame(tableController);
             try {
@@ -97,93 +99,54 @@ public class MainWindow extends JFrame {
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
-        panel.add(librariansButton);
+        panel.add(librarians);
 
+        //Читатели
+        Readers readers = new Readers();
+        layout.putConstraint(SpringLayout.WEST, readers, 5, SpringLayout.WEST, panel);
+        layout.putConstraint(SpringLayout.NORTH, readers, 10, SpringLayout.SOUTH, librarians);
+        layout.putConstraint(SpringLayout.EAST, readers, -this.getWidth()/2, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.SOUTH, readers, 100, SpringLayout.NORTH, readers);
 
-        JButton productionsButton = new JButton("Произведения");
-        productionsButton.setFont(new Font(productionsButton.getFont().getName(), Font.BOLD, 20));
-        layout.putConstraint(SpringLayout.EAST, productionsButton, -20, SpringLayout.EAST, panel);
-        layout.putConstraint(SpringLayout.NORTH, productionsButton, 40, SpringLayout.SOUTH, librariesButton);
-        panel.add(productionsButton);
-
-
-        JButton readersButton = new JButton("Читатели");
-        readersButton.setFont(new Font(readersButton.getFont().getName(), Font.BOLD, 20));
-        layout.putConstraint(SpringLayout.WEST, readersButton, 50, SpringLayout.EAST, librariansButton);
-        layout.putConstraint(SpringLayout.NORTH, readersButton, 40, SpringLayout.SOUTH, librariansButton);
-        panel.add(readersButton);
-
-        JLabel readersCategory = new JLabel("<html>Выбрать категорию читателей:</html>");
-        readersCategory.setFont(new Font(readersCategory.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.NORTH, readersCategory, 10, SpringLayout.SOUTH, readersButton);
-        layout.putConstraint(SpringLayout.WEST, readersCategory, 50, SpringLayout.EAST, librariansButton);
-        panel.add(readersCategory);
+        panel.add(readers);
 
         //Кнопки-категории
-        JButton teacherButton = new JButton("Учителя");
-        teacherButton.setFont(new Font(teacherButton.getFont().getName(), Font.BOLD, 20));
-        layout.putConstraint(SpringLayout.NORTH, teacherButton, 10, SpringLayout.SOUTH, readersCategory);
-        layout.putConstraint(SpringLayout.WEST, teacherButton, 50, SpringLayout.EAST, librariansButton);
-        panel.add(teacherButton);
+        CategoryReaders categoryReaders = new CategoryReaders();
+        layout.putConstraint(SpringLayout.NORTH, categoryReaders, 10, SpringLayout.SOUTH, readers);
+        layout.putConstraint(SpringLayout.WEST, categoryReaders, 5, SpringLayout.WEST, panel);
+        layout.putConstraint(SpringLayout.EAST, categoryReaders, -this.getWidth()/2, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.SOUTH, categoryReaders, 350, SpringLayout.NORTH, categoryReaders);
 
+        panel.add(categoryReaders);
 
-        JButton researchersButton = new JButton("Научные сотрудники");
-        researchersButton.setFont(new Font(researchersButton.getFont().getName(), Font.BOLD, 20));
-        layout.putConstraint(SpringLayout.NORTH, researchersButton, 10, SpringLayout.SOUTH, teacherButton);
-        layout.putConstraint(SpringLayout.WEST, researchersButton, 50, SpringLayout.EAST, librariansButton);
-        panel.add(researchersButton);
+        Productions productions = new Productions();
+        layout.putConstraint(SpringLayout.EAST, productions, -20, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.NORTH, productions, 20, SpringLayout.SOUTH, info);
+        layout.putConstraint(SpringLayout.WEST, productions, -this.getWidth()/2 + 20, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.SOUTH, productions, 180, SpringLayout.NORTH, productions);
 
+        panel.add(productions);
 
-        JButton schoolchildButton = new JButton("Школьники");
-        schoolchildButton.setFont(new Font(schoolchildButton.getFont().getName(), Font.BOLD, 20));
-        layout.putConstraint(SpringLayout.NORTH, schoolchildButton, 10, SpringLayout.SOUTH, researchersButton);
-        layout.putConstraint(SpringLayout.WEST, schoolchildButton, 50, SpringLayout.EAST, librariansButton);
-        panel.add(schoolchildButton);
+        Editions editions = new Editions();
+        layout.putConstraint(SpringLayout.EAST, editions, -20, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.NORTH, editions, 10, SpringLayout.SOUTH, productions);
+        layout.putConstraint(SpringLayout.WEST, editions, -this.getWidth()/2 + 20, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.SOUTH, editions, 180, SpringLayout.NORTH, editions);
 
+        panel.add(editions);
 
-        JButton studentButton = new JButton("Студенты");
-        studentButton.setFont(new Font(studentButton.getFont().getName(), Font.BOLD, 20));
-        layout.putConstraint(SpringLayout.NORTH, studentButton, 10, SpringLayout.SOUTH, schoolchildButton);
-        layout.putConstraint(SpringLayout.WEST, studentButton, 50, SpringLayout.EAST, librariansButton);
-        panel.add(studentButton);
+        IssuedBooksAndTerms issuedBooksAndTerms = new IssuedBooksAndTerms();
+        layout.putConstraint(SpringLayout.EAST, issuedBooksAndTerms, -20, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.NORTH, issuedBooksAndTerms, 10, SpringLayout.SOUTH, editions);
+        layout.putConstraint(SpringLayout.WEST, issuedBooksAndTerms, -this.getWidth()/2 + 20, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.SOUTH, issuedBooksAndTerms, 210, SpringLayout.NORTH, issuedBooksAndTerms);
 
-
-        JButton pensionersButton = new JButton("Пенсионеры");
-        pensionersButton.setFont(new Font(pensionersButton.getFont().getName(), Font.BOLD, 20));
-        layout.putConstraint(SpringLayout.NORTH, pensionersButton, 10, SpringLayout.SOUTH, studentButton);
-        layout.putConstraint(SpringLayout.WEST, pensionersButton, 50, SpringLayout.EAST, librariansButton);
-        panel.add(pensionersButton);
-
-
-        JButton workersButton = new JButton("Работники");
-        workersButton.setFont(new Font(workersButton.getFont().getName(), Font.BOLD, 20));
-        layout.putConstraint(SpringLayout.NORTH, workersButton, 10, SpringLayout.SOUTH, pensionersButton);
-        layout.putConstraint(SpringLayout.WEST, workersButton, 50, SpringLayout.EAST, librariansButton);
-        panel.add(workersButton);
-
-
-        JButton editionsButton = new JButton("Издания");
-        editionsButton.setFont(new Font(editionsButton.getFont().getName(), Font.BOLD, 20));
-        layout.putConstraint(SpringLayout.EAST, editionsButton, -50, SpringLayout.WEST, productionsButton);
-        layout.putConstraint(SpringLayout.NORTH, editionsButton, 40, SpringLayout.SOUTH, librariansButton);
-        panel.add(editionsButton);
-
-        JButton issuedBooks = new JButton("Выданные книги");
-        issuedBooks.setFont(new Font(issuedBooks.getFont().getName(), Font.BOLD, 20));
-        layout.putConstraint(SpringLayout.WEST, issuedBooks, 20, SpringLayout.WEST, panel);
-        layout.putConstraint(SpringLayout.NORTH, issuedBooks, 40, SpringLayout.SOUTH, workersButton);
-        panel.add(issuedBooks);
-
-        JButton rulesButton = new JButton("<html>Правила пользования<br>кнгиами</html>");
-        rulesButton.setFont(new Font(rulesButton.getFont().getName(), Font.BOLD, 20));
-        layout.putConstraint(SpringLayout.EAST, rulesButton, -20, SpringLayout.EAST, panel);
-        layout.putConstraint(SpringLayout.NORTH, rulesButton, 30, SpringLayout.SOUTH, workersButton);
-        panel.add(rulesButton);
+        panel.add(issuedBooksAndTerms);
 
         JButton exit = new JButton("Выйти из фонда");
         exit.setFont(new Font(exit.getFont().getName(), Font.BOLD, 20));
         layout.putConstraint(SpringLayout.EAST, exit, -20, SpringLayout.EAST, panel);
-        layout.putConstraint(SpringLayout.NORTH, exit, 20, SpringLayout.SOUTH, rulesButton);
+        layout.putConstraint(SpringLayout.NORTH, exit, 20, SpringLayout.SOUTH, issuedBooksAndTerms);
         panel.add(exit);
 
         exit.addActionListener(e -> {
