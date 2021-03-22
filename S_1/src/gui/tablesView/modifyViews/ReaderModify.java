@@ -3,6 +3,7 @@ package gui.tablesView.modifyViews;
 import controllers.TableController;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.SQLException;
@@ -99,7 +100,7 @@ public class ReaderModify extends JDialog implements ModifyView{
         layout.putConstraint(SpringLayout.WEST, status, 20, SpringLayout.WEST, jPanel);
         jPanel.add(status);
 
-        JTextField statusField = new JTextField(10);
+        JTextField statusField = new JTextField(15);
         statusField.setText(currValues.get(3));
         statusField.setFont(new Font(statusField.getFont().getName(), Font.PLAIN, 16));
         layout.putConstraint(SpringLayout.NORTH, statusField, 10, SpringLayout.SOUTH, status);
@@ -112,7 +113,17 @@ public class ReaderModify extends JDialog implements ModifyView{
         layout.putConstraint(SpringLayout.SOUTH, confirmUpdates, -20, SpringLayout.SOUTH, jPanel);
         layout.putConstraint(SpringLayout.EAST, confirmUpdates, -20, SpringLayout.EAST, jPanel);
         confirmUpdates.addActionListener(e -> {
-            if(idLibraryField.getText().isEmpty()
+            if(!statusField.getText().equals("ученик") &&
+                    !statusField.getText().equals("учитель") &&
+                    !statusField.getText().equals("студент") &&
+                    !statusField.getText().equals("научный сотрудник") &&
+                    !statusField.getText().equals("работник") &&
+                    !statusField.getText().equals("пенсионер")){
+                JLabel error = new JLabel("Неправильно задан статус читателя!");
+                error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+            else if(idLibraryField.getText().isEmpty()
                     || surnameField.getText().isEmpty()
                     || nameField.getText().isEmpty()
                     || patronymicField.getText().isEmpty()
@@ -135,7 +146,8 @@ public class ReaderModify extends JDialog implements ModifyView{
                             + newValues.get(4) + "' where id_reader = " + currValues.get(0);
                     performUpdateOperation(sqlValuesSet);
                     tableModel.setValueAt(newValues.get(0), indexRow, 1);
-                    tableModel.setValueAt(newValues.get(1), indexRow, 2);
+                    tableModel.setValueAt(newValues.get(1) + " " + newValues.get(2) + " " + newValues.get(3), indexRow, 2);
+                    tableModel.setValueAt(newValues.get(4), indexRow, 3);
                     this.setVisible(false);
                     JLabel success = new JLabel("Изменения сохранены");
                     success.setFont(new Font(success.getFont().getName(), Font.BOLD, 16));
@@ -162,6 +174,23 @@ public class ReaderModify extends JDialog implements ModifyView{
             }
         });
         jPanel.add(confirmUpdates);
+
+        JLabel statusInfo = new JLabel("<html><b>Статус</b> читателя<br>может быть<br>следующим:<br>" +
+                "<b>1.ученик</b><br>" +
+                "<b>2.учитель</b><br>" +
+                "<b>3.студент</b><br>" +
+                "<b>4.научный сотрудник</b><br>" +
+                "<b>5.работник</b><br>" +
+                "<b>6.пенсионер</b></html>");
+        statusInfo.setFont(new Font(statusInfo.getFont().getName(), Font.PLAIN, 16));
+        Icon icon = UIManager.getIcon("OptionPane.informationIcon");
+        Border solidBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
+        statusInfo.setBorder(solidBorder);
+        statusInfo.setIcon(icon);
+        layout.putConstraint(SpringLayout.SOUTH, statusInfo, -50, SpringLayout.NORTH, confirmUpdates);
+        layout.putConstraint(SpringLayout.EAST, statusInfo, -10, SpringLayout.EAST, jPanel);
+        layout.putConstraint(SpringLayout.WEST, statusInfo, 10, SpringLayout.EAST, statusField);
+        jPanel.add(statusInfo);
 
         this.setModal(true);
         this.setResizable(false);

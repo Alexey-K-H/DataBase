@@ -9,7 +9,7 @@ public class CategoryReaders extends JPanel {
     private final JButton schoolchildButton;
     private final JButton studentButton;
     private final JButton pensionersButton;
-    private JButton workersButton;
+    private final JButton workersButton;
 
     public CategoryReaders() {
         SpringLayout layout = new SpringLayout();
@@ -58,7 +58,7 @@ public class CategoryReaders extends JPanel {
         layout.putConstraint(SpringLayout.WEST, workersButton, 20, SpringLayout.WEST, this);
         add(workersButton);
 
-        String text = "<html>Выбрать конкретную<br>категорию читателей<br>в зависимости<br>от статуса.<br><br>Общая информация:<br>" +
+        String text = "<html>Посмотреть конкретную<br>категорию читателей<br>в зависимости<br>от статуса.<br><br>Общая информация:<br>" +
                 "Институт<br>Школа<br>Место работы<br>Пенсионное свид. и т. д.</html>";
         JLabel info = new JLabel(text);
         info.setFont(new Font(info.getFont().getName(), Font.PLAIN, 16));
