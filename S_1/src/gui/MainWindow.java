@@ -107,7 +107,17 @@ public class MainWindow extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, readers, 10, SpringLayout.SOUTH, librarians);
         layout.putConstraint(SpringLayout.EAST, readers, -this.getWidth()/2, SpringLayout.EAST, panel);
         layout.putConstraint(SpringLayout.SOUTH, readers, 100, SpringLayout.NORTH, readers);
-
+        readers.getOpenButton().addActionListener(e -> {
+            TableController tableController = new TableController("Readers", connection);
+            TableFrame tableFrame = new TableFrame(tableController);
+            try {
+                tableFrame.openTable();
+            } catch (SQLException exception) {
+                JLabel error = new JLabel("Ошибка!" + exception.getMessage());
+                error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        });
         panel.add(readers);
 
         //Кнопки-категории
@@ -116,7 +126,24 @@ public class MainWindow extends JFrame {
         layout.putConstraint(SpringLayout.WEST, categoryReaders, 5, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.EAST, categoryReaders, -this.getWidth()/2, SpringLayout.EAST, panel);
         layout.putConstraint(SpringLayout.SOUTH, categoryReaders, 350, SpringLayout.NORTH, categoryReaders);
+        categoryReaders.getTeacherButton().addActionListener(e -> {
 
+        });
+        categoryReaders.getPensionersButton().addActionListener(e -> {
+
+        });
+        categoryReaders.getResearchersButton().addActionListener(e -> {
+
+        });
+        categoryReaders.getSchoolchildButton().addActionListener(e -> {
+
+        });
+        categoryReaders.getStudentButton().addActionListener(e -> {
+
+        });
+        categoryReaders.getWorkersButton().addActionListener(e -> {
+
+        });
         panel.add(categoryReaders);
 
         Productions productions = new Productions();

@@ -184,5 +184,17 @@ public class DBConnection{
         statement.executeUpdate("insert into LIBRARIANS values (3, 4, 521)");
         statement.executeUpdate("insert into LIBRARIANS values (4, 6, 302)");
         statement.executeUpdate("insert into LIBRARIANS values (5, 1, 434)");
+
+
+        statement.executeUpdate("insert into READERS values (1,3, 'Иванов', 'Иван', 'Иванович','студент')");
+        statement.executeUpdate("insert into READERS values (2,4, 'Сабинина', 'Фросья', 'Афросьевна', 'учитель')");
+        statement.executeUpdate("insert into READERS values (3,1, 'Козырев', 'Леонид', 'Федорович', 'работник')");
+        statement.executeUpdate("insert into READERS values (4,1, 'Козлова','Анастасия','Викторовна', 'ученик')");
+        statement.executeUpdate("insert into READERS values (5,2, 'Сарычев', 'Генадий', 'Олегович', 'научный сотрудник')");
+        statement.executeUpdate("insert into READERS values (6,2, 'Зюбин', 'Александр', 'Викторович', 'пенсионер')");
+        statement.executeUpdate("insert into READERS values (7,1, 'Киреев', 'Евгений', 'Сергеевич', 'учитель')");
+        statement.executeUpdate("insert into READERS values (8,6, 'Хлиманкова', 'Галина', 'Игоревна', 'студент')");
+        statement.executeUpdate("insert into READERS values (9,1, 'Налепова', 'Анастасия', 'Олеговна', 'студент')");
+        statement.executeUpdate("insert into READERS values (10,3, 'Шарапов', 'Виктор', 'Геннадьевич', 'пенсионер')");
     }
 }

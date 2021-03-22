@@ -4,8 +4,10 @@ import connection.DBConnection;
 import controllers.TableController;
 import gui.tablesView.insertViews.LibrarianInsert;
 import gui.tablesView.insertViews.LibraryInsert;
+import gui.tablesView.insertViews.ReaderInsert;
 import gui.tablesView.modifyViews.LibrarianModify;
 import gui.tablesView.modifyViews.LibraryModify;
+import gui.tablesView.modifyViews.ReaderModify;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -31,6 +33,8 @@ public class TableFrame extends JDialog {
                 return "Библиотеки";
             case "Librarians":
                 return "Библиотекари";
+            case "Readers":
+                return "Читатели.Общее";
             default:
                 return null;
         }
@@ -39,7 +43,7 @@ public class TableFrame extends JDialog {
     public void openTable() throws SQLException {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
-        this.setBounds(dimension.width/2 - 400, dimension.height/2 - 300, 800, 600);
+        this.setBounds(dimension.width/2 - 500, dimension.height/2 - 400, 1000, 800);
         this.setTitle(translateTableName());
 
         JPanel jPanel = new JPanel();
@@ -56,24 +60,39 @@ public class TableFrame extends JDialog {
         jPanel.add(tableTitle);
 
         JTable table = new JTable(tableModel);
+        table.setRowHeight(20);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         JScrollPane scrollPane = new JScrollPane(table);
+        int horizontalPolicy = JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED;
+        int verticalPolicy = JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED;
+        scrollPane.setHorizontalScrollBarPolicy(horizontalPolicy);
+        scrollPane.setVerticalScrollBarPolicy(verticalPolicy);
+
         layout.putConstraint(SpringLayout.NORTH, scrollPane, 20, SpringLayout.NORTH, tableTitle);
         layout.putConstraint(SpringLayout.WEST, scrollPane, 20, SpringLayout.WEST, jPanel);
         layout.putConstraint(SpringLayout.SOUTH, scrollPane, -20, SpringLayout.SOUTH, jPanel);
+        scrollPane.setPreferredSize(new Dimension(2*this.getWidth()/3, this.getHeight()));
+
+        int prefSize = scrollPane.getPreferredSize().width/table.getColumnCount();
+        for(int i = 0; i < table.getColumnCount(); i++){
+            table.getColumnModel().getColumn(i).setPreferredWidth(prefSize);
+        }
+
         jPanel.add(scrollPane);
 
         JLabel infoTable = new JLabel("<html>Модификация<br>таблицы данных:</html>");
         infoTable.setFont(new Font(infoTable.getFont().getName(), Font.BOLD, 16));
         layout.putConstraint(SpringLayout.NORTH, infoTable, 50, SpringLayout.NORTH, jPanel);
-        layout.putConstraint(SpringLayout.WEST, infoTable, 20, SpringLayout.EAST, scrollPane);
+        layout.putConstraint(SpringLayout.WEST, infoTable, 10, SpringLayout.EAST, scrollPane);
         jPanel.add(infoTable);
 
 
         //ввод данных в таблицу
         JButton insert = new JButton("Добавить запись");
         insert.setFont(new Font(insert.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.WEST, insert, 20, SpringLayout.EAST, scrollPane);
+        layout.putConstraint(SpringLayout.WEST, insert, 10, SpringLayout.EAST, scrollPane);
         layout.putConstraint(SpringLayout.NORTH, insert, 30, SpringLayout.SOUTH, infoTable);
 
         insert.addActionListener(e -> {
@@ -86,6 +105,11 @@ public class TableFrame extends JDialog {
                 case "Librarians":{
                     LibrarianInsert librarianInsert = new LibrarianInsert(tableController, tableModel);
                     librarianInsert.openInsertWindow();
+                    break;
+                }
+                case "Readers":{
+                    ReaderInsert readerInsert = new ReaderInsert(tableController, tableModel);
+                    readerInsert.openInsertWindow();
                     break;
                 }
             }
@@ -102,14 +126,13 @@ public class TableFrame extends JDialog {
         beforeDelOrUpdateInfo.setBorder(solidBorder);
         beforeDelOrUpdateInfo.setIcon(icon);
         layout.putConstraint(SpringLayout.NORTH, beforeDelOrUpdateInfo, 70, SpringLayout.NORTH, insert);
-        layout.putConstraint(SpringLayout.WEST, beforeDelOrUpdateInfo, 20, SpringLayout.EAST, scrollPane);
-        layout.putConstraint(SpringLayout.EAST, beforeDelOrUpdateInfo, -10, SpringLayout.EAST, jPanel);
+        layout.putConstraint(SpringLayout.WEST, beforeDelOrUpdateInfo, 10, SpringLayout.EAST, scrollPane);
         jPanel.add(beforeDelOrUpdateInfo);
 
         //Удаление данных из таблицы
         JButton delete = new JButton("Удалить запись");
         delete.setFont(new Font(delete.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.WEST, delete, 20, SpringLayout.EAST, scrollPane);
+        layout.putConstraint(SpringLayout.WEST, delete, 10, SpringLayout.EAST, scrollPane);
         layout.putConstraint(SpringLayout.NORTH, delete, 30, SpringLayout.SOUTH, beforeDelOrUpdateInfo);
         delete.addActionListener(e -> {
             int i = table.getSelectedRow();
@@ -139,7 +162,7 @@ public class TableFrame extends JDialog {
         //Модификация данных таблицы
         JButton modify = new JButton("Изменить запись");
         modify.setFont(new Font(modify.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.WEST, modify, 20, SpringLayout.EAST, scrollPane);
+        layout.putConstraint(SpringLayout.WEST, modify, 10, SpringLayout.EAST, scrollPane);
         layout.putConstraint(SpringLayout.NORTH, modify, 30, SpringLayout.SOUTH, delete);
         modify.addActionListener(e -> {
             int i = table.getSelectedRow();
@@ -165,6 +188,11 @@ public class TableFrame extends JDialog {
                         librarianModify.openModifyWindow();
                         break;
                     }
+                    case "Readers":{
+                        ReaderModify readerModify = new ReaderModify(tableController, oldValues, tableModel, i);
+                        readerModify.openModifyWindow();
+                        break;
+                    }
                 }
 
             }
@@ -175,7 +203,7 @@ public class TableFrame extends JDialog {
         //Выход из окна просмотра
         JButton exit = new JButton("Закрыть таблицу");
         exit.setFont(new Font(exit.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.WEST, exit, 20, SpringLayout.EAST, scrollPane);
+        layout.putConstraint(SpringLayout.EAST, exit, -20, SpringLayout.EAST, jPanel);
         layout.putConstraint(SpringLayout.SOUTH, exit, -20, SpringLayout.SOUTH, jPanel);
         exit.addActionListener(e -> setVisible(false));
         jPanel.add(exit);

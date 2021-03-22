@@ -31,7 +31,9 @@ public class TableController {
             case "Libraries":
                 return new String[]{"Идентификатор", "Количество книг"};
             case "Librarians":
-                return new String[]{"Идентификатор", "Id - Бибилиотека",  "Номер зала"};
+                return new String[]{"Идентификатор", "Id - Библиотека",  "Номер зала"};
+            case "Readers":
+                return new String[]{"Идентификатор", "Id - Библиотека", "ФИО", "Статус"};
             default:
                 return null;
         }
@@ -43,7 +45,12 @@ public class TableController {
             throw new SQLException("Нет таблицы с таким названием!");
         }
 
-        DefaultTableModel tableModel = new DefaultTableModel();
+        DefaultTableModel tableModel = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         tableModel.setColumnIdentifiers(columnsHeaders);
 
         String sql = "select * from " + tableName;
@@ -65,6 +72,18 @@ public class TableController {
                             result.getInt("id_librarian"),
                             result.getInt("id_library"),
                             result.getInt("hall_num")});
+                }
+                break;
+            }
+            case "Readers":{
+                while (result.next()) {
+                    tableModel.addRow(new Object[]{
+                            result.getInt("id_reader"),
+                            result.getInt("id_library"),
+                            result.getString("surname") + " " +
+                                    result.getString("name") + " " +
+                                    result.getString("patronymic"),
+                            result.getString("status")});
                 }
                 break;
             }
@@ -93,6 +112,9 @@ public class TableController {
             }
             case "Librarians":{
                 return "id_librarian";
+            }
+            case "Readers":{
+                return "id_reader";
             }
         }
         return null;
