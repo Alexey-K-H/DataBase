@@ -37,6 +37,8 @@ public class TableController {
                 return new String[]{"Идентификатор", "Id - Библиотека", "ФИО", "Статус"};
             case "Teachers":
                 return new String[]{"Id-читатель", "Id-университет", "Факультет", "Название ВУЗа"};
+            case "Editions":
+                return new String[]{"Идентификатор", "Id-библиотека", "Зал", "Стеллаж", "Полка", "Поступление", "Списание"};
             default:
                 return null;
         }
@@ -87,6 +89,20 @@ public class TableController {
                 }
                 break;
             }
+            case "Editions":{
+                while (result.next()){
+                    tableModel.addRow(new Object[]{
+                            result.getInt("id_edition"),
+                            result.getInt("id_library"),
+                            result.getInt("hall_num"),
+                            result.getInt("rack_num"),
+                            result.getInt("shelf_num"),
+                            result.getDate("date_of_admission"),
+                            result.getDate("write_off_date")
+                    });
+                }
+                break;
+            }
             case "Readers":{
                 while (result.next()) {
                     tableModel.addRow(new Object[]{
@@ -132,6 +148,9 @@ public class TableController {
             }
             case "Librarians":{
                 return "id_librarian";
+            }
+            case "Editions":{
+                return "id_edition";
             }
             case "Readers":
             case "Teachers": {

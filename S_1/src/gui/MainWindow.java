@@ -161,7 +161,17 @@ public class MainWindow extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, editions, 10, SpringLayout.SOUTH, productions);
         layout.putConstraint(SpringLayout.WEST, editions, -this.getWidth()/2 + 20, SpringLayout.EAST, panel);
         layout.putConstraint(SpringLayout.SOUTH, editions, 180, SpringLayout.NORTH, editions);
-
+        editions.getOpenButton().addActionListener(e -> {
+            TableController tableController = new TableController("Editions", connection);
+            TableFrame tableFrame = new TableFrame(tableController);
+            try {
+                tableFrame.openTable();
+            } catch (SQLException exception) {
+                JLabel error = new JLabel("Ошибка!" + exception.getMessage());
+                error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        });
         panel.add(editions);
 
         IssuedBooksAndTerms issuedBooksAndTerms = new IssuedBooksAndTerms();

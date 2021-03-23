@@ -90,7 +90,7 @@ public class DBConnection{
                         "id_librarian integer primary key, " +
                         "id_library integer not null , " +
                         "hall_num integer not null," +
-                        "foreign key (id_library, hall_num) references HALLS(ID_HALL, ID_LIBRARY) on delete cascade," +
+                        "foreign key (id_library, hall_num) references HALLS(ID_LIBRARY, ID_HALL) on delete cascade," +
                         " check ( hall_num > 0 ))"
         );
         statement.executeUpdate("create sequence libs_seq start with 1 increment by 1 nomaxvalue");
@@ -134,7 +134,7 @@ public class DBConnection{
                         "shelf_num integer not null," +
                         "date_of_admission date not null," +
                         "write_off_date date not null," +
-                        "foreign key (id_library) references Libraries(id_library) on delete cascade " +
+                        "foreign key (id_library, hall_num) references HALLS(ID_LIBRARY, ID_HALL) on delete cascade " +
                         ")"
         );
         statement.executeUpdate("create sequence edit_seq start with 1 increment by 1 nomaxvalue ");
@@ -241,21 +241,21 @@ public class DBConnection{
         statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS) values (10)");
 
         statement.executeUpdate("insert into HALLS values (1,1)");
-        statement.executeUpdate("insert into HALLS values (1,2)");
-        statement.executeUpdate("insert into HALLS values (1,3)");
         statement.executeUpdate("insert into HALLS values (2,1)");
-        statement.executeUpdate("insert into HALLS values (2,2)");
         statement.executeUpdate("insert into HALLS values (3,1)");
+        statement.executeUpdate("insert into HALLS values (1,2)");
+        statement.executeUpdate("insert into HALLS values (2,2)");
         statement.executeUpdate("insert into HALLS values (3,2)");
-        statement.executeUpdate("insert into HALLS values (3,3)");
-        statement.executeUpdate("insert into HALLS values (3,4)");
-        statement.executeUpdate("insert into HALLS values (4,1)");
-        statement.executeUpdate("insert into HALLS values (4,2)");
-        statement.executeUpdate("insert into HALLS values (5,1)");
-        statement.executeUpdate("insert into HALLS values (6,1)");
+        statement.executeUpdate("insert into HALLS values (1,3)");
+        statement.executeUpdate("insert into HALLS values (2,3)");
+        statement.executeUpdate("insert into HALLS values (1,4)");
+        statement.executeUpdate("insert into HALLS values (2,4)");
+        statement.executeUpdate("insert into HALLS values (1,5)");
+        statement.executeUpdate("insert into HALLS values (2,5)");
+        statement.executeUpdate("insert into HALLS values (1,6)");
 
         statement.executeUpdate("insert into LIBRARIANS(ID_LIBRARY, HALL_NUM) values (2, 1)");
-        statement.executeUpdate("insert into LIBRARIANS(ID_LIBRARY, HALL_NUM) values (3, 3)");
+        statement.executeUpdate("insert into LIBRARIANS(ID_LIBRARY, HALL_NUM) values (3, 2)");
         statement.executeUpdate("insert into LIBRARIANS(ID_LIBRARY, HALL_NUM) values (4, 1)");
         statement.executeUpdate("insert into LIBRARIANS(ID_LIBRARY, HALL_NUM) values (6, 1)");
         statement.executeUpdate("insert into LIBRARIANS(ID_LIBRARY, HALL_NUM) values (1, 2)");
@@ -274,17 +274,17 @@ public class DBConnection{
         statement.executeUpdate("insert into TEACHERS values (2, 2300, 'ФФ', 'НГУ')");
         statement.executeUpdate("insert into TEACHERS values (7, 2300, 'ФИТ', 'НГУ')");
 
-//        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (2, 402, 12, 5, to_date('23.02.2021','dd.mm.yyyy'), to_date('','dd.mm.yyyy'))");
-//        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (4, 467, 15, 1, to_date('04.01.2020','dd.mm.yyyy'), to_date('06.12.2020','dd.mm.yyyy'))");
-//        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (1, 234, 5, 7, to_date('23.02.2020','dd.mm.yyyy'), to_date('','dd.mm.yyyy'))");
-//        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (1, 4546, 23, 23, to_date('23.03.2020','dd.mm.yyyy'), to_date('','dd.mm.yyyy'))");
-//        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (6, 3332, 57, 1, to_date('04.05.2020','dd.mm.yyyy'), to_date('','dd.mm.yyyy'))");
-//        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (4, 3522, 24, 5, to_date('','dd.mm.yyyy'), to_date('','dd.mm.yyyy'))");
-//        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (5, 453, 665, 34, to_date('','dd.mm.yyyy'), to_date('','dd.mm.yyyy'))");
-//        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (2, 345, 34, 2, to_date('','dd.mm.yyyy'), to_date('','dd.mm.yyyy'))");
-//        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (1, 1435, 5, 356, to_date('','dd.mm.yyyy'), to_date('','dd.mm.yyyy'))");
-//        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (1, 2554, 1342, 23, to_date('','dd.mm.yyyy'), to_date('','dd.mm.yyyy'))");
-//        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (6, 2344, 45, 235, to_date('','dd.mm.yyyy'), to_date('','dd.mm.yyyy'))");
-//        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (3, 4302, 46, 1, to_date('','dd.mm.yyyy'), to_date('','dd.mm.yyyy'))");
+        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (2, 2, 12, 5, to_date('23.02.2021','dd.mm.yyyy'), to_date('14.07.2021','dd.mm.yyyy'))");
+        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (4, 1, 15, 1, to_date('04.01.2020','dd.mm.yyyy'), to_date('06.12.2020','dd.mm.yyyy'))");
+        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (1, 3, 5, 7, to_date('23.02.2020','dd.mm.yyyy'), to_date('21.07.2021','dd.mm.yyyy'))");
+        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (1, 1, 23, 23, to_date('23.03.2020','dd.mm.yyyy'), to_date('02.08.2021','dd.mm.yyyy'))");
+        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (6, 1, 57, 1, to_date('04.05.2020','dd.mm.yyyy'), to_date('06.08.2021','dd.mm.yyyy'))");
+        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (4, 2, 24, 5, to_date('10.01.2021','dd.mm.yyyy'), to_date('27.08.2021','dd.mm.yyyy'))");
+        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (5, 1, 665, 34, to_date('03.02.2021','dd.mm.yyyy'), to_date('08.09.2021','dd.mm.yyyy'))");
+        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (2, 1, 34, 2, to_date('06.02.2021','dd.mm.yyyy'), to_date('07.10.2021','dd.mm.yyyy'))");
+        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (1, 3, 5, 356, to_date('10.02.2021','dd.mm.yyyy'), to_date('15.10.2021','dd.mm.yyyy'))");
+        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (1, 2, 1342, 23, to_date('05.03.2021','dd.mm.yyyy'), to_date('22.12.2021','dd.mm.yyyy'))");
+        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (6, 1, 45, 235, to_date('13.03.2021','dd.mm.yyyy'), to_date('12.02.2022','dd.mm.yyyy'))");
+        statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (3, 2, 46, 1, to_date('06.05.2021','dd.mm.yyyy'), to_date('09.09.2021','dd.mm.yyyy'))");
     }
 }

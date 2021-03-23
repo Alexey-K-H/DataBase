@@ -38,6 +38,8 @@ public class TableFrame extends JDialog {
                 return "Библиотекари";
             case "Readers":
                 return "Читатели.Общее";
+            case "Editions":
+                return "Издания";
             default:
                 return null;
         }
