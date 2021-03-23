@@ -118,7 +118,8 @@ public class ReaderModify extends JDialog implements ModifyView{
                     !statusField.getText().equals("студент") &&
                     !statusField.getText().equals("научный сотрудник") &&
                     !statusField.getText().equals("работник") &&
-                    !statusField.getText().equals("пенсионер")){
+                    !statusField.getText().equals("пенсионер") &&
+                    !statusField.getText().equals("прочие")){
                 JLabel error = new JLabel("Неправильно задан статус читателя!");
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -181,7 +182,9 @@ public class ReaderModify extends JDialog implements ModifyView{
                 "<b>3.студент</b><br>" +
                 "<b>4.научный сотрудник</b><br>" +
                 "<b>5.работник</b><br>" +
-                "<b>6.пенсионер</b></html>");
+                "<b>6.пенсионер</b><br>" +
+                "Если статуса нет,<br>" +
+                "указывается \"<b>прочие</b>\"</html>");
         statusInfo.setFont(new Font(statusInfo.getFont().getName(), Font.PLAIN, 16));
         Icon icon = UIManager.getIcon("OptionPane.informationIcon");
         Border solidBorder = BorderFactory.createLineBorder(Color.BLACK, 1);

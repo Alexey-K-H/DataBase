@@ -36,21 +36,21 @@ public class LibrarianInsert extends JDialog implements InsertFrame {
         layout.putConstraint(SpringLayout.WEST, info, 20, SpringLayout.WEST, jPanel);
         jPanel.add(info);
 
-        JLabel idLabel = new JLabel("Идентификатор сотрудника");
-        idLabel.setFont(new Font(idLabel.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.NORTH, idLabel, 50, SpringLayout.SOUTH, info);
-        layout.putConstraint(SpringLayout.WEST, idLabel, 20, SpringLayout.WEST, jPanel);
-        jPanel.add(idLabel);
-
-        JTextField idTextField = new JTextField(10);
-        idTextField.setFont(new Font(idTextField.getFont().getName(), Font.PLAIN, 16));
-        layout.putConstraint(SpringLayout.NORTH, idTextField, 10, SpringLayout.SOUTH, idLabel);
-        layout.putConstraint(SpringLayout.WEST, idTextField, 20, SpringLayout.WEST, jPanel);
-        jPanel.add(idTextField);
+//        JLabel idLabel = new JLabel("Идентификатор сотрудника");
+//        idLabel.setFont(new Font(idLabel.getFont().getName(), Font.BOLD, 16));
+//        layout.putConstraint(SpringLayout.NORTH, idLabel, 50, SpringLayout.SOUTH, info);
+//        layout.putConstraint(SpringLayout.WEST, idLabel, 20, SpringLayout.WEST, jPanel);
+//        jPanel.add(idLabel);
+//
+//        JTextField idTextField = new JTextField(10);
+//        idTextField.setFont(new Font(idTextField.getFont().getName(), Font.PLAIN, 16));
+//        layout.putConstraint(SpringLayout.NORTH, idTextField, 10, SpringLayout.SOUTH, idLabel);
+//        layout.putConstraint(SpringLayout.WEST, idTextField, 20, SpringLayout.WEST, jPanel);
+//        jPanel.add(idTextField);
 
         JLabel idLibLabel = new JLabel("Идентификатор библиотеки");
         idLibLabel.setFont(new Font(idLibLabel.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.NORTH, idLibLabel, 20, SpringLayout.SOUTH, idTextField);
+        layout.putConstraint(SpringLayout.NORTH, idLibLabel, 20, SpringLayout.SOUTH, info);
         layout.putConstraint(SpringLayout.WEST, idLibLabel, 20, SpringLayout.WEST, jPanel);
         jPanel.add(idLibLabel);
 
@@ -78,17 +78,20 @@ public class LibrarianInsert extends JDialog implements InsertFrame {
         layout.putConstraint(SpringLayout.EAST, confirm, -20, SpringLayout.EAST, jPanel);
         confirm.addActionListener(e->{
             currValues = new ArrayList<>();
-            currValues.add(idTextField.getText());
+            //currValues.add(idTextField.getText());
             currValues.add(idLibTexField.getText());
             currValues.add(hallNumTexFiled.getText());
-
+            String sql = "insert into LIBRARIANS(ID_LIBRARY, HALL_NUM) values (" + currValues.get(0) + "," + currValues.get(1) + ")";
             try {
-                performInsertOperation(currValues);
-                idTextField.setText("");
+                performInsertOperation(sql);
+                //idTextField.setText("");
                 idLibTexField.setText("");
                 hallNumTexFiled.setText("");
 
-                Object[] values = new Object[]{currValues.get(0), currValues.get(1), currValues.get(2)};
+                Object[] values = new Object[]{tableController.getTableSet().getValueAt(
+                        tableController.getTableSet().getRowCount() - 1, 0), tableController.getTableSet().getValueAt(
+                        tableController.getTableSet().getRowCount() - 1, 1), tableController.getTableSet().getValueAt(
+                        tableController.getTableSet().getRowCount() - 1, 2)};
                 tableModel.addRow(values);
                 JLabel success = new JLabel("Запись добавлена успешно!");
                 success.setFont(new Font(success.getFont().getName(), Font.BOLD, 16));
@@ -96,10 +99,6 @@ public class LibrarianInsert extends JDialog implements InsertFrame {
             } catch (SQLException exception) {
                 JLabel error = new JLabel();
                 switch (exception.getErrorCode()){
-                    case 1:{
-                        error.setText("Ошибка добавления записи! Нарушена уникальность идентификаторов библиотекарей!");
-                        break;
-                    }
                     case 936:{
                         error.setText("Ошибка добавленя записи! Незаполненные поля!");
                         break;
@@ -124,7 +123,7 @@ public class LibrarianInsert extends JDialog implements InsertFrame {
         layout.putConstraint(SpringLayout.SOUTH, clear, -20, SpringLayout.NORTH, confirm);
         layout.putConstraint(SpringLayout.EAST, clear, -20, SpringLayout.EAST, jPanel);
         clear.addActionListener(e -> {
-            idTextField.setText("");
+            //idTextField.setText("");
             idLibTexField.setText("");
             hallNumTexFiled.setText("");
         });
@@ -137,7 +136,7 @@ public class LibrarianInsert extends JDialog implements InsertFrame {
     }
 
     @Override
-    public void performInsertOperation(ArrayList<String> values) throws SQLException {
-        tableController.insertNewRecord(values);
+    public void performInsertOperation(String sql) throws SQLException {
+        tableController.insertNewRecord(sql);
     }
 }

@@ -4,6 +4,7 @@ import connection.DBConnection;
 import controllers.TableController;
 import gui.menuButtons.*;
 import gui.signIn.ConnectionFrame;
+import gui.tablesView.CategoryTableFrame;
 import gui.tablesView.TableFrame;
 
 import javax.swing.*;
@@ -121,7 +122,7 @@ public class MainWindow extends JFrame {
         panel.add(readers);
 
         //Кнопки-категории
-        CategoryReaders categoryReaders = new CategoryReaders();
+        CategoryReaders categoryReaders = new CategoryReaders(connection);
         layout.putConstraint(SpringLayout.NORTH, categoryReaders, 10, SpringLayout.SOUTH, readers);
         layout.putConstraint(SpringLayout.WEST, categoryReaders, 5, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.EAST, categoryReaders, -this.getWidth()/2, SpringLayout.EAST, panel);

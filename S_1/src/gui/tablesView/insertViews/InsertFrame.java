@@ -5,5 +5,5 @@ import java.util.ArrayList;
 
 public interface InsertFrame {
     void openInsertWindow();
-    void performInsertOperation(ArrayList<String> values) throws SQLException;
+    void performInsertOperation(String sql) throws SQLException;
 }

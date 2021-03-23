@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 
 public class TableController {
     private final String tableName;
@@ -34,6 +33,8 @@ public class TableController {
                 return new String[]{"Идентификатор", "Id - Библиотека",  "Номер зала"};
             case "Readers":
                 return new String[]{"Идентификатор", "Id - Библиотека", "ФИО", "Статус"};
+            case "Teachers":
+                return new String[]{"Id-читатель", "Id-университет", "Факультет", "Название ВУЗа"};
             default:
                 return null;
         }
@@ -87,6 +88,17 @@ public class TableController {
                 }
                 break;
             }
+            case "Teachers":{
+                while (result.next()){
+                    tableModel.addRow(new Object[]{
+                            result.getInt("id_reader"),
+                            result.getInt("id_university"),
+                            result.getString("faculty"),
+                            result.getString("name_university")
+                    });
+                }
+                break;
+            }
         }
 
         result.close();
@@ -94,14 +106,8 @@ public class TableController {
         return tableModel;
     }
 
-    public void insertNewRecord(ArrayList<String> newValues) throws SQLException {
-        StringBuilder valuesSet = new StringBuilder();
-        for (String value : newValues){
-           valuesSet.append(value).append(", ");
-        }
-        String values = valuesSet.substring(0, valuesSet.toString().length() - 2);
+    public void insertNewRecord(String sql) throws SQLException {
         Statement statement = connection.getConn().createStatement();
-        String sql = "insert into " + tableName + " values(" + values + ")";
         statement.executeUpdate(sql);
     }
 
@@ -113,7 +119,8 @@ public class TableController {
             case "Librarians":{
                 return "id_librarian";
             }
-            case "Readers":{
+            case "Readers":
+            case "Teachers": {
                 return "id_reader";
             }
         }

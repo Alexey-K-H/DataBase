@@ -36,15 +36,19 @@ public class DBConnection{
         statement.executeUpdate("drop table Students");
         statement.executeUpdate("drop table Pensioners");
         statement.executeUpdate("drop table Workers");
+        statement.executeUpdate("drop table Others");
         //second level
         statement.executeUpdate("drop table Issued_books");
         statement.executeUpdate("drop table Rules");
         statement.executeUpdate("drop table Compositions");
         //Delete dependent tables 1 level
+        statement.executeUpdate("drop sequence libs_seq");
         statement.executeUpdate("drop table Librarians");
+        statement.executeUpdate("drop sequence reader_seq");
         statement.executeUpdate("drop table Readers");
         statement.executeUpdate("drop table Editions");
         //Delete independent tables
+        statement.executeUpdate("drop sequence lib_seq");
         statement.executeUpdate("drop table Libraries");
         System.out.println("Close connection...");
         conn.close();
@@ -59,6 +63,16 @@ public class DBConnection{
                 " quantity_books integer not null," +
                         "check ( quantity_books >= 0 ))"
         );
+        statement.executeUpdate("create sequence lib_seq start with 1 increment by 1 nomaxvalue");
+        statement.executeUpdate("create trigger lib_trigger " +
+                "before insert on LIBRARIES " +
+                "referencing new as new_lib " +
+                "for each row " +
+                "begin " +
+                "if(:new_lib.id_library is null) then " +
+                "select lib_seq.nextval into :new_lib.id_library from DUAL; " +
+                "end if; " +
+                "end;");
         //first level
         statement.executeUpdate(
                 "create table Librarians (" +
@@ -68,6 +82,17 @@ public class DBConnection{
                         "foreign key (id_library) references Libraries(id_library) on delete cascade," +
                         " check ( hall_num > 0 ))"
         );
+        statement.executeUpdate("create sequence libs_seq start with 1 increment by 1 nomaxvalue");
+        statement.executeUpdate("create trigger libs_trigger " +
+                "before insert on LIBRARIANS " +
+                "referencing new as new_libn " +
+                "for each row " +
+                "begin " +
+                "if(:new_libn.id_librarian is null) then " +
+                "select libs_seq.nextval into :new_libn.id_librarian from DUAL; " +
+                "end if; " +
+                "end;");
+
         statement.executeUpdate("" +
                 "create table Readers (" +
                 "id_reader integer primary key, " +
@@ -79,6 +104,16 @@ public class DBConnection{
                 "foreign key (id_library) references Libraries(id_library) on delete cascade " +
                 ")"
         );
+        statement.executeUpdate("create sequence reader_seq start with 1 increment by 1 nomaxvalue");
+        statement.executeUpdate("create trigger reader_trigger " +
+                "before insert on READERS " +
+                "referencing new as new_read " +
+                "for each row " +
+                "begin " +
+                "if(:new_read.id_reader is null) then " +
+                "select reader_seq.nextval into :new_read.id_reader from DUAL; " +
+                "end if; " +
+                "end;");
         statement.executeUpdate(
                 "create table Editions(" +
                         "id_edition integer primary key ," +
@@ -171,30 +206,35 @@ public class DBConnection{
                 "foreign key(id_reader) references Readers(id_reader) on delete cascade " +
                 ")"
         );
+        statement.executeUpdate("create table Others(" +
+                "id_reader integer primary key," +
+                "foreign key (id_reader) references READERS(ID_READER) on delete cascade " +
+                ")"
+        );
 
-        statement.executeUpdate("insert into Libraries values (1, 5)");
-        statement.executeUpdate("insert into Libraries values (2, 10)");
-        statement.executeUpdate("insert into Libraries values (3, 7)");
-        statement.executeUpdate("insert into Libraries values (4, 15)");
-        statement.executeUpdate("insert into Libraries values (5, 12)");
-        statement.executeUpdate("insert into Libraries values (6, 10)");
+        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS) values (5)");
+        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS) values (10)");
+        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS) values (7)");
+        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS) values (15)");
+        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS) values (12)");
+        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS) values (10)");
 
-        statement.executeUpdate("insert into LIBRARIANS values (1, 2, 102)");
-        statement.executeUpdate("insert into LIBRARIANS values (2, 3, 203)");
-        statement.executeUpdate("insert into LIBRARIANS values (3, 4, 521)");
-        statement.executeUpdate("insert into LIBRARIANS values (4, 6, 302)");
-        statement.executeUpdate("insert into LIBRARIANS values (5, 1, 434)");
+        statement.executeUpdate("insert into LIBRARIANS(ID_LIBRARY, HALL_NUM) values (2, 102)");
+        statement.executeUpdate("insert into LIBRARIANS(ID_LIBRARY, HALL_NUM) values (3, 203)");
+        statement.executeUpdate("insert into LIBRARIANS(ID_LIBRARY, HALL_NUM) values (4, 521)");
+        statement.executeUpdate("insert into LIBRARIANS(ID_LIBRARY, HALL_NUM) values (6, 302)");
+        statement.executeUpdate("insert into LIBRARIANS(ID_LIBRARY, HALL_NUM) values (1, 434)");
 
+        statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (3, 'Иванов', 'Иван', 'Иванович','студент')");
+        statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (4, 'Сабинина', 'Фросья', 'Афросьевна', 'учитель')");
+        statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (1, 'Козырев', 'Леонид', 'Федорович', 'работник')");
+        statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (1, 'Козлова','Анастасия','Викторовна', 'ученик')");
+        statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (2, 'Сарычев', 'Генадий', 'Олегович', 'научный сотрудник')");
+        statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (2, 'Зюбин', 'Александр', 'Викторович', 'пенсионер')");
+        statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (1, 'Киреев', 'Евгений', 'Сергеевич', 'учитель')");
+        statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (6, 'Хлиманкова', 'Галина', 'Игоревна', 'студент')");
+        statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (1, 'Налепова', 'Анастасия', 'Олеговна', 'студент')");
+        statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (3, 'Шарапов', 'Виктор', 'Геннадьевич', 'пенсионер')");
 
-        statement.executeUpdate("insert into READERS values (1,3, 'Иванов', 'Иван', 'Иванович','студент')");
-        statement.executeUpdate("insert into READERS values (2,4, 'Сабинина', 'Фросья', 'Афросьевна', 'учитель')");
-        statement.executeUpdate("insert into READERS values (3,1, 'Козырев', 'Леонид', 'Федорович', 'работник')");
-        statement.executeUpdate("insert into READERS values (4,1, 'Козлова','Анастасия','Викторовна', 'ученик')");
-        statement.executeUpdate("insert into READERS values (5,2, 'Сарычев', 'Генадий', 'Олегович', 'научный сотрудник')");
-        statement.executeUpdate("insert into READERS values (6,2, 'Зюбин', 'Александр', 'Викторович', 'пенсионер')");
-        statement.executeUpdate("insert into READERS values (7,1, 'Киреев', 'Евгений', 'Сергеевич', 'учитель')");
-        statement.executeUpdate("insert into READERS values (8,6, 'Хлиманкова', 'Галина', 'Игоревна', 'студент')");
-        statement.executeUpdate("insert into READERS values (9,1, 'Налепова', 'Анастасия', 'Олеговна', 'студент')");
-        statement.executeUpdate("insert into READERS values (10,3, 'Шарапов', 'Виктор', 'Геннадьевич', 'пенсионер')");
     }
 }

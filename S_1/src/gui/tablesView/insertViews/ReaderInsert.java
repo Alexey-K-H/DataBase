@@ -37,21 +37,21 @@ public class ReaderInsert extends JDialog implements InsertFrame{
         layout.putConstraint(SpringLayout.WEST, info, 20, SpringLayout.WEST, jPanel);
         jPanel.add(info);
 
-        JLabel idLabel = new JLabel("Идентификатор читателя");
-        idLabel.setFont(new Font(idLabel.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.NORTH, idLabel, 50, SpringLayout.SOUTH, info);
-        layout.putConstraint(SpringLayout.WEST, idLabel, 20, SpringLayout.WEST, jPanel);
-        jPanel.add(idLabel);
-
-        JTextField idTextField = new JTextField(10);
-        idTextField.setFont(new Font(idTextField.getFont().getName(), Font.PLAIN, 16));
-        layout.putConstraint(SpringLayout.NORTH, idTextField, 10, SpringLayout.SOUTH, idLabel);
-        layout.putConstraint(SpringLayout.WEST, idTextField, 20, SpringLayout.WEST, jPanel);
-        jPanel.add(idTextField);
+//        JLabel idLabel = new JLabel("Идентификатор читателя");
+//        idLabel.setFont(new Font(idLabel.getFont().getName(), Font.BOLD, 16));
+//        layout.putConstraint(SpringLayout.NORTH, idLabel, 50, SpringLayout.SOUTH, info);
+//        layout.putConstraint(SpringLayout.WEST, idLabel, 20, SpringLayout.WEST, jPanel);
+//        jPanel.add(idLabel);
+//
+//        JTextField idTextField = new JTextField(10);
+//        idTextField.setFont(new Font(idTextField.getFont().getName(), Font.PLAIN, 16));
+//        layout.putConstraint(SpringLayout.NORTH, idTextField, 10, SpringLayout.SOUTH, idLabel);
+//        layout.putConstraint(SpringLayout.WEST, idTextField, 20, SpringLayout.WEST, jPanel);
+//        jPanel.add(idTextField);
 
         JLabel idLibLabel = new JLabel("Идентификатор библиотеки");
         idLibLabel.setFont(new Font(idLibLabel.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.NORTH, idLibLabel, 20, SpringLayout.SOUTH, idTextField);
+        layout.putConstraint(SpringLayout.NORTH, idLibLabel, 20, SpringLayout.SOUTH, info);
         layout.putConstraint(SpringLayout.WEST, idLibLabel, 20, SpringLayout.WEST, jPanel);
         jPanel.add(idLibLabel);
 
@@ -115,28 +115,34 @@ public class ReaderInsert extends JDialog implements InsertFrame{
         layout.putConstraint(SpringLayout.SOUTH, confirm, -10, SpringLayout.SOUTH, jPanel);
         layout.putConstraint(SpringLayout.EAST, confirm, -20, SpringLayout.EAST, jPanel);
         confirm.addActionListener(e->{
-            if(!statusTextField.getText().equals("ученик") ||
-            !statusTextField.getText().equals("учитель") ||
-            !statusTextField.getText().equals("студент") ||
-            !statusTextField.getText().equals("научный сотрудник") ||
-            !statusTextField.getText().equals("работник") ||
-            !statusTextField.getText().equals("пенсионер")){
+            if(!statusTextField.getText().equals("ученик") &&
+            !statusTextField.getText().equals("учитель") &&
+            !statusTextField.getText().equals("студент") &&
+            !statusTextField.getText().equals("научный сотрудник") &&
+            !statusTextField.getText().equals("работник") &&
+            !statusTextField.getText().equals("пенсионер") &&
+            !statusTextField.getText().equals("прочие")){
+                System.out.println(statusTextField.getText());
                 JLabel error = new JLabel("Неправильно задан статус читателя!");
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
             else {
                 currValues = new ArrayList<>();
-                currValues.add("'" + idTextField.getText() + "'");
+                //currValues.add("'" + idTextField.getText() + "'");
                 currValues.add("'" + idLibTexField.getText() + "'");
                 currValues.add("'" + surnameTexFiled.getText() + "'");
                 currValues.add("'" + nameTextField.getText() + "'");
                 currValues.add("'" + patronymicTextField.getText() + "'");
                 currValues.add("'" + statusTextField.getText() + "'");
-
+                String sql = "insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (" + currValues.get(0) + "," +
+                        currValues.get(1) + "," +
+                        currValues.get(2) + "," +
+                        currValues.get(3) + "," +
+                        currValues.get(4) + ")";
                 try {
-                    performInsertOperation(currValues);
-                    idTextField.setText("");
+                    performInsertOperation(sql);
+                    //idTextField.setText("");
                     idLibTexField.setText("");
                     surnameTexFiled.setText("");
                     nameTextField.setText("");
@@ -144,12 +150,14 @@ public class ReaderInsert extends JDialog implements InsertFrame{
                     statusTextField.setText("");
 
                     Object[] values = new Object[]{
-                            currValues.get(0).substring(1, currValues.get(0).length() - 1),
-                            currValues.get(1).substring(1, currValues.get(1).length() - 1),
-                            currValues.get(2).substring(1, currValues.get(2).length() - 1) + " " +
-                                    currValues.get(3).substring(1, currValues.get(3).length() - 1) + " " +
-                                    currValues.get(4).substring(1, currValues.get(4).length() - 1),
-                            currValues.get(5).substring(1, currValues.get(5).length() - 1)
+                            tableController.getTableSet().getValueAt(
+                                    tableController.getTableSet().getRowCount() - 1, 0),
+                            tableController.getTableSet().getValueAt(
+                                    tableController.getTableSet().getRowCount() - 1, 1),
+                            tableController.getTableSet().getValueAt(
+                                    tableController.getTableSet().getRowCount() - 1, 2),
+                            tableController.getTableSet().getValueAt(
+                                    tableController.getTableSet().getRowCount() - 1, 3)
                     };
 
                     tableModel.addRow(values);
@@ -159,10 +167,6 @@ public class ReaderInsert extends JDialog implements InsertFrame{
                 } catch (SQLException exception) {
                     JLabel error = new JLabel();
                     switch (exception.getErrorCode()) {
-                        case 1: {
-                            error.setText("Ошибка добавления записи! Нарушена уникальность идентификаторов библиотекарей!");
-                            break;
-                        }
                         case 936: {
                             error.setText("Ошибка добавленя записи! Незаполненные поля!");
                             break;
@@ -188,7 +192,7 @@ public class ReaderInsert extends JDialog implements InsertFrame{
         layout.putConstraint(SpringLayout.SOUTH, clear, -20, SpringLayout.NORTH, confirm);
         layout.putConstraint(SpringLayout.EAST, clear, -20, SpringLayout.EAST, jPanel);
         clear.addActionListener(e -> {
-            idTextField.setText("");
+            //idTextField.setText("");
             idLibTexField.setText("");
             surnameTexFiled.setText("");
             nameTextField.setText("");
@@ -203,7 +207,9 @@ public class ReaderInsert extends JDialog implements InsertFrame{
                 "<b>3.студент</b><br>" +
                 "<b>4.научный сотрудник</b><br>" +
                 "<b>5.работник</b><br>" +
-                "<b>6.пенсионер</b></html>");
+                "<b>6.пенсионер</b><br>" +
+                "Если статуса нет,<br>" +
+                "указывается \"<b>прочие</b>\"</html>");
         statusInfo.setFont(new Font(statusInfo.getFont().getName(), Font.PLAIN, 16));
         Icon icon = UIManager.getIcon("OptionPane.informationIcon");
         Border solidBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
@@ -220,7 +226,7 @@ public class ReaderInsert extends JDialog implements InsertFrame{
     }
 
     @Override
-    public void performInsertOperation(ArrayList<String> values) throws SQLException {
-        tableController.insertNewRecord(values);
+    public void performInsertOperation(String sql) throws SQLException {
+        tableController.insertNewRecord(sql);
     }
 }
