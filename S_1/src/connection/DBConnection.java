@@ -162,9 +162,9 @@ public class DBConnection{
         //category
         statement.executeUpdate("create table Teachers(" +
                 "id_reader integer primary key," +
-                "id_university integer not null," +
-                "faculty varchar(100) not null," +
-                "name_university varchar(100) not null," +
+                "id_university integer not null ," +
+                "faculty varchar(100) not null ," +
+                "name_university varchar(100) not null ," +
                 "foreign key (id_reader) references Readers (id_reader) on delete cascade " +
                 ")"
         );
@@ -236,5 +236,7 @@ public class DBConnection{
         statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (1, 'Налепова', 'Анастасия', 'Олеговна', 'студент')");
         statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (3, 'Шарапов', 'Виктор', 'Геннадьевич', 'пенсионер')");
 
+        statement.executeUpdate("insert into TEACHERS values (2, 2300, 'ФФ', 'НГУ')");
+        statement.executeUpdate("insert into TEACHERS values (7, 2300, 'ФИТ', 'НГУ')");
     }
 }

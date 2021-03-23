@@ -127,24 +127,6 @@ public class MainWindow extends JFrame {
         layout.putConstraint(SpringLayout.WEST, categoryReaders, 5, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.EAST, categoryReaders, -this.getWidth()/2, SpringLayout.EAST, panel);
         layout.putConstraint(SpringLayout.SOUTH, categoryReaders, 350, SpringLayout.NORTH, categoryReaders);
-        categoryReaders.getTeacherButton().addActionListener(e -> {
-
-        });
-        categoryReaders.getPensionersButton().addActionListener(e -> {
-
-        });
-        categoryReaders.getResearchersButton().addActionListener(e -> {
-
-        });
-        categoryReaders.getSchoolchildButton().addActionListener(e -> {
-
-        });
-        categoryReaders.getStudentButton().addActionListener(e -> {
-
-        });
-        categoryReaders.getWorkersButton().addActionListener(e -> {
-
-        });
         panel.add(categoryReaders);
 
         Productions productions = new Productions();

@@ -1,6 +1,7 @@
 package gui.tablesView.insertViews;
 
 import controllers.TableController;
+import gui.tablesView.insertViews.categoryInserts.TeacherInsert;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -142,6 +143,15 @@ public class ReaderInsert extends JDialog implements InsertFrame{
                         currValues.get(4) + ")";
                 try {
                     performInsertOperation(sql);
+
+                    switch (statusTextField.getText()){
+                        case "учитель":{
+                            TeacherInsert teacherInsert = new TeacherInsert(tableController, tableModel);
+                            teacherInsert.openInsertWindow();
+                            break;
+                        }
+                    }
+
                     //idTextField.setText("");
                     idLibTexField.setText("");
                     surnameTexFiled.setText("");
@@ -160,10 +170,12 @@ public class ReaderInsert extends JDialog implements InsertFrame{
                                     tableController.getTableSet().getRowCount() - 1, 3)
                     };
 
-                    tableModel.addRow(values);
-                    JLabel success = new JLabel("Запись добавлена успешно!");
-                    success.setFont(new Font(success.getFont().getName(), Font.BOLD, 16));
-                    JOptionPane.showMessageDialog(null, success, "INSERT", JOptionPane.INFORMATION_MESSAGE);
+                    //tableModel.addRow(values);
+
+
+//                    JLabel success = new JLabel("Запись добавлена успешно!");
+//                    success.setFont(new Font(success.getFont().getName(), Font.BOLD, 16));
+//                    JOptionPane.showMessageDialog(null, success, "INSERT", JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException exception) {
                     JLabel error = new JLabel();
                     switch (exception.getErrorCode()) {
