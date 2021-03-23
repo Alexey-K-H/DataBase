@@ -49,7 +49,7 @@ public class MainWindow extends JFrame {
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
-        this.setBounds(dimension.width/2 - 500, dimension.height/2 - 400, 1000, 800);
+        this.setBounds(dimension.width/2 - 500, dimension.height/2 - 450, 1000, 900);
         this.setTitle(url);
 
         JPanel panel = new JPanel();
@@ -83,10 +83,29 @@ public class MainWindow extends JFrame {
         });
         panel.add(lib);
 
+        //Залы бибилиотек
+        Halls halls = new Halls();
+        layout.putConstraint(SpringLayout.WEST, halls, 5, SpringLayout.WEST, panel);
+        layout.putConstraint(SpringLayout.NORTH, halls, 20, SpringLayout.SOUTH, lib);
+        layout.putConstraint(SpringLayout.EAST, halls, -this.getWidth()/2, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.SOUTH, halls, 90, SpringLayout.NORTH, halls);
+        halls.getOpenButton().addActionListener(e -> {
+            TableController tableController = new TableController("Halls", connection);
+            TableFrame tableFrame = new TableFrame(tableController);
+            try {
+                tableFrame.openTable();
+            }catch (SQLException exception){
+                JLabel error = new JLabel("Ошибка!" + exception.getMessage());
+                error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        panel.add(halls);
+
         //Библиотекари
         Librarians librarians = new Librarians();
         layout.putConstraint(SpringLayout.WEST, librarians, 5, SpringLayout.WEST, panel);
-        layout.putConstraint(SpringLayout.NORTH, librarians, 10, SpringLayout.SOUTH, lib);
+        layout.putConstraint(SpringLayout.NORTH, librarians, 10, SpringLayout.SOUTH, halls);
         layout.putConstraint(SpringLayout.EAST, librarians, -this.getWidth()/2, SpringLayout.EAST, panel);
         layout.putConstraint(SpringLayout.SOUTH, librarians, 90, SpringLayout.NORTH, librarians);
         librarians.getOpenButton().addActionListener(e -> {
@@ -126,7 +145,7 @@ public class MainWindow extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, categoryReaders, 10, SpringLayout.SOUTH, readers);
         layout.putConstraint(SpringLayout.WEST, categoryReaders, 5, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.EAST, categoryReaders, -this.getWidth()/2, SpringLayout.EAST, panel);
-        layout.putConstraint(SpringLayout.SOUTH, categoryReaders, 350, SpringLayout.NORTH, categoryReaders);
+        layout.putConstraint(SpringLayout.SOUTH, categoryReaders, 320, SpringLayout.NORTH, categoryReaders);
         panel.add(categoryReaders);
 
         Productions productions = new Productions();

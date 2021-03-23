@@ -2,6 +2,7 @@ package gui.tablesView;
 
 import connection.DBConnection;
 import controllers.TableController;
+import gui.tablesView.insertViews.HallInsert;
 import gui.tablesView.insertViews.LibrarianInsert;
 import gui.tablesView.insertViews.LibraryInsert;
 import gui.tablesView.insertViews.ReaderInsert;
@@ -31,6 +32,8 @@ public class TableFrame extends JDialog {
         switch (tableName){
             case "Libraries":
                 return "Библиотеки";
+            case "Halls":
+                return "Читальные залы";
             case "Librarians":
                 return "Библиотекари";
             case "Readers":
@@ -102,6 +105,11 @@ public class TableFrame extends JDialog {
                     libraryInsert.openInsertWindow();
                     break;
                 }
+                case "Halls":{
+                    HallInsert hallInsert = new HallInsert(tableController, tableModel);
+                    hallInsert.openInsertWindow();
+                    break;
+                }
                 case "Librarians":{
                     LibrarianInsert librarianInsert = new LibrarianInsert(tableController, tableModel);
                     librarianInsert.openInsertWindow();
@@ -118,8 +126,17 @@ public class TableFrame extends JDialog {
 
         jPanel.add(insert);
 
-        JLabel beforeDelOrUpdateInfo = new JLabel("<html><p>Перед <b>удалением</b><br> или <b>изменением</b> данных<br>" +
-                " выберите строку в таблице</html>");
+        String beforeDelOdUpdateStr;
+        if(!tableName.equals("Halls")){
+            beforeDelOdUpdateStr = "<html><p>Перед <b>удалением</b><br> или <b>изменением</b> данных<br>" +
+                    " выберите строку в таблице</html>";
+        }
+        else{
+            beforeDelOdUpdateStr = "<html><p>Перед <b>удалением</b><br>данных<br>" +
+                    " выберите строку в таблице</html>";
+        }
+        JLabel beforeDelOrUpdateInfo = new JLabel(beforeDelOdUpdateStr);
+
         beforeDelOrUpdateInfo.setFont(new Font(beforeDelOrUpdateInfo.getFont().getName(), Font.ITALIC, 16));
         Icon icon = UIManager.getIcon("OptionPane.informationIcon");
         Border solidBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
@@ -127,6 +144,7 @@ public class TableFrame extends JDialog {
         beforeDelOrUpdateInfo.setIcon(icon);
         layout.putConstraint(SpringLayout.NORTH, beforeDelOrUpdateInfo, 70, SpringLayout.NORTH, insert);
         layout.putConstraint(SpringLayout.WEST, beforeDelOrUpdateInfo, 10, SpringLayout.EAST, scrollPane);
+        layout.putConstraint(SpringLayout.EAST, beforeDelOrUpdateInfo, -10, SpringLayout.EAST, jPanel);
         jPanel.add(beforeDelOrUpdateInfo);
 
         //Удаление данных из таблицы
@@ -197,8 +215,11 @@ public class TableFrame extends JDialog {
 
             }
         });
-        jPanel.add(modify);
-        modify.setVisible(false);
+        if(!tableName.equals("Halls")){
+            jPanel.add(modify);
+            modify.setVisible(false);
+        }
+
 
         //Выход из окна просмотра
         JButton exit = new JButton("Закрыть таблицу");
@@ -212,7 +233,9 @@ public class TableFrame extends JDialog {
         table.getSelectionModel().addListSelectionListener(event -> {
             if (!event.getValueIsAdjusting() && table.getSelectedRow() != -1){
                 delete.setVisible(true);
-                modify.setVisible(true);
+                if(!tableName.equals("Halls")){
+                    modify.setVisible(true);
+                }
                 repaint();
             }
         });
