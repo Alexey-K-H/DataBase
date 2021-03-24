@@ -2,10 +2,8 @@ package gui.tablesView;
 
 import connection.DBConnection;
 import controllers.TableController;
-import gui.tablesView.insertViews.HallInsert;
-import gui.tablesView.insertViews.LibrarianInsert;
-import gui.tablesView.insertViews.LibraryInsert;
-import gui.tablesView.insertViews.ReaderInsert;
+import gui.tablesView.insertViews.*;
+import gui.tablesView.modifyViews.EditionsModify;
 import gui.tablesView.modifyViews.LibrarianModify;
 import gui.tablesView.modifyViews.LibraryModify;
 import gui.tablesView.modifyViews.ReaderModify;
@@ -122,6 +120,11 @@ public class TableFrame extends JDialog {
                     readerInsert.openInsertWindow();
                     break;
                 }
+                case "Editions":{
+                    EditionInsert editionInsert = new EditionInsert(tableController, tableModel);
+                    editionInsert.openInsertWindow();
+                    break;
+                }
             }
 
         });
@@ -211,6 +214,11 @@ public class TableFrame extends JDialog {
                     case "Readers":{
                         ReaderModify readerModify = new ReaderModify(tableController, oldValues, tableModel, i);
                         readerModify.openModifyWindow();
+                        break;
+                    }
+                    case "Editions":{
+                        EditionsModify editionsModify = new EditionsModify(tableController, oldValues, tableModel, i);
+                        editionsModify.openModifyWindow();
                         break;
                     }
                 }

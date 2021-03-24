@@ -134,6 +134,9 @@ public class DBConnection{
                         "shelf_num integer not null," +
                         "date_of_admission date not null," +
                         "write_off_date date not null," +
+                        "check ( date_of_admission < write_off_date )," +
+                        "check ( rack_num > 0 )," +
+                        "check ( shelf_num > 0 )," +
                         "foreign key (id_library, hall_num) references HALLS(ID_LIBRARY, ID_HALL) on delete cascade " +
                         ")"
         );
