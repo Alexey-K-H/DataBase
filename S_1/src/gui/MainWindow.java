@@ -4,7 +4,6 @@ import connection.DBConnection;
 import controllers.TableController;
 import gui.menuButtons.*;
 import gui.signIn.ConnectionFrame;
-import gui.tablesView.CategoryTableFrame;
 import gui.tablesView.TableFrame;
 
 import javax.swing.*;
@@ -189,13 +188,40 @@ public class MainWindow extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, issuedBooksAndTerms, 10, SpringLayout.SOUTH, editions);
         layout.putConstraint(SpringLayout.WEST, issuedBooksAndTerms, -this.getWidth()/2 + 20, SpringLayout.EAST, panel);
         layout.putConstraint(SpringLayout.SOUTH, issuedBooksAndTerms, 210, SpringLayout.NORTH, issuedBooksAndTerms);
-
+        issuedBooksAndTerms.getOpenButton().addActionListener(e -> {
+            TableController tableController = new TableController("Issued_Books", connection);
+            TableFrame tableFrame = new TableFrame(tableController);
+            try {
+                tableFrame.openTable();
+            } catch (SQLException exception) {
+                JLabel error = new JLabel("Ошибка! " + exception.getMessage());
+                error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        issuedBooksAndTerms.getRulesButton().addActionListener(e -> {
+            TableController tableController = new TableController("Rules", connection);
+            TableFrame tableFrame = new TableFrame(tableController);
+            try {
+                tableFrame.openTable();
+            } catch (SQLException exception) {
+                JLabel error = new JLabel("Ошибка!" + exception.getMessage());
+                error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        });
         panel.add(issuedBooksAndTerms);
+
+        JButton select = new JButton("Отчеты по пользователям");
+        select.setFont(new Font(select.getFont().getName(), Font.BOLD, 20));
+        layout.putConstraint(SpringLayout.EAST, select, -20, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.NORTH, select, 20, SpringLayout.SOUTH, issuedBooksAndTerms);
+        panel.add(select);
 
         JButton exit = new JButton("Выйти из фонда");
         exit.setFont(new Font(exit.getFont().getName(), Font.BOLD, 20));
         layout.putConstraint(SpringLayout.EAST, exit, -20, SpringLayout.EAST, panel);
-        layout.putConstraint(SpringLayout.NORTH, exit, 20, SpringLayout.SOUTH, issuedBooksAndTerms);
+        layout.putConstraint(SpringLayout.NORTH, exit, 20, SpringLayout.SOUTH, select);
         panel.add(exit);
 
         exit.addActionListener(e -> {

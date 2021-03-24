@@ -38,7 +38,9 @@ public class DBConnection{
         statement.executeUpdate("drop table Workers");
         statement.executeUpdate("drop table Others");
         //second level
+        statement.executeUpdate("drop sequence issued_seq");
         statement.executeUpdate("drop table Issued_books");
+        statement.executeUpdate("drop sequence rules_seq");
         statement.executeUpdate("drop table Rules");
         statement.executeUpdate("drop sequence comp_seq");
         statement.executeUpdate("drop table Compositions");
@@ -160,12 +162,22 @@ public class DBConnection{
                         "id_reader integer not null," +
                         "date_of_issue date not null," +
                         "return_date date not null," +
-                        "is_returned varchar(3) not null," +
+                        "is_returned varchar(6) not null," +
                         "foreign key (id_librarian) references Librarians(id_librarian) on delete cascade ," +
                         "foreign key (id_edition) references Editions(id_edition) on delete cascade ," +
                         "foreign key (id_reader) references Readers(id_reader) on delete cascade " +
                         ")"
         );
+        statement.executeUpdate("create sequence issued_seq start with 1 increment by 1");
+        statement.executeUpdate("create trigger issued_trigger " +
+                "before insert on ISSUED_BOOKS " +
+                "referencing new as new_issued " +
+                "for each row " +
+                "begin " +
+                "if(:new_issued.id_record is null) then " +
+                "select issued_seq.nextval into :new_issued.id_record from DUAL;" +
+                "end if;" +
+                "end;");
         statement.executeUpdate("create table Rules(" +
                 "id_rule integer primary key," +
                 " id_edition integer not null," +
@@ -173,6 +185,16 @@ public class DBConnection{
                 " foreign key (id_edition) references Editions(id_edition) on delete cascade " +
                 ")"
         );
+        statement.executeUpdate("create sequence rules_seq start with 1 increment by 1");
+        statement.executeUpdate("create trigger rule_trigger " +
+                "before insert on RULES " +
+                "referencing new as new_rule " +
+                "for each row " +
+                "begin " +
+                "if(:new_rule.id_rule is null ) then " +
+                "select rules_seq.nextval into :new_rule.id_rule from DUAL;" +
+                "end if;" +
+                "end;");
         statement.executeUpdate("create table Compositions(" +
                 " id_record integer," +
                 " id_edition integer," +
@@ -313,5 +335,19 @@ public class DBConnection{
         statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (8, 'Демидович Е.П.', 'Сборник задач по мат анализу', 0.8, 'Учебник')");
 
 
+        statement.executeUpdate("insert into RULES(ID_EDITION, RULE_TEXT) values (1, 'Не выдается на руки')");
+        statement.executeUpdate("insert into RULES(ID_EDITION, RULE_TEXT) values (2, 'Выдается на небольшой срок')");
+        statement.executeUpdate("insert into RULES(ID_EDITION, RULE_TEXT) values (3, 'При невозврате накладывается штраф')");
+        statement.executeUpdate("insert into RULES(ID_EDITION, RULE_TEXT) values (4, 'Не выдается на руки')");
+        statement.executeUpdate("insert into RULES(ID_EDITION, RULE_TEXT) values (5, 'Требует выплаты залога')");
+        statement.executeUpdate("insert into RULES(ID_EDITION, RULE_TEXT) values (6, 'При потере возместить стоимость киниги')");
+        statement.executeUpdate("insert into RULES(ID_EDITION, RULE_TEXT) values (6, 'Выдается на небольшой срок')");
+        statement.executeUpdate("insert into RULES(ID_EDITION, RULE_TEXT) values (1, 'Пометки в книге запрещены')");
+        statement.executeUpdate("insert into RULES(ID_EDITION, RULE_TEXT) values (2, 'При невозврате накладывается штраф')");
+        statement.executeUpdate("insert into RULES(ID_EDITION, RULE_TEXT) values (10, 'Требует выплаты залога')");
+
+
+        statement.executeUpdate("insert into ISSUED_BOOKS(ID_LIBRARIAN, ID_EDITION, ID_READER, DATE_OF_ISSUE, RETURN_DATE, IS_RETURNED) values (1, 12, 5, to_date('12.02.2020','dd.mm.yyyy'),to_date('01.03.2020','dd.mm.yyyy'), 'да')");
+        statement.executeUpdate("insert into ISSUED_BOOKS(ID_LIBRARIAN, ID_EDITION, ID_READER, DATE_OF_ISSUE, RETURN_DATE, IS_RETURNED) values (4, 3, 1, to_date('04.11.2020','dd.mm.yyyy'),to_date('20.11.2020','dd.mm.yyyy'), 'нет')");
     }
 }

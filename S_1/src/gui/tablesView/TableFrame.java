@@ -37,6 +37,10 @@ public class TableFrame extends JDialog {
                 return "Издания";
             case "Compositions":
                 return "Произведения";
+            case "Rules":
+                return "Правила пользования";
+            case "Issued_Books":
+                return "Выданные книги";
             default:
                 return null;
         }
@@ -203,7 +207,6 @@ public class TableFrame extends JDialog {
                 for(int k = 0; k < table.getColumnCount(); k++){
                     oldValues.add(table.getValueAt(i, k).toString());
                 }
-
                 switch (tableName){
                     case "Libraries":{
                         LibraryModify libraryModify = new LibraryModify(tableController, oldValues, tableModel, i);
@@ -231,7 +234,6 @@ public class TableFrame extends JDialog {
                         break;
                     }
                 }
-
             }
         });
         if(!tableName.equals("Halls")){

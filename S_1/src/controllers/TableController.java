@@ -41,6 +41,10 @@ public class TableController {
                 return new String[]{"Идентификатор", "Id-библиотека", "Зал", "Стеллаж", "Полка", "Поступление", "Списание"};
             case "Compositions":
                 return new String[]{"Идентификатор", "Id-издание", "Автор", "Название", "Популярность", "Жанр"};
+            case "Rules":
+                return new String[]{"Идентификатор", "Id-издание", "Текст"};
+            case "Issued_Books":
+                return new String[]{"Идентификатор", "Id-бибилотекарь", "Id-издание", "Id-читатель", "Дата выдачи", "Дата возврата", "Возврат выполнен"};
             default:
                 return null;
         }
@@ -141,6 +145,30 @@ public class TableController {
                 }
                 break;
             }
+            case "Rules":{
+                while (result.next()){
+                    tableModel.addRow(new Object[]{
+                            result.getInt("id_rule"),
+                            result.getInt("id_edition"),
+                            result.getString("rule_text")
+                    });
+                }
+                break;
+            }
+            case "Issued_Books":{
+                while (result.next()){
+                    tableModel.addRow(new Object[]{
+                            result.getInt("id_record"),
+                            result.getInt("id_librarian"),
+                            result.getInt("id_edition"),
+                            result.getInt("id_reader"),
+                            result.getDate("date_of_issue"),
+                            result.getDate("return_date"),
+                            result.getString("is_returned")
+                    });
+                }
+                break;
+            }
         }
 
         result.close();
@@ -167,12 +195,16 @@ public class TableController {
             case "Editions":{
                 return "id_edition";
             }
-            case "Compositions":{
+            case "Compositions":
+            case "Issued_Books": {
                 return "id_record";
             }
             case "Readers":
             case "Teachers": {
                 return "id_reader";
+            }
+            case "Rules":{
+                return "id_rule";
             }
         }
         return null;
@@ -181,6 +213,7 @@ public class TableController {
     public void deleteRecord(Object rowKey) throws SQLException {
         Statement statement = connection.getConn().createStatement();
         String sql = "delete from " + tableName + " where " + getPrimaryKeyNameByTableName() + " = " + rowKey;
+        //System.out.println(sql);
         statement.executeUpdate(sql);
     }
 
