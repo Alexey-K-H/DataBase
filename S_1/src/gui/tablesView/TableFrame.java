@@ -3,10 +3,7 @@ package gui.tablesView;
 import connection.DBConnection;
 import controllers.TableController;
 import gui.tablesView.insertViews.*;
-import gui.tablesView.modifyViews.EditionsModify;
-import gui.tablesView.modifyViews.LibrarianModify;
-import gui.tablesView.modifyViews.LibraryModify;
-import gui.tablesView.modifyViews.ReaderModify;
+import gui.tablesView.modifyViews.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -127,6 +124,11 @@ public class TableFrame extends JDialog {
                     editionInsert.openInsertWindow();
                     break;
                 }
+                case "Compositions":{
+                    CompositionInsert compositionInsert = new CompositionInsert(tableController, tableModel);
+                    compositionInsert.openInsertWindow();
+                    break;
+                }
             }
 
         });
@@ -221,6 +223,11 @@ public class TableFrame extends JDialog {
                     case "Editions":{
                         EditionsModify editionsModify = new EditionsModify(tableController, oldValues, tableModel, i);
                         editionsModify.openModifyWindow();
+                        break;
+                    }
+                    case "Compositions":{
+                        CompositionsModify compositionsModify = new CompositionsModify(tableController, oldValues, tableModel, i);
+                        compositionsModify.openModifyWindow();
                         break;
                     }
                 }
