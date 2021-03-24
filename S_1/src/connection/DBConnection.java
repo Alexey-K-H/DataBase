@@ -40,6 +40,7 @@ public class DBConnection{
         //second level
         statement.executeUpdate("drop table Issued_books");
         statement.executeUpdate("drop table Rules");
+        statement.executeUpdate("drop sequence comp_seq");
         statement.executeUpdate("drop table Compositions");
         //Delete dependent tables 1 level
         statement.executeUpdate("drop sequence libs_seq");
@@ -173,16 +174,27 @@ public class DBConnection{
                 ")"
         );
         statement.executeUpdate("create table Compositions(" +
-                "id_record integer," +
+                " id_record integer," +
                 " id_edition integer," +
                 " author varchar(100) not null," +
                 " title varchar(100) not null," +
-                " popularity integer not null," +
+                " popularity NUMBER not null," +
+                "check ( popularity >= 0 and popularity <= 1 )," +
                 " genre varchar(50) not null," +
                 " primary key(id_record, id_edition)," +
                 " foreign key (id_edition) references Editions(id_edition) on delete cascade " +
                 ")"
         );
+        statement.executeUpdate("create sequence comp_seq start with 1 increment by 1 nomaxvalue ");
+        statement.executeUpdate("create trigger comp_trigger " +
+                "before insert on COMPOSITIONS " +
+                "referencing new as new_comp " +
+                "for each row " +
+                "begin " +
+                "if(:new_comp.id_record is null) then " +
+                "select comp_seq.nextval into :new_comp.id_record from DUAL;" +
+                "end if;" +
+                "end;");
         //category
         statement.executeUpdate("create table Teachers(" +
                 "id_reader integer primary key," +
@@ -289,5 +301,17 @@ public class DBConnection{
         statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (1, 2, 1342, 23, to_date('05.03.2021','dd.mm.yyyy'), to_date('22.12.2021','dd.mm.yyyy'))");
         statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (6, 1, 45, 235, to_date('13.03.2021','dd.mm.yyyy'), to_date('12.02.2022','dd.mm.yyyy'))");
         statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (3, 2, 46, 1, to_date('06.05.2021','dd.mm.yyyy'), to_date('09.09.2021','dd.mm.yyyy'))");
+
+
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (1, 'Булгаков И.О.', 'Особенности проблем психики', 0.53, 'Нучная статья')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (2, 'Иванов И.Р.', 'Физика-2', 0.02, 'Методическое пособие')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (3, 'Киреев А.И.', 'ЭВМ и Архитектура компьютера', 0.78, 'Учебное пососбие')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (4, 'Киреев А.И.', 'ЭВМ и Архитектура компьютера', 0.59, 'Учебное пососбие')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (5, 'Пушкин А.С.', 'Евгений Онегин', 0.35, 'Роман в стихах')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (6, 'Кожанов И.А.', 'ДГМА', 0.001, 'Учебное пособие')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (7, 'Доманова Е.Д.', 'Определенный интгерал', 0.24, 'Учебное пособие')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (8, 'Демидович Е.П.', 'Сборник задач по мат анализу', 0.8, 'Учебник')");
+
+
     }
 }
