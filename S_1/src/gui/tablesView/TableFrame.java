@@ -238,6 +238,11 @@ public class TableFrame extends JDialog {
                         compositionsModify.openModifyWindow();
                         break;
                     }
+                    case "Issued_Books":{
+                        IssuedBooksModify issuedBooksModify = new IssuedBooksModify(tableController, oldValues, tableModel, i);
+                        issuedBooksModify.openModifyWindow();
+                        break;
+                    }
                 }
             }
         });

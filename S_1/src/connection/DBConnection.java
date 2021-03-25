@@ -203,6 +203,7 @@ public class DBConnection{
                         "date_of_issue date not null," +
                         "return_date date not null," +
                         "is_returned varchar(6) not null," +
+                        "check ( is_returned = 'да' or is_returned = 'нет' )," +
                         "foreign key (id_librarian) references Librarians(id_librarian) on delete cascade ," +
                         "foreign key (id_composition, id_edition) references COMPOSITIONS(ID_RECORD, ID_EDITION) on delete cascade ," +
                         "foreign key (id_reader) references Readers(id_reader) on delete cascade " +
