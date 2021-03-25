@@ -154,30 +154,6 @@ public class DBConnection{
                 "end if;" +
                 "end;");
         //second level
-        statement.executeUpdate(
-                "create table Issued_books(" +
-                        "id_record integer primary key," +
-                        "id_librarian integer not null," +
-                        "id_edition integer not null," +
-                        "id_reader integer not null," +
-                        "date_of_issue date not null," +
-                        "return_date date not null," +
-                        "is_returned varchar(6) not null," +
-                        "foreign key (id_librarian) references Librarians(id_librarian) on delete cascade ," +
-                        "foreign key (id_edition) references Editions(id_edition) on delete cascade ," +
-                        "foreign key (id_reader) references Readers(id_reader) on delete cascade " +
-                        ")"
-        );
-        statement.executeUpdate("create sequence issued_seq start with 1 increment by 1");
-        statement.executeUpdate("create trigger issued_trigger " +
-                "before insert on ISSUED_BOOKS " +
-                "referencing new as new_issued " +
-                "for each row " +
-                "begin " +
-                "if(:new_issued.id_record is null) then " +
-                "select issued_seq.nextval into :new_issued.id_record from DUAL;" +
-                "end if;" +
-                "end;");
         statement.executeUpdate("create table Rules(" +
                 "id_rule integer primary key," +
                 " id_edition integer not null," +
@@ -215,6 +191,32 @@ public class DBConnection{
                 "begin " +
                 "if(:new_comp.id_record is null) then " +
                 "select comp_seq.nextval into :new_comp.id_record from DUAL;" +
+                "end if;" +
+                "end;");
+        statement.executeUpdate(
+                "create table Issued_books(" +
+                        "id_record integer primary key," +
+                        "id_librarian integer not null," +
+                        "id_edition integer not null," +
+                        "id_composition integer not null," +
+                        "id_reader integer not null," +
+                        "date_of_issue date not null," +
+                        "return_date date not null," +
+                        "is_returned varchar(6) not null," +
+                        "foreign key (id_librarian) references Librarians(id_librarian) on delete cascade ," +
+                        "foreign key (id_composition, id_edition) references COMPOSITIONS(ID_RECORD, ID_EDITION) on delete cascade ," +
+                        "foreign key (id_reader) references Readers(id_reader) on delete cascade " +
+                        ")"
+        );
+        statement.executeUpdate("create sequence issued_seq start with 1 increment by 1");
+        statement.executeUpdate("create trigger issued_trigger " +
+                "before insert on ISSUED_BOOKS " +
+                "referencing new as new_issued " +
+                "for each row " +
+                "begin " +
+                "if(:new_issued.id_record is null) then " +
+                "select issued_seq.nextval into :new_issued.id_record from DUAL;" +
+                "select 'нет' into :new_issued.is_returned from DUAL;" +
                 "end if;" +
                 "end;");
         //category
@@ -347,7 +349,7 @@ public class DBConnection{
         statement.executeUpdate("insert into RULES(ID_EDITION, RULE_TEXT) values (10, 'Требует выплаты залога')");
 
 
-        statement.executeUpdate("insert into ISSUED_BOOKS(ID_LIBRARIAN, ID_EDITION, ID_READER, DATE_OF_ISSUE, RETURN_DATE, IS_RETURNED) values (1, 12, 5, to_date('12.02.2020','dd.mm.yyyy'),to_date('01.03.2020','dd.mm.yyyy'), 'да')");
-        statement.executeUpdate("insert into ISSUED_BOOKS(ID_LIBRARIAN, ID_EDITION, ID_READER, DATE_OF_ISSUE, RETURN_DATE, IS_RETURNED) values (4, 3, 1, to_date('04.11.2020','dd.mm.yyyy'),to_date('20.11.2020','dd.mm.yyyy'), 'нет')");
+        statement.executeUpdate("insert into ISSUED_BOOKS(ID_LIBRARIAN, ID_EDITION, id_composition, ID_READER,  DATE_OF_ISSUE, RETURN_DATE) values (1, 8, 8, 5, to_date('12.02.2020','dd.mm.yyyy'),to_date('01.03.2020','dd.mm.yyyy'))");
+        statement.executeUpdate("insert into ISSUED_BOOKS(ID_LIBRARIAN, ID_EDITION, id_composition, ID_READER, DATE_OF_ISSUE, RETURN_DATE) values (4, 3, 3, 1, to_date('04.11.2020','dd.mm.yyyy'),to_date('20.11.2020','dd.mm.yyyy'))");
     }
 }

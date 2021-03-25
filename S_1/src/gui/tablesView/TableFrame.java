@@ -133,6 +133,11 @@ public class TableFrame extends JDialog {
                     compositionInsert.openInsertWindow();
                     break;
                 }
+                case "Issued_Books":{
+                    IssuedBooksInsert issuedBooksInsert = new IssuedBooksInsert(tableController,tableModel);
+                    issuedBooksInsert.openInsertWindow();
+                    break;
+                }
             }
 
         });

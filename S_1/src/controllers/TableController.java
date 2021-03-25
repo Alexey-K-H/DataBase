@@ -44,7 +44,7 @@ public class TableController {
             case "Rules":
                 return new String[]{"Идентификатор", "Id-издание", "Текст"};
             case "Issued_Books":
-                return new String[]{"Идентификатор", "Id-бибилотекарь", "Id-издание", "Id-читатель", "Дата выдачи", "Дата возврата", "Возврат выполнен"};
+                return new String[]{"Идентификатор", "Id-бибилотекарь", "Id-издание", "Id-произведения", "Id-читатель", "Дата выдачи", "Дата возврата", "Возврат выполнен"};
             default:
                 return null;
         }
@@ -161,6 +161,7 @@ public class TableController {
                             result.getInt("id_record"),
                             result.getInt("id_librarian"),
                             result.getInt("id_edition"),
+                            result.getInt("id_composition"),
                             result.getInt("id_reader"),
                             result.getDate("date_of_issue"),
                             result.getDate("return_date"),

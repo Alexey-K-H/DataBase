@@ -140,8 +140,8 @@ public class EditionInsert extends JDialog implements InsertFrame{
                 hallNumTexField.setText("");
                 rackNumTexField.setText("");
                 shelfNumTexField.setText("");
-                admissionDate.setText("");
-                writeOffDate.setText("");
+                admissionDate.setValue(null);
+                writeOffDate.setValue(null);
 
                 Object[] values = new Object[]{
                         tableController.getTableSet().getValueAt(tableController.getTableSet().getRowCount() - 1, 0),
