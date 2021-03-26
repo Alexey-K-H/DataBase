@@ -91,7 +91,23 @@ public class CompositionInsert extends JDialog implements InsertFrame{
         layout.putConstraint(SpringLayout.WEST, genreLabel, 20, SpringLayout.WEST, jPanel);
         jPanel.add(genreLabel);
 
-        JTextField genreField = new JTextField(10);
+        //JTextField genreField = new JTextField(10);
+
+        String[] items = {
+                "Прочие",
+                "Художественное произведение",
+                "Роман",
+                "Учебная литература",
+                "Методическое пособие",
+                "Сказки",
+                "Сборник стихов",
+                "Научно-популярная статья",
+                "Журнал",
+                "Детектив",
+                "Энциклопедии"
+        };
+
+        JComboBox<String> genreField = new JComboBox<>(items);
         genreField.setFont(new Font(genreField.getFont().getName(), Font.PLAIN, 16));
         layout.putConstraint(SpringLayout.NORTH, genreField, 10, SpringLayout.SOUTH, genreLabel);
         layout.putConstraint(SpringLayout.WEST, genreField, 20, SpringLayout.WEST, jPanel);
@@ -108,7 +124,7 @@ public class CompositionInsert extends JDialog implements InsertFrame{
             currValues.add(authorField.getText());
             currValues.add(titleField.getText());
             currValues.add(popularityField.getText());
-            currValues.add(genreField.getText());
+            currValues.add(genreField.getSelectedItem().toString());
 
             String sql = "insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (" + currValues.get(0) + ",'" + currValues.get(1) + "','" +
                     currValues.get(2) + "'," + currValues.get(3) + ",'"+ currValues.get(4) + "')";
@@ -118,7 +134,7 @@ public class CompositionInsert extends JDialog implements InsertFrame{
                 authorField.setText("");
                 titleField.setText("");
                 popularityField.setText("");
-                genreField.setText("");
+                genreField.setSelectedItem("Прочие");
 
                 Object[] values = new Object[]{
                         tableController.getTableSet().getValueAt(tableController.getTableSet().getRowCount() - 1, 0),
@@ -170,7 +186,7 @@ public class CompositionInsert extends JDialog implements InsertFrame{
             authorField.setText("");
             titleField.setText("");
             popularityField.setText("");
-            genreField.setText("");
+            genreField.setSelectedItem("Прочие");
         });
         jPanel.add(cleanValues);
 

@@ -83,7 +83,7 @@ public class TeacherInsert extends JDialog implements InsertFrame {
         layout.putConstraint(SpringLayout.EAST, confirm, -20, SpringLayout.EAST, jPanel);
         confirm.addActionListener(e->{
                 currValues = new ArrayList<>();
-                currValues.add("'" + idUniversityTexField.getText() + "'");
+                currValues.add(idUniversityTexField.getText());
                 currValues.add("'" + facultyTexField.getText() + "'");
                 currValues.add("'" + nameUniversityTexField.getText() + "'");
 

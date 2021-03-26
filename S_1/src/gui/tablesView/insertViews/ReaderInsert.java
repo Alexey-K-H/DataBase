@@ -1,7 +1,7 @@
 package gui.tablesView.insertViews;
 
 import controllers.TableController;
-import gui.tablesView.insertViews.categoryInserts.TeacherInsert;
+import gui.tablesView.insertViews.categoryInserts.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ReaderInsert extends JDialog implements InsertFrame{
     private final TableController tableController;
@@ -105,7 +106,18 @@ public class ReaderInsert extends JDialog implements InsertFrame{
         layout.putConstraint(SpringLayout.WEST, status, 20, SpringLayout.WEST, jPanel);
         jPanel.add(status);
 
-        JTextField statusTextField = new JTextField(10);
+        String[] items = {
+                "прочие",
+                "ученик",
+                "учитель",
+                "студент",
+                "научный сотрудник",
+                "работник",
+                "пенсионер"
+        };
+
+        //JTextField statusTextField = new JTextField(10);
+        JComboBox<String> statusTextField = new JComboBox<>(items);
         statusTextField.setFont(new Font(surnameTexFiled.getFont().getName(), Font.PLAIN, 16));
         layout.putConstraint(SpringLayout.NORTH, statusTextField, 10, SpringLayout.SOUTH, status);
         layout.putConstraint(SpringLayout.WEST, statusTextField, 20, SpringLayout.WEST, jPanel);
@@ -116,14 +128,13 @@ public class ReaderInsert extends JDialog implements InsertFrame{
         layout.putConstraint(SpringLayout.SOUTH, confirm, -10, SpringLayout.SOUTH, jPanel);
         layout.putConstraint(SpringLayout.EAST, confirm, -20, SpringLayout.EAST, jPanel);
         confirm.addActionListener(e->{
-            if(!statusTextField.getText().equals("ученик") &&
-            !statusTextField.getText().equals("учитель") &&
-            !statusTextField.getText().equals("студент") &&
-            !statusTextField.getText().equals("научный сотрудник") &&
-            !statusTextField.getText().equals("работник") &&
-            !statusTextField.getText().equals("пенсионер") &&
-            !statusTextField.getText().equals("прочие")){
-                System.out.println(statusTextField.getText());
+            if(!statusTextField.getSelectedItem().equals("ученик") &&
+            !statusTextField.getSelectedItem().equals( "учитель") &&
+            !statusTextField.getSelectedItem().equals("студент") &&
+            !statusTextField.getSelectedItem().equals("научный сотрудник") &&
+            !statusTextField.getSelectedItem().equals("работник") &&
+            !statusTextField.getSelectedItem().equals("пенсионер") &&
+            !statusTextField.getSelectedItem().equals("прочие")){
                 JLabel error = new JLabel("Неправильно задан статус читателя!");
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -135,7 +146,7 @@ public class ReaderInsert extends JDialog implements InsertFrame{
                 currValues.add("'" + surnameTexFiled.getText() + "'");
                 currValues.add("'" + nameTextField.getText() + "'");
                 currValues.add("'" + patronymicTextField.getText() + "'");
-                currValues.add("'" + statusTextField.getText() + "'");
+                currValues.add("'" + statusTextField.getSelectedItem() + "'");
                 String sql = "insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (" + currValues.get(0) + "," +
                         currValues.get(1) + "," +
                         currValues.get(2) + "," +
@@ -144,38 +155,63 @@ public class ReaderInsert extends JDialog implements InsertFrame{
                 try {
                     performInsertOperation(sql);
 
-                    switch (statusTextField.getText()){
+                    switch (statusTextField.getSelectedItem().toString()){
                         case "учитель":{
                             TeacherInsert teacherInsert = new TeacherInsert(tableController, tableModel);
                             teacherInsert.openInsertWindow();
                             break;
                         }
+                        case "работник":{
+                            WorkersInsert workersInsert = new WorkersInsert(tableController, tableModel);
+                            workersInsert.openInsertWindow();
+                            break;
+                        }
+                        case "пенсионер":{
+                            PensionersInsert pensionersInsert = new PensionersInsert(tableController, tableModel);
+                            pensionersInsert.openInsertWindow();
+                            break;
+                        }
+                        case "студент":{
+                            StudentsInsert studentsInsert = new StudentsInsert(tableController, tableModel);
+                            studentsInsert.openInsertWindow();
+                            break;
+                        }
+                        case "ученик":{
+                            SchoolChildInsert schoolChildInsert = new SchoolChildInsert(tableController, tableModel);
+                            schoolChildInsert.openInsertWindow();
+                            break;
+                        }
+                        case "научный сотрудник":{
+                            ResearchersInsert researchersInsert = new ResearchersInsert(tableController, tableModel);
+                            researchersInsert.openInsertWindow();
+                            break;
+                        }
+                        case "прочие":{
+                            Object[] values = new Object[]{
+                                    tableController.getTableSet().getValueAt(
+                                            tableController.getTableSet().getRowCount() - 1, 0),
+                                    tableController.getTableSet().getValueAt(
+                                            tableController.getTableSet().getRowCount() - 1, 1),
+                                    tableController.getTableSet().getValueAt(
+                                            tableController.getTableSet().getRowCount() - 1, 2),
+                                    tableController.getTableSet().getValueAt(
+                                            tableController.getTableSet().getRowCount() - 1, 3)
+                            };
+
+                            tableModel.addRow(values);
+                            JLabel success = new JLabel("Запись добавлена успешно!");
+                            success.setFont(new Font(success.getFont().getName(), Font.BOLD, 16));
+                            JOptionPane.showMessageDialog(null, success, "INSERT", JOptionPane.INFORMATION_MESSAGE);
+                        }
                     }
 
-                    //idTextField.setText("");
                     idLibTexField.setText("");
                     surnameTexFiled.setText("");
                     nameTextField.setText("");
                     patronymicTextField.setText("");
-                    statusTextField.setText("");
-
-                    Object[] values = new Object[]{
-                            tableController.getTableSet().getValueAt(
-                                    tableController.getTableSet().getRowCount() - 1, 0),
-                            tableController.getTableSet().getValueAt(
-                                    tableController.getTableSet().getRowCount() - 1, 1),
-                            tableController.getTableSet().getValueAt(
-                                    tableController.getTableSet().getRowCount() - 1, 2),
-                            tableController.getTableSet().getValueAt(
-                                    tableController.getTableSet().getRowCount() - 1, 3)
-                    };
-
-                    //tableModel.addRow(values);
+                    statusTextField.setSelectedItem("прочие");
 
 
-//                    JLabel success = new JLabel("Запись добавлена успешно!");
-//                    success.setFont(new Font(success.getFont().getName(), Font.BOLD, 16));
-//                    JOptionPane.showMessageDialog(null, success, "INSERT", JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException exception) {
                     JLabel error = new JLabel();
                     switch (exception.getErrorCode()) {
@@ -204,12 +240,11 @@ public class ReaderInsert extends JDialog implements InsertFrame{
         layout.putConstraint(SpringLayout.SOUTH, clear, -20, SpringLayout.NORTH, confirm);
         layout.putConstraint(SpringLayout.EAST, clear, -20, SpringLayout.EAST, jPanel);
         clear.addActionListener(e -> {
-            //idTextField.setText("");
             idLibTexField.setText("");
             surnameTexFiled.setText("");
             nameTextField.setText("");
             patronymicTextField.setText("");
-            statusTextField.setText("");
+            statusTextField.setSelectedItem("прочие");
         });
         jPanel.add(clear);
 

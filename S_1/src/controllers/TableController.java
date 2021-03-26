@@ -37,6 +37,16 @@ public class TableController {
                 return new String[]{"Идентификатор", "Id - Библиотека", "ФИО", "Статус"};
             case "Teachers":
                 return new String[]{"Id-читатель", "Id-университет", "Факультет", "Название ВУЗа"};
+            case "Researchers":
+                return new String[]{"Id-читатель", "Id-институт", "Адрес института", "Степень", "Название института"};
+            case "SchoolChild":
+                return new String[]{"Id-читетль", "Id-школа", "Класс", "Название школы"};
+            case "Students":
+                return new String[]{"Id-читатель", "Id-университет", "Факультет", "Нзавание университета"};
+            case "Pensioners":
+                return new String[]{"Id-читатель", "Номер пенсионного свид."};
+            case "Workers":
+                return new String[]{"Id-читатель", "Адрес фирмы", "Название фирмы"};
             case "Editions":
                 return new String[]{"Идентификатор", "Id-библиотека", "Зал", "Стеллаж", "Полка", "Поступление", "Списание"};
             case "Compositions":
@@ -145,6 +155,55 @@ public class TableController {
                 }
                 break;
             }
+            case "Researchers":{
+                while (result.next()){
+                    tableModel.addRow(new Object[]{
+                            result.getInt("id_reader"),
+                            result.getInt("id_university"),
+                            result.getString("address_university"),
+                            result.getString("degree"),
+                            result.getString("name_university")
+                    });
+                }
+            }
+            case "SchoolChild":{
+                while (result.next()){
+                    tableModel.addRow(new Object[]{
+                            result.getInt("id_reader"),
+                            result.getInt("id_school"),
+                            result.getInt("grade"),
+                            result.getString("name_school")
+                    });
+                }
+            }
+            case "Students":{
+                while (result.next()){
+                    tableModel.addRow(new Object[]{
+                            result.getInt("id_reader"),
+                            result.getInt("id_university"),
+                            result.getString("faculty"),
+                            result.getString("name_university")
+                    });
+                }
+            }
+            case "Pensioners":{
+                while (result.next()){
+                    tableModel.addRow(new Object[]{
+                            result.getInt("id_reader"),
+                            result.getInt("id_pensioner")
+                    });
+                }
+            }
+            case "Workers":{
+                while (result.next()){
+                    tableModel.addRow(new Object[]{
+                            result.getInt("id_reader"),
+                            result.getString("firm_address"),
+                            result.getString("name_firm")
+                    });
+                }
+            }
+
             case "Rules":{
                 while (result.next()){
                     tableModel.addRow(new Object[]{
@@ -201,6 +260,11 @@ public class TableController {
                 return "id_record";
             }
             case "Readers":
+            case "Researchers":
+            case "Students":
+            case "SchoolChild":
+            case "Pensioners":
+            case "Workers":
             case "Teachers": {
                 return "id_reader";
             }

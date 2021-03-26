@@ -242,6 +242,7 @@ public class DBConnection{
                 "id_reader integer primary key," +
                 "id_school integer not null," +
                 "grade integer not null," +
+                "check ( grade >= 1 and grade <= 11 )," +
                 "name_school varchar(100) not null," +
                 "foreign key(id_reader) references Readers(id_reader) on delete cascade " +
                 ")"
