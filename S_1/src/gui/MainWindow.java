@@ -3,6 +3,7 @@ package gui;
 import connection.DBConnection;
 import controllers.TableController;
 import gui.menuButtons.*;
+import gui.queryWindow.MainQueryWindow;
 import gui.signIn.ConnectionFrame;
 import gui.tablesView.TableFrame;
 
@@ -216,6 +217,10 @@ public class MainWindow extends JFrame {
         select.setFont(new Font(select.getFont().getName(), Font.BOLD, 20));
         layout.putConstraint(SpringLayout.EAST, select, -20, SpringLayout.EAST, panel);
         layout.putConstraint(SpringLayout.NORTH, select, 20, SpringLayout.SOUTH, issuedBooksAndTerms);
+        select.addActionListener(e -> {
+            MainQueryWindow mainQueryWindow = new MainQueryWindow();
+            mainQueryWindow.openQueryConsole();
+        });
         panel.add(select);
 
         JButton exit = new JButton("Выйти из фонда");

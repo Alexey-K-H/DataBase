@@ -311,9 +311,21 @@ public class DBConnection{
         statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (6, 'Хлиманкова', 'Галина', 'Игоревна', 'студент')");
         statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (1, 'Налепова', 'Анастасия', 'Олеговна', 'студент')");
         statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (3, 'Шарапов', 'Виктор', 'Геннадьевич', 'пенсионер')");
+        statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (1, 'Киреева', 'Ирина', 'Витальевна', 'прочие')");
+        statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (4, 'Сорокин', 'Борис', 'Сергеевич', 'пенсионер')");
 
         statement.executeUpdate("insert into TEACHERS values (2, 2300, 'ФФ', 'НГУ')");
         statement.executeUpdate("insert into TEACHERS values (7, 2300, 'ФИТ', 'НГУ')");
+        statement.executeUpdate("insert into STUDENTS values (1, 2300, 'ФИТ', 'НГУ')");
+        statement.executeUpdate("insert into STUDENTS values (8, 3400, 'Экономический', 'НГУАЭ')");
+        statement.executeUpdate("insert into STUDENTS values (9, 4500, 'Естественных наук', 'НГТУ')");
+        statement.executeUpdate("insert into WORKERS values (3,'Пирогова 26','Data Science Center')");
+        statement.executeUpdate("insert into SCHOOLCHILD(ID_READER, ID_SCHOOL, GRADE, NAME_SCHOOL) values (4, 367, 5, 'Лицей 45')");
+        statement.executeUpdate("insert into RESEARCHERS(ID_READER, ID_UNIVERSITY, ADDRESS_UNIVERSITY, DEGREE, NAME_UNIVERSITY) values (5, 3400, 'Петрова 24', 'Кандидат наук', 'НГУАЭ')");
+        statement.executeUpdate("insert into PENSIONERS(ID_READER, ID_PENSIONER) VALUES (6, 1678)");
+        statement.executeUpdate("insert into PENSIONERS(ID_READER, ID_PENSIONER) VALUES (10, 56477)");
+        statement.executeUpdate("insert into OTHERS(ID_READER) values (11)");
+        statement.executeUpdate("insert into PENSIONERS(ID_READER, ID_PENSIONER) values (12, 78993)");
 
         statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (2, 2, 12, 5, to_date('23.02.2021','dd.mm.yyyy'), to_date('14.07.2021','dd.mm.yyyy'))");
         statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (4, 1, 15, 1, to_date('04.01.2020','dd.mm.yyyy'), to_date('06.12.2020','dd.mm.yyyy'))");
