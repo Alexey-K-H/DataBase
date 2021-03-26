@@ -157,7 +157,7 @@ public class DBConnection{
         statement.executeUpdate("create table Rules(" +
                 "id_rule integer primary key," +
                 " id_edition integer not null," +
-                " rule_text varchar(500)," +
+                " rule_text varchar(500) not null," +
                 " foreign key (id_edition) references Editions(id_edition) on delete cascade " +
                 ")"
         );

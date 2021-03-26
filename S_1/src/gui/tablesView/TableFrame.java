@@ -66,7 +66,12 @@ public class TableFrame extends JDialog {
         jPanel.add(tableTitle);
 
         JTable table = new JTable(tableModel);
-        table.setRowHeight(20);
+        if(tableName.equals("Rules")){
+            table.setRowHeight(50);
+        }
+        else {
+            table.setRowHeight(20);
+        }
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -138,6 +143,11 @@ public class TableFrame extends JDialog {
                     issuedBooksInsert.openInsertWindow();
                     break;
                 }
+                case "Rules":{
+                    RuleInsert ruleInsert = new RuleInsert(tableController, tableModel);
+                    ruleInsert.openInsertWindow();
+                    break;
+                }
             }
 
         });
@@ -145,7 +155,7 @@ public class TableFrame extends JDialog {
         jPanel.add(insert);
 
         String beforeDelOdUpdateStr;
-        if(!tableName.equals("Halls")){
+        if(!tableName.equals("Halls") && !tableName.equals("Rules")){
             beforeDelOdUpdateStr = "<html><p>Перед <b>удалением</b><br> или <b>изменением</b> данных<br>" +
                     " выберите строку в таблице</html>";
         }
@@ -246,7 +256,7 @@ public class TableFrame extends JDialog {
                 }
             }
         });
-        if(!tableName.equals("Halls")){
+        if(!tableName.equals("Halls") && !tableName.equals("Rules")){
             jPanel.add(modify);
             modify.setVisible(false);
         }
