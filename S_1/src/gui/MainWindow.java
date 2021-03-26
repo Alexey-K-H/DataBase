@@ -1,6 +1,7 @@
 package gui;
 
 import connection.DBConnection;
+import controllers.QueryController;
 import controllers.TableController;
 import gui.menuButtons.*;
 import gui.queryWindow.MainQueryWindow;
@@ -218,7 +219,8 @@ public class MainWindow extends JFrame {
         layout.putConstraint(SpringLayout.EAST, select, -20, SpringLayout.EAST, panel);
         layout.putConstraint(SpringLayout.NORTH, select, 20, SpringLayout.SOUTH, issuedBooksAndTerms);
         select.addActionListener(e -> {
-            MainQueryWindow mainQueryWindow = new MainQueryWindow();
+            QueryController queryController = new QueryController(connection);
+            MainQueryWindow mainQueryWindow = new MainQueryWindow(queryController);
             mainQueryWindow.openQueryConsole();
         });
         panel.add(select);

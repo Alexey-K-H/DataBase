@@ -1,12 +1,15 @@
 package gui.queryWindow;
 
+import controllers.QueryController;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class MainQueryWindow extends JDialog {
+    private QueryController queryController;
 
-    public MainQueryWindow(){
-
+    public MainQueryWindow(QueryController controller){
+        this.queryController = controller;
     }
 
     public void openQueryConsole(){
@@ -28,6 +31,10 @@ public class MainQueryWindow extends JDialog {
         firstQuery.setFont(new Font(firstQuery.getFont().getName(), Font.BOLD, 12));
         layout.putConstraint(SpringLayout.NORTH, firstQuery, 20, SpringLayout.NORTH, jPanel);
         layout.putConstraint(SpringLayout.WEST, firstQuery, 20, SpringLayout.WEST, jPanel);
+        firstQuery.addActionListener(e->{
+            FirstQuery firstQueryFrame = new FirstQuery(queryController);
+            firstQueryFrame.openQueryConfig();
+        });
         jPanel.add(firstQuery);
 
         this.setResizable(false);
