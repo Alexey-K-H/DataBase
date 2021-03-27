@@ -6,8 +6,10 @@ import gui.queryWindow.ResultQueryView;
 import javax.swing.*;
 import java.awt.*;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AdditionalParameters extends JDialog {
     private QueryController queryController;
@@ -91,8 +93,19 @@ public class AdditionalParameters extends JDialog {
                     try {
                         queryController.performSQLQuery(sqlQuery);
                         ResultSet resultSet = queryController.getCurrResultSet();
-                        ResultQueryView queryView = new ResultQueryView(resultSet);
+                        ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+                        int columnsCount = resultSetMetaData.getColumnCount();
+
+                        ArrayList<String> list = new ArrayList<>();
+                        for(int i = 1; i <= columnsCount; i++){
+                            list.add(resultSetMetaData.getColumnLabel(i));
+                        }
+
+                        String[] columnsHeaders = list.toArray(new String[0]);
+
+                        ResultQueryView queryView = new ResultQueryView(resultSet, columnsCount, columnsHeaders);
                         queryController.closeSQLSet();
+                        this.setVisible(false);
 
                     } catch (SQLException exception) {
                         exception.printStackTrace();
