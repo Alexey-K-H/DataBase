@@ -1,12 +1,13 @@
 package gui.queryWindow;
 
 import controllers.QueryController;
+import gui.queryWindow.firstQuery.FirstQuery;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class MainQueryWindow extends JDialog {
-    private QueryController queryController;
+    private final QueryController queryController;
 
     public MainQueryWindow(QueryController controller){
         this.queryController = controller;

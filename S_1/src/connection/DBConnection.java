@@ -313,6 +313,7 @@ public class DBConnection{
         statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (3, 'Шарапов', 'Виктор', 'Геннадьевич', 'пенсионер')");
         statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (1, 'Киреева', 'Ирина', 'Витальевна', 'прочие')");
         statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (4, 'Сорокин', 'Борис', 'Сергеевич', 'пенсионер')");
+        statement.executeUpdate("insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (2, 'Исмагилов', 'Тимур', 'Зинферович', 'учитель')");
 
         statement.executeUpdate("insert into TEACHERS values (2, 2300, 'ФФ', 'НГУ')");
         statement.executeUpdate("insert into TEACHERS values (7, 2300, 'ФИТ', 'НГУ')");
@@ -326,6 +327,7 @@ public class DBConnection{
         statement.executeUpdate("insert into PENSIONERS(ID_READER, ID_PENSIONER) VALUES (10, 56477)");
         statement.executeUpdate("insert into OTHERS(ID_READER) values (11)");
         statement.executeUpdate("insert into PENSIONERS(ID_READER, ID_PENSIONER) values (12, 78993)");
+        statement.executeUpdate("insert into TEACHERS(ID_READER, ID_UNIVERSITY, FACULTY, NAME_UNIVERSITY) VALUES (13, 2300, 'ФИТ', 'НГУ')");
 
         statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (2, 2, 12, 5, to_date('23.02.2021','dd.mm.yyyy'), to_date('14.07.2021','dd.mm.yyyy'))");
         statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (4, 1, 15, 1, to_date('04.01.2020','dd.mm.yyyy'), to_date('06.12.2020','dd.mm.yyyy'))");
