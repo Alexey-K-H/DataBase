@@ -55,11 +55,22 @@ public class FirstQuery extends JDialog implements QueryFrame {
         layout.putConstraint(SpringLayout.WEST, categoryChose, 20, SpringLayout.WEST, jPanel);
         jPanel.add(categoryChose);
 
-        JButton continueButton = new JButton("Задать параметры выбранной категории");
-        continueButton.setFont(new Font(continueButton.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.SOUTH, continueButton, -10, SpringLayout.SOUTH, jPanel);
-        layout.putConstraint(SpringLayout.WEST, continueButton, 20, SpringLayout.WEST, jPanel);
-        jPanel.add(continueButton);
+        JButton categoryParameters = new JButton("Задать параметры выбранной категории");
+        categoryParameters.setFont(new Font(categoryParameters.getFont().getName(), Font.BOLD, 16));
+        layout.putConstraint(SpringLayout.SOUTH, categoryParameters, -10, SpringLayout.SOUTH, jPanel);
+        layout.putConstraint(SpringLayout.WEST, categoryParameters, 20, SpringLayout.WEST, jPanel);
+        categoryParameters.addActionListener(e ->{
+            if(!categoryChose.getSelectedItem().toString().equals("прочие") &&
+            !categoryChose.getSelectedItem().toString().equals("пенсионер")){
+                try {
+                    AdditionalParameters additionalParameters = new AdditionalParameters(categoryChose.getSelectedItem().toString(), queryController);
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
+                }
+            }
+
+        });
+        jPanel.add(categoryParameters);
 
         JLabel additionalParametersInfo = new JLabel("<html>Выбрав категорию,<br>можно задать<br>дополнительные параметры поиска<br>" +
                 "по нажаитю кнопки под значением<br>выбранной категории.<br>Если параметры не указываются,<br>то будет показна вся категория</html>");
@@ -80,22 +91,16 @@ public class FirstQuery extends JDialog implements QueryFrame {
         layout.putConstraint(SpringLayout.EAST, performQuery, -10, SpringLayout.EAST, jPanel);
         jPanel.add(performQuery);
 
-        continueButton.addActionListener(e ->{
-            performQuery.setVisible(true);
-        });
-
         this.setResizable(false);
         this.setModal(true);
         this.setVisible(true);
     }
 
     @Override
-    public void performQuery(String sql) throws SQLException {
-
-    }
-
-    @Override
-    public void showQueryResult(ResultSet resultSet) {
-
+    public ResultSet performQuery(String sql) throws SQLException {
+        queryController.performSQLQuery(sql);
+        ResultSet result = queryController.getCurrResultSet();
+        queryController.closeSQLSet();
+        return result;
     }
 }

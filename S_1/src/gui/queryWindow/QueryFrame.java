@@ -5,6 +5,5 @@ import java.sql.SQLException;
 
 public interface QueryFrame {
     void openQueryConfig();
-    void performQuery(String sql) throws SQLException;
-    void showQueryResult(ResultSet resultSet);
+    ResultSet performQuery(String sql) throws SQLException;
 }

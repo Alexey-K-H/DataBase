@@ -1,6 +1,8 @@
 package controllers;
 
 import connection.DBConnection;
+
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -13,7 +15,8 @@ public class QueryController {
     }
 
     public void performSQLQuery(String sql) throws SQLException{
-
+        PreparedStatement preStatement = connection.getConn().prepareStatement(sql);
+        currResultSet = preStatement.executeQuery();
     }
 
     public ResultSet getCurrResultSet() {
