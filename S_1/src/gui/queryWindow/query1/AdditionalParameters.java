@@ -119,7 +119,10 @@ public class AdditionalParameters extends JDialog {
                         this.setVisible(false);
 
                     } catch (SQLException exception) {
-                        exception.printStackTrace();
+                        JLabel error = new JLabel();
+                        error.setText(exception.getMessage());
+                        error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                        JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
                 });
                 jPanel.add(find);
@@ -216,7 +219,10 @@ public class AdditionalParameters extends JDialog {
                         this.setVisible(false);
 
                     } catch (SQLException exception) {
-                        exception.printStackTrace();
+                        JLabel error = new JLabel();
+                        error.setText(exception.getMessage());
+                        error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                        JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
                 });
                 jPanel.add(find);
@@ -313,7 +319,10 @@ public class AdditionalParameters extends JDialog {
                         this.setVisible(false);
 
                     } catch (SQLException exception) {
-                        exception.printStackTrace();
+                        JLabel error = new JLabel();
+                        error.setText(exception.getMessage());
+                        error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                        JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
                 });
                 jPanel.add(find);
@@ -413,7 +422,10 @@ public class AdditionalParameters extends JDialog {
                         this.setVisible(false);
 
                     } catch (SQLException exception) {
-                        exception.printStackTrace();
+                        JLabel error = new JLabel();
+                        error.setText(exception.getMessage());
+                        error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                        JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
                 });
                 jPanel.add(find);
@@ -475,7 +487,10 @@ public class AdditionalParameters extends JDialog {
                         this.setVisible(false);
 
                     } catch (SQLException exception) {
-                        exception.printStackTrace();
+                        JLabel error = new JLabel();
+                        error.setText(exception.getMessage());
+                        error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                        JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
                 });
                 jPanel.add(find);
@@ -537,7 +552,10 @@ public class AdditionalParameters extends JDialog {
                         this.setVisible(false);
 
                     } catch (SQLException exception) {
-                        exception.printStackTrace();
+                        JLabel error = new JLabel();
+                        error.setText(exception.getMessage());
+                        error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                        JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
                     }
                 });
                 jPanel.add(find);

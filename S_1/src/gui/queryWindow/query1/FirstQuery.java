@@ -12,14 +12,11 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class FirstQuery extends JDialog implements QueryFrame {
-    private final QueryController queryController;
-
+public class FirstQuery extends QueryFrame {
     public FirstQuery(QueryController queryController) {
-        this.queryController = queryController;
+        super(queryController);
     }
 
-    @Override
     public void openQueryConfig() {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
@@ -65,7 +62,7 @@ public class FirstQuery extends JDialog implements QueryFrame {
         categoryParameters.addActionListener(e ->{
             if(!categoryChose.getSelectedItem().toString().equals("прочие")){
                 try {
-                    AdditionalParameters additionalParameters = new AdditionalParameters(categoryChose.getSelectedItem().toString(), queryController);
+                    AdditionalParameters additionalParameters = new AdditionalParameters(categoryChose.getSelectedItem().toString(), getQueryController());
                 } catch (SQLException exception) {
                     exception.printStackTrace();
                 }
@@ -131,8 +128,8 @@ public class FirstQuery extends JDialog implements QueryFrame {
             }
 
             try {
-                queryController.performSQLQuery(sql);
-                ResultSet resultSet = queryController.getCurrResultSet();
+                getQueryController().performSQLQuery(sql);
+                ResultSet resultSet = getQueryController().getCurrResultSet();
                 ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
                 int columnsCount = resultSetMetaData.getColumnCount();
 
@@ -144,7 +141,7 @@ public class FirstQuery extends JDialog implements QueryFrame {
                 String[] columnsHeaders = list.toArray(new String[0]);
 
                 ResultQueryView queryView = new ResultQueryView(resultSet, columnsCount, columnsHeaders);
-                queryController.closeSQLSet();
+                getQueryController().closeSQLSet();
             } catch (SQLException exception) {
                 JLabel error = new JLabel();
                 error.setText(exception.getMessage());
@@ -158,13 +155,5 @@ public class FirstQuery extends JDialog implements QueryFrame {
         this.setResizable(false);
         this.setModal(true);
         this.setVisible(true);
-    }
-
-    @Override
-    public ResultSet performQuery(String sql) throws SQLException {
-        queryController.performSQLQuery(sql);
-        ResultSet result = queryController.getCurrResultSet();
-        queryController.closeSQLSet();
-        return result;
     }
 }
