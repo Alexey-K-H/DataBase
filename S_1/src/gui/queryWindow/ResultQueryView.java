@@ -59,7 +59,6 @@ public class ResultQueryView extends JDialog {
         scrollPane.setPreferredSize(new Dimension(845, 700));
 
         int prefSize = scrollPane.getPreferredSize().width/table.getColumnCount();
-        System.out.println(prefSize);
         for(int i = 0; i < table.getColumnCount(); i++){
             table.getColumnModel().getColumn(i).setPreferredWidth(prefSize);
         }

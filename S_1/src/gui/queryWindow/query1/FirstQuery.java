@@ -1,16 +1,19 @@
-package gui.queryWindow.firstQuery;
+package gui.queryWindow.query1;
 
 import controllers.QueryController;
 import gui.queryWindow.QueryFrame;
+import gui.queryWindow.ResultQueryView;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class FirstQuery extends JDialog implements QueryFrame {
-    private QueryController queryController;
+    private final QueryController queryController;
 
     public FirstQuery(QueryController queryController) {
         this.queryController = queryController;
@@ -60,8 +63,7 @@ public class FirstQuery extends JDialog implements QueryFrame {
         layout.putConstraint(SpringLayout.SOUTH, categoryParameters, -10, SpringLayout.SOUTH, jPanel);
         layout.putConstraint(SpringLayout.WEST, categoryParameters, 20, SpringLayout.WEST, jPanel);
         categoryParameters.addActionListener(e ->{
-            if(!categoryChose.getSelectedItem().toString().equals("прочие") &&
-            !categoryChose.getSelectedItem().toString().equals("пенсионер")){
+            if(!categoryChose.getSelectedItem().toString().equals("прочие")){
                 try {
                     AdditionalParameters additionalParameters = new AdditionalParameters(categoryChose.getSelectedItem().toString(), queryController);
                 } catch (SQLException exception) {
@@ -85,10 +87,72 @@ public class FirstQuery extends JDialog implements QueryFrame {
         layout.putConstraint(SpringLayout.WEST, additionalParametersInfo, -360, SpringLayout.EAST, additionalParametersInfo);
         jPanel.add(additionalParametersInfo);
 
-        JButton performQuery = new JButton("Найти");
+        JButton performQuery = new JButton("Вывести всех");
         performQuery.setFont(new Font(performQuery.getFont().getName(), Font.BOLD, 16));
         layout.putConstraint(SpringLayout.SOUTH, performQuery, -10, SpringLayout.SOUTH, jPanel);
         layout.putConstraint(SpringLayout.EAST, performQuery, -10, SpringLayout.EAST, jPanel);
+        performQuery.addActionListener(e -> {
+            String sql = "";
+            switch (categoryChose.getSelectedItem().toString()){
+                case "прочие":{
+                    sql = "select id_reader as \"Id-читателя\" from Others";
+                    break;
+                }
+                case "ученик":{
+                    sql = "select id_reader as \"Id-читателя\", grade as \"Класс\", name_school as \"Школа\" " +
+                            "from Schoolchild";
+                    break;
+                }
+                case "учитель":{
+                    sql = "select id_reader as \"Id-читателя\", faculty as \"Факультет\", name_university as \"Университет\" " +
+                            "from Teachers";
+                    break;
+                }
+                case "студент":{
+                    sql = "select id_reader as \"Id-читателя\", faculty as \"Факультет\", name_university as \"Университет\" " +
+                            "from Students";
+                    break;
+                }
+                case "научный сотрудник":{
+                    sql = "select id_reader as \"Id-читателя\", degree as \"Научная степень\", name_university as \"Институт\", " +
+                            "address_university as \"Адрес института\" from Researchers";
+                    break;
+                }
+                case "работник":{
+                    sql = "select id_reader as \"Id-читателя\", name_firm as \"Фирма\", firm_address as \"Адрес фирмы\" " +
+                            "from Workers";
+                    break;
+                }
+                case "пенсионер":{
+                    sql = "select id_reader as \"Id-читателя\", id_pensioner as \"№ пенсионного свидетельства\" from " +
+                            "Pensioners";
+                    break;
+                }
+            }
+
+            try {
+                queryController.performSQLQuery(sql);
+                ResultSet resultSet = queryController.getCurrResultSet();
+                ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+                int columnsCount = resultSetMetaData.getColumnCount();
+
+                ArrayList<String> list = new ArrayList<>();
+                for(int i = 1; i <= columnsCount; i++){
+                    list.add(resultSetMetaData.getColumnLabel(i));
+                }
+
+                String[] columnsHeaders = list.toArray(new String[0]);
+
+                ResultQueryView queryView = new ResultQueryView(resultSet, columnsCount, columnsHeaders);
+                queryController.closeSQLSet();
+            } catch (SQLException exception) {
+                JLabel error = new JLabel();
+                error.setText(exception.getMessage());
+                error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+
+        });
         jPanel.add(performQuery);
 
         this.setResizable(false);

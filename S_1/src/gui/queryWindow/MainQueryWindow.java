@@ -1,7 +1,7 @@
 package gui.queryWindow;
 
 import controllers.QueryController;
-import gui.queryWindow.firstQuery.FirstQuery;
+import gui.queryWindow.query1.FirstQuery;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,13 +24,16 @@ public class MainQueryWindow extends JDialog {
         jPanel.setLayout(layout);
         this.add(jPanel);
 
-        JButton firstQuery = new JButton("<html>Получить список читателей с заданными характеристиками:<br>" +
-                "студентов указанного учебного заведения, " +
-                "факультета<br>" +
-                "научных работников по определенной тематике и т.д." +
-                "</html>");
-        firstQuery.setFont(new Font(firstQuery.getFont().getName(), Font.BOLD, 12));
-        layout.putConstraint(SpringLayout.NORTH, firstQuery, 20, SpringLayout.NORTH, jPanel);
+        JLabel firstQueryLabel = new JLabel("Отчет №1");
+        firstQueryLabel.setFont(new Font(firstQueryLabel.getFont().getName(), Font.BOLD, 14));
+        layout.putConstraint(SpringLayout.NORTH, firstQueryLabel, 10, SpringLayout.NORTH, jPanel);
+        layout.putConstraint(SpringLayout.WEST, firstQueryLabel, 20, SpringLayout.WEST, jPanel);
+        jPanel.add(firstQueryLabel);
+
+        JButton firstQuery = new JButton("<html>Список читателей с заданными характеристиками</html>");
+        firstQuery.setFont(new Font(firstQuery.getFont().getName(), Font.BOLD, 14));
+        firstQuery.setPreferredSize(new Dimension(this.getWidth()/2 - 20, 30));
+        layout.putConstraint(SpringLayout.NORTH, firstQuery, 10, SpringLayout.SOUTH, firstQueryLabel);
         layout.putConstraint(SpringLayout.WEST, firstQuery, 20, SpringLayout.WEST, jPanel);
         firstQuery.addActionListener(e->{
             FirstQuery firstQueryFrame = new FirstQuery(queryController);
