@@ -224,6 +224,7 @@ public class DBConnection{
         statement.executeUpdate("create table Teachers(" +
                 "id_reader integer primary key," +
                 "id_university integer not null ," +
+                "check ( id_university > 0 )," +
                 "faculty varchar(100) not null ," +
                 "name_university varchar(100) not null ," +
                 "foreign key (id_reader) references Readers (id_reader) on delete cascade " +
@@ -232,6 +233,7 @@ public class DBConnection{
         statement.executeUpdate("create table Researchers(" +
                 "id_reader integer primary key," +
                 "id_university integer not null," +
+                "check ( id_university > 0 )," +
                 "address_university varchar(100) not null," +
                 "degree varchar(100) not null," +
                 "name_university varchar(200) not null," +
@@ -241,6 +243,7 @@ public class DBConnection{
         statement.executeUpdate("create table SchoolChild(" +
                 "id_reader integer primary key," +
                 "id_school integer not null," +
+                "check ( id_school > 0 )," +
                 "grade integer not null," +
                 "check ( grade >= 1 and grade <= 11 )," +
                 "name_school varchar(100) not null," +
@@ -250,6 +253,7 @@ public class DBConnection{
         statement.executeUpdate("create table Students(" +
                 "id_reader integer primary key," +
                 "id_university integer not null," +
+                "check ( id_university > 0 )," +
                 "faculty varchar(100) not null," +
                 "name_university varchar(100) not null," +
                 "foreign key(id_reader) references Readers(id_reader) on delete cascade " +
@@ -258,6 +262,7 @@ public class DBConnection{
         statement.executeUpdate("create table Pensioners (" +
                 "id_reader integer primary key," +
                 "id_pensioner integer unique," +
+                "check ( id_pensioner > 0 ), " +
                 "foreign key(id_reader) references Readers(id_reader) on delete cascade " +
                 ")"
         );

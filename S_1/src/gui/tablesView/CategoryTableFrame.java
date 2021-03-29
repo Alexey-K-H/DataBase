@@ -2,6 +2,7 @@ package gui.tablesView;
 
 import connection.DBConnection;
 import controllers.TableController;
+import gui.tablesView.modifyViews.categoryModify.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -135,7 +136,36 @@ public class CategoryTableFrame extends JDialog{
                 }
 
                 switch (tableName){
-
+                    case "Teachers":{
+                        TeacherModify teacherModify = new TeacherModify(tableController, oldValues, tableModel, i);
+                        teacherModify.openModifyWindow();
+                        break;
+                    }
+                    case "Students":{
+                        StudentModify studentModify = new StudentModify(tableController, oldValues, tableModel, i);
+                        studentModify.openModifyWindow();
+                        break;
+                    }
+                    case "SchoolChild":{
+                        SchoolChildModify schoolChildModify = new SchoolChildModify(tableController, oldValues, tableModel, i);
+                        schoolChildModify.openModifyWindow();
+                        break;
+                    }
+                    case "Pensioners":{
+                        PensionersModify pensionersModify = new PensionersModify(tableController, oldValues, tableModel, i);
+                        pensionersModify.openModifyWindow();
+                        break;
+                    }
+                    case "Researchers":{
+                        ResearchersModify researchersModify = new ResearchersModify(tableController, oldValues, tableModel, i);
+                        researchersModify.openModifyWindow();
+                        break;
+                    }
+                    case "Workers":{
+                        WorkersModify workersModify = new WorkersModify(tableController, oldValues, tableModel, i);
+                        workersModify.openModifyWindow();
+                        break;
+                    }
                 }
 
             }
