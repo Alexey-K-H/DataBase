@@ -3,6 +3,7 @@ package gui.queryWindow;
 import controllers.QueryController;
 import gui.queryWindow.query1.FirstQuery;
 import gui.queryWindow.query12.TwelveQuery;
+import gui.queryWindow.query16.SixteenthQuery;
 import gui.queryWindow.query2.SecondQuery;
 import gui.queryWindow.query3.ThirdQuery;
 
@@ -95,6 +96,23 @@ public class MainQueryWindow extends JDialog {
             twelveQueryFrame.openQueryConfig();
         });
         jPanel.add(twelveQueryButton);
+
+        JLabel sixteenthQuery = new JLabel("Отчет №16");
+        sixteenthQuery.setFont(new Font(sixteenthQuery.getFont().getName(), Font.BOLD, 14));
+        layout.putConstraint(SpringLayout.NORTH, sixteenthQuery, 10, SpringLayout.SOUTH, twelveQueryButton);
+        layout.putConstraint(SpringLayout.WEST, sixteenthQuery, 20, SpringLayout.WEST, jPanel);
+        jPanel.add(sixteenthQuery);
+
+        JButton sixteenthQueryButton = new JButton("<html>Список самых популярных произведений</html>");
+        sixteenthQueryButton.setFont(new Font(sixteenthQueryButton.getFont().getName(), Font.BOLD, 14));
+        sixteenthQueryButton.setPreferredSize(new Dimension(this.getWidth()/2 - 20, 40));
+        layout.putConstraint(SpringLayout.NORTH, sixteenthQueryButton, 10, SpringLayout.SOUTH, sixteenthQuery);
+        layout.putConstraint(SpringLayout.WEST, sixteenthQueryButton, 20, SpringLayout.WEST, jPanel);
+        sixteenthQueryButton.addActionListener(e->{
+            SixteenthQuery sixteenthQueryFrame = new SixteenthQuery(queryController);
+            sixteenthQueryFrame.openQueryConfig();
+        });
+        jPanel.add(sixteenthQueryButton);
 
         this.setResizable(false);
         this.setModal(true);
