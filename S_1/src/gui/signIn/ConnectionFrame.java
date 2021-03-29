@@ -4,11 +4,8 @@ import connection.DBConnection;
 import gui.MainWindow;
 
 import javax.swing.*;
-import javax.swing.text.MaskFormatter;
 import java.awt.*;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Properties;
 
 public class ConnectionFrame extends JFrame {
