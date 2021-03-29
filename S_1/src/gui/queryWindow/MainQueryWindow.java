@@ -2,6 +2,7 @@ package gui.queryWindow;
 
 import controllers.QueryController;
 import gui.queryWindow.query1.FirstQuery;
+import gui.queryWindow.query12.TwelveQuery;
 import gui.queryWindow.query2.SecondQuery;
 import gui.queryWindow.query3.ThirdQuery;
 
@@ -77,6 +78,23 @@ public class MainQueryWindow extends JDialog {
             thirdQueryFrame.openQueryConfig();
         });
         jPanel.add(thirdQuery);
+
+        JLabel twelveQuery = new JLabel("Отчет №12");
+        twelveQuery.setFont(new Font(twelveQuery.getFont().getName(), Font.BOLD, 14));
+        layout.putConstraint(SpringLayout.NORTH, twelveQuery, 10, SpringLayout.SOUTH, thirdQuery);
+        layout.putConstraint(SpringLayout.WEST, twelveQuery, 20, SpringLayout.WEST, jPanel);
+        jPanel.add(twelveQuery);
+
+        JButton twelveQueryButton = new JButton("<html>Библиотекари, работающие в указанном читальном зале некоторой библиотеки</html>");
+        twelveQueryButton.setFont(new Font(twelveQueryButton.getFont().getName(), Font.BOLD, 14));
+        twelveQueryButton.setPreferredSize(new Dimension(this.getWidth()/2 - 20, 40));
+        layout.putConstraint(SpringLayout.NORTH, twelveQueryButton, 10, SpringLayout.SOUTH, twelveQuery);
+        layout.putConstraint(SpringLayout.WEST, twelveQueryButton, 20, SpringLayout.WEST, jPanel);
+        twelveQueryButton.addActionListener(e->{
+            TwelveQuery twelveQueryFrame = new TwelveQuery(queryController);
+            twelveQueryFrame.openQueryConfig();
+        });
+        jPanel.add(twelveQueryButton);
 
         this.setResizable(false);
         this.setModal(true);
