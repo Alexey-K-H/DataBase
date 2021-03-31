@@ -117,6 +117,7 @@ public class ResearchersModify extends CategoryModify {
                     getTableModel().setValueAt(newValues.get(3), getIndexRow(), 4);
                     this.setVisible(false);
                     JLabel success = new JLabel("Изменения сохранены");
+                    getTableController().getConnection().getConn().createStatement().executeUpdate("COMMIT ");
                     success.setFont(new Font(success.getFont().getName(), Font.BOLD, 16));
                     JOptionPane.showMessageDialog(null, success, "Модификация записи", JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException exception) {
@@ -128,6 +129,12 @@ public class ResearchersModify extends CategoryModify {
                     }
                     error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
                     JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+                    try {
+                        getTableController().getConnection().getConn().createStatement().executeUpdate("ROLLBACK ");
+                    } catch (SQLException sqlException) {
+                        error.setText(sqlException.getMessage());
+                        JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         });

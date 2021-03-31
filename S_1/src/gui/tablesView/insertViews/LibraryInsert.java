@@ -80,6 +80,7 @@ public class LibraryInsert extends JDialog implements InsertFrame {
                                 tableController.getTableSet().getRowCount() - 1, 1)};
                 tableModel.addRow(values);
                 JLabel success = new JLabel("Запись добавлена успешно!");
+                tableController.getConnection().getConn().createStatement().executeUpdate("COMMIT ");
                 success.setFont(new Font(success.getFont().getName(), Font.BOLD, 16));
                 JOptionPane.showMessageDialog(null, success, "INSERT", JOptionPane.INFORMATION_MESSAGE);
             } catch (SQLException exception) {
@@ -96,6 +97,12 @@ public class LibraryInsert extends JDialog implements InsertFrame {
                 }
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+                try {
+                    tableController.getConnection().getConn().createStatement().executeUpdate("ROLLBACK ");
+                } catch (SQLException sqlException) {
+                    error.setText(sqlException.getMessage());
+                    JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         jPanel.add(confirmInsert);

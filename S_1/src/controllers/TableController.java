@@ -280,11 +280,13 @@ public class TableController {
         String sql = "delete from " + tableName + " where " + getPrimaryKeyNameByTableName() + " = " + rowKey;
         //System.out.println(sql);
         statement.executeUpdate(sql);
+        statement.executeUpdate("commit ");
     }
 
     public void modifyRow(String sqlValuesSet) throws SQLException {
         Statement statement = connection.getConn().createStatement();
         String sql = "update " + tableName + " " + sqlValuesSet;
         statement.executeUpdate(sql);
+        statement.executeUpdate("commit ");
     }
 }
