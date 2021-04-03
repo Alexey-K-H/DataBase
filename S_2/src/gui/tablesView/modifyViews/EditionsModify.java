@@ -165,6 +165,7 @@ public class EditionsModify extends JDialog implements ModifyView{
                     tableModel.setValueAt(tableController.getTableSet().getValueAt(indexRow, 6), indexRow, 6);
                     this.setVisible(false);
                     JLabel success = new JLabel("Изменения сохранены");
+                    tableController.getConnection().getConn().createStatement().executeUpdate("COMMIT ");
                     success.setFont(new Font(success.getFont().getName(), Font.BOLD, 16));
                     JOptionPane.showMessageDialog(null, success, "Модификация записи", JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException exception) {
@@ -185,6 +186,12 @@ public class EditionsModify extends JDialog implements ModifyView{
                     }
                     error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
                     JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+                    try {
+                        tableController.getConnection().getConn().createStatement().executeUpdate("ROLLBACK ");
+                    } catch (SQLException sqlException) {
+                        error.setText(sqlException.getMessage());
+                        JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         });

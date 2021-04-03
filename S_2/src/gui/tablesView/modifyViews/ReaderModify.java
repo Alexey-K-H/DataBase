@@ -123,6 +123,7 @@ public class ReaderModify extends JDialog implements ModifyView{
                     tableModel.setValueAt(newValues.get(1) + " " + newValues.get(2) + " " + newValues.get(3), indexRow, 2);
                     this.setVisible(false);
                     JLabel success = new JLabel("Изменения сохранены");
+                    tableController.getConnection().getConn().createStatement().executeUpdate("COMMIT ");
                     success.setFont(new Font(success.getFont().getName(), Font.BOLD, 16));
                     JOptionPane.showMessageDialog(null, success, "Модификация записи", JOptionPane.INFORMATION_MESSAGE);
                 } catch (SQLException exception) {
@@ -143,6 +144,12 @@ public class ReaderModify extends JDialog implements ModifyView{
                     }
                     error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
                     JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+                    try {
+                        tableController.getConnection().getConn().createStatement().executeUpdate("ROLLBACK ");
+                    } catch (SQLException sqlException) {
+                        error.setText(sqlException.getMessage());
+                        JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         });

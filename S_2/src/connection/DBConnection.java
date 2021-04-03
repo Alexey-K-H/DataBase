@@ -24,6 +24,7 @@ public class DBConnection{
         Locale.setDefault(Locale.ENGLISH);
 
         conn = DriverManager.getConnection(url, props);
+        conn.setAutoCommit(false);
     }
 
     public void close() throws SQLException {
@@ -372,5 +373,6 @@ public class DBConnection{
 
         statement.executeUpdate("insert into ISSUED_BOOKS(ID_LIBRARIAN, ID_EDITION, id_composition, ID_READER,  DATE_OF_ISSUE, RETURN_DATE) values (1, 8, 8, 5, to_date('12.02.2020','dd.mm.yyyy'),to_date('01.03.2020','dd.mm.yyyy'))");
         statement.executeUpdate("insert into ISSUED_BOOKS(ID_LIBRARIAN, ID_EDITION, id_composition, ID_READER, DATE_OF_ISSUE, RETURN_DATE) values (4, 3, 3, 1, to_date('04.11.2020','dd.mm.yyyy'),to_date('20.11.2020','dd.mm.yyyy'))");
+        statement.executeUpdate("commit ");
     }
 }

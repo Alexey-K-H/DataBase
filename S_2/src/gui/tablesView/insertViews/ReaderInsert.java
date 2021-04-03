@@ -9,7 +9,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class ReaderInsert extends JDialog implements InsertFrame{
     private final TableController tableController;
@@ -38,18 +37,6 @@ public class ReaderInsert extends JDialog implements InsertFrame{
         layout.putConstraint(SpringLayout.NORTH, info, 20, SpringLayout.NORTH, jPanel);
         layout.putConstraint(SpringLayout.WEST, info, 20, SpringLayout.WEST, jPanel);
         jPanel.add(info);
-
-//        JLabel idLabel = new JLabel("Идентификатор читателя");
-//        idLabel.setFont(new Font(idLabel.getFont().getName(), Font.BOLD, 16));
-//        layout.putConstraint(SpringLayout.NORTH, idLabel, 50, SpringLayout.SOUTH, info);
-//        layout.putConstraint(SpringLayout.WEST, idLabel, 20, SpringLayout.WEST, jPanel);
-//        jPanel.add(idLabel);
-//
-//        JTextField idTextField = new JTextField(10);
-//        idTextField.setFont(new Font(idTextField.getFont().getName(), Font.PLAIN, 16));
-//        layout.putConstraint(SpringLayout.NORTH, idTextField, 10, SpringLayout.SOUTH, idLabel);
-//        layout.putConstraint(SpringLayout.WEST, idTextField, 20, SpringLayout.WEST, jPanel);
-//        jPanel.add(idTextField);
 
         JLabel idLibLabel = new JLabel("Идентификатор библиотеки");
         idLibLabel.setFont(new Font(idLibLabel.getFont().getName(), Font.BOLD, 16));
@@ -200,6 +187,7 @@ public class ReaderInsert extends JDialog implements InsertFrame{
 
                             tableModel.addRow(values);
                             JLabel success = new JLabel("Запись добавлена успешно!");
+                            tableController.getConnection().getConn().createStatement().executeUpdate("COMMIT ");
                             success.setFont(new Font(success.getFont().getName(), Font.BOLD, 16));
                             JOptionPane.showMessageDialog(null, success, "INSERT", JOptionPane.INFORMATION_MESSAGE);
                         }
@@ -230,6 +218,12 @@ public class ReaderInsert extends JDialog implements InsertFrame{
                     }
                     error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
                     JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+                    try {
+                        tableController.getConnection().getConn().createStatement().executeUpdate("ROLLBACK ");
+                    } catch (SQLException sqlException) {
+                        error.setText(sqlException.getMessage());
+                        JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         });
