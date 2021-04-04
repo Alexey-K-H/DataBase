@@ -1,6 +1,7 @@
 package gui.signIn;
 
 import connection.DBConnection;
+import gui.signIn.usersMods.Admin;
 
 import javax.swing.*;
 import java.awt.*;
@@ -73,7 +74,8 @@ public class UserModeSelection extends JDialog {
         singIn.addActionListener(e -> {
             switch (Objects.requireNonNull(userModeField.getSelectedItem()).toString()){
                 case "Администратор":{
-
+                    Admin admin = new Admin(connection, url);
+                    admin.openSecurityCheckWindow();
                     break;
                 }
                 case "Библиотекарь":{
