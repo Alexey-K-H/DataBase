@@ -48,7 +48,8 @@ public class ConnectionFrame extends JFrame {
             }
         });
         layout.putConstraint(SpringLayout.NORTH, nsu, 10, SpringLayout.SOUTH, connectionInfo);
-        layout.putConstraint(SpringLayout.WEST, nsu, 23, SpringLayout.WEST, jPanel);
+        layout.putConstraint(SpringLayout.WEST, nsu, 10, SpringLayout.WEST, jPanel);
+        layout.putConstraint(SpringLayout.EAST, nsu, -10, SpringLayout.EAST, jPanel);
         jPanel.add(nsu);
 
         JButton localhost = new JButton("localhost server:@127.0.0.1");
@@ -61,8 +62,10 @@ public class ConnectionFrame extends JFrame {
                 props.setProperty("password", "nsu");
                 DBConnection connection = new DBConnection(url, props);
                 this.setVisible(false);
-                MainWindow mainWindow = new MainWindow(connection, localhost.getText());
-                mainWindow.run();
+//                MainWindow mainWindow = new MainWindow(connection, localhost.getText());
+//                mainWindow.run();
+                UserModeSelection userModeSelection = new UserModeSelection(connection, localhost.getText());
+                userModeSelection.openSelectionPane();
             } catch (SQLException ex) {
                 JLabel error = new JLabel("Ошибка подключения! " + ex.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
@@ -70,7 +73,8 @@ public class ConnectionFrame extends JFrame {
             }
         });
         layout.putConstraint(SpringLayout.NORTH, localhost, 10, SpringLayout.SOUTH, nsu);
-        layout.putConstraint(SpringLayout.WEST, localhost, 20, SpringLayout.WEST, jPanel);
+        layout.putConstraint(SpringLayout.WEST, localhost, 10, SpringLayout.WEST, jPanel);
+        layout.putConstraint(SpringLayout.EAST, localhost, -10, SpringLayout.EAST, jPanel);
         jPanel.add(localhost);
 
         JLabel userConnectInfo = new JLabel("<html>Персональные настройки<br>пользователя:</html>");
@@ -130,7 +134,8 @@ public class ConnectionFrame extends JFrame {
 
         JButton singIn = new JButton("<html>Войти<br>с пользовательскими<br>настройками</html>");
         singIn.setFont(new Font(singIn.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.WEST, singIn, 35, SpringLayout.WEST, jPanel);
+        layout.putConstraint(SpringLayout.WEST, singIn, 30, SpringLayout.WEST, jPanel);
+        layout.putConstraint(SpringLayout.EAST, singIn, -30, SpringLayout.EAST, jPanel);
         layout.putConstraint(SpringLayout.NORTH, singIn, 20, SpringLayout.SOUTH, passwordValue);
         singIn.addActionListener(e -> {
             StringBuilder pwd = new StringBuilder();

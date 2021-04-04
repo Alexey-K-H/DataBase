@@ -14,8 +14,8 @@ import java.awt.event.*;
 import java.sql.SQLException;
 
 public class MainWindow extends JFrame {
-    DBConnection connection;
-    String url;
+    private final DBConnection connection;
+    private final String url;
 
     public MainWindow(DBConnection connection, String url){
         this.connection = connection;
@@ -64,6 +64,12 @@ public class MainWindow extends JFrame {
         layout.putConstraint(SpringLayout.WEST, info, this.getWidth()/2 - info.getPreferredSize().width/2, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.NORTH, info, 20, SpringLayout.NORTH, panel);
         panel.add(info);
+
+        JLabel userMode = new JLabel("<html>Вы вошли как:<br>Администратор</html>");
+        userMode.setFont(new Font(userMode.getFont().getName(), Font.PLAIN, 14));
+        layout.putConstraint(SpringLayout.WEST, userMode, 10, SpringLayout.WEST, panel);
+        layout.putConstraint(SpringLayout.NORTH, userMode, 10, SpringLayout.NORTH, panel);
+        panel.add(userMode);
 
         //Библиотеки
         Libraries lib = new Libraries();

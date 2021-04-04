@@ -73,7 +73,7 @@ public class ThirdQuery extends QueryFrame {
                         "    select READERS.ID_READER, SURNAME, NAME, PATRONYMIC from READERS\n" +
                         "    inner join t1 on t1.ID_READER = READERS.ID_READER\n" +
                         ")\n" +
-                        "select * from t2";
+                        "select ID_READER as \"ID-читателя\", SURNAME as \"Фамилия\", NAME as \"Имя\", PATRONYMIC as \"Отчество\" from t2";
                 //System.out.println(queryStr);
 
 
