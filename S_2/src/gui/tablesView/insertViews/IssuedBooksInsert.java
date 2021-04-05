@@ -200,8 +200,8 @@ public class IssuedBooksInsert extends JDialog implements InsertFrame{
             idLibrarianField.setText("");
             editionField.setText("");
             compositionField.setText("");
-            date_of_issue.setText("");
-            date_of_return.setText("");
+            date_of_issue.setValue(null);
+            date_of_return.setValue(null);
         });
         jPanel.add(cleanValues);
 

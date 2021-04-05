@@ -199,8 +199,8 @@ public class EditionInsert extends JDialog implements InsertFrame{
             hallNumTexField.setText("");
             rackNumTexField.setText("");
             shelfNumTexField.setText("");
-            admissionDate.setText("");
-            writeOffDate.setText("");
+            admissionDate.setValue(null);
+            writeOffDate.setValue(null);
         });
         jPanel.add(cleanValues);
 

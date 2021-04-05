@@ -6,6 +6,7 @@ import gui.queryWindow.query12.TwelveQuery;
 import gui.queryWindow.query16.SixteenthQuery;
 import gui.queryWindow.query2.SecondQuery;
 import gui.queryWindow.query3.ThirdQuery;
+import gui.queryWindow.query4.ForthQuery;
 
 import javax.swing.*;
 import java.awt.*;
@@ -113,6 +114,24 @@ public class MainQueryWindow extends JDialog {
             sixteenthQueryFrame.openQueryConfig();
         });
         jPanel.add(sixteenthQueryButton);
+
+        JLabel forthQuery = new JLabel("Отчет №4");
+        forthQuery.setFont(new Font(forthQuery.getFont().getName(), Font.BOLD, 14));
+        layout.putConstraint(SpringLayout.NORTH, forthQuery, 10, SpringLayout.SOUTH, sixteenthQueryButton);
+        layout.putConstraint(SpringLayout.WEST, forthQuery, 20, SpringLayout.WEST, jPanel);
+        jPanel.add(forthQuery);
+
+        JButton forthQueryButton = new JButton("<html>Перечень читателей, которые в течение указанного промежутка" +
+                " времени получали<br>издание с некоторым произведением</html>");
+        forthQueryButton.setFont(new Font(forthQueryButton.getFont().getName(), Font.BOLD, 14));
+        forthQueryButton.setPreferredSize(new Dimension(this.getWidth()/2 - 20, 70));
+        layout.putConstraint(SpringLayout.NORTH, forthQueryButton, 10, SpringLayout.SOUTH, forthQuery);
+        layout.putConstraint(SpringLayout.WEST, forthQueryButton, 20, SpringLayout.WEST, jPanel);
+        forthQueryButton.addActionListener(e -> {
+            ForthQuery forthQueryFrame = new ForthQuery(queryController);
+            forthQueryFrame.openQueryConfig();
+        });
+        jPanel.add(forthQueryButton);
 
         this.setResizable(false);
         this.setModal(true);
