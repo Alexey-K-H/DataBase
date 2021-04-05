@@ -1,12 +1,7 @@
 package gui.signIn;
 
-import connection.DBConnection;
-import gui.MainWindow;
-import gui.UserMods;
-
 import javax.swing.*;
 import java.awt.*;
-import java.sql.SQLException;
 import java.util.Properties;
 
 public class ConnectionFrame extends JFrame {
@@ -133,17 +128,9 @@ public class ConnectionFrame extends JFrame {
             Properties props = new Properties();
             props.setProperty("user", loginValue.getText());
             props.setProperty("password", pwd.toString());
-            DBConnection connection;
-            try {
-                connection = new DBConnection(url, props);
-                this.setVisible(false);
-                MainWindow mainWindow = new MainWindow(connection, localhost.getText(), UserMods.ADMINISTRATOR);
-                mainWindow.run();
-            } catch (SQLException exception) {
-                JLabel error = new JLabel("Ошибка подключения! " + exception.getMessage());
-                error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
-                JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
+            this.setVisible(false);
+            UserModeSelection userModeSelection = new UserModeSelection(localhost.getText(), props, url);
+            userModeSelection.openSelectionPane();
         });
         jPanel.add(singIn);
 
