@@ -16,20 +16,24 @@ import java.sql.SQLException;
 public class MainWindow extends JFrame {
     private final DBConnection connection;
     private final String url;
+    private final UserMods userMod;
 
-    public MainWindow(DBConnection connection, String url){
+    public MainWindow(DBConnection connection, String url, UserMods userMod){
         this.connection = connection;
         this.url = url;
+        this.userMod = userMod;
     }
 
     public void run(){
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
-                try {
-                    connection.initSchema();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
+                if(userMod == UserMods.ADMINISTRATOR){
+                    try {
+                        connection.initSchema();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         });
@@ -37,7 +41,11 @@ public class MainWindow extends JFrame {
         this.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
                 try {
-                    connection.close();
+                    if(userMod == UserMods.ADMINISTRATOR){
+                        connection.close();
+                    } else{
+                        connection.getConn().close();
+                    }
                 } catch (SQLException ex) {
                     ex.printStackTrace();
                 }
@@ -65,7 +73,23 @@ public class MainWindow extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, info, 20, SpringLayout.NORTH, panel);
         panel.add(info);
 
-        JLabel userMode = new JLabel("<html>Вы вошли как:<br>Администратор</html>");
+        String userModeStr = "";
+        switch (userMod){
+            case ADMINISTRATOR:{
+                userModeStr = userModeStr.concat("Администратор");
+                break;
+            }
+            case LIBRARIAN:{
+                userModeStr = userModeStr.concat("Библиотекарь");
+                break;
+            }
+            case USER:{
+                userModeStr = userModeStr.concat("Читатель");
+                break;
+            }
+        }
+
+        JLabel userMode = new JLabel("<html>Вы вошли как:<br>"+ userModeStr + "</html>");
         userMode.setFont(new Font(userMode.getFont().getName(), Font.PLAIN, 14));
         layout.putConstraint(SpringLayout.WEST, userMode, 10, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.NORTH, userMode, 10, SpringLayout.NORTH, panel);
@@ -88,7 +112,10 @@ public class MainWindow extends JFrame {
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
-        panel.add(lib);
+        if(userMod == UserMods.ADMINISTRATOR){
+            panel.add(lib);
+        }
+
 
         //Залы бибилиотек
         Halls halls = new Halls();
@@ -107,7 +134,9 @@ public class MainWindow extends JFrame {
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
-        panel.add(halls);
+        if(userMod == UserMods.ADMINISTRATOR) {
+            panel.add(halls);
+        }
 
         //Библиотекари
         Librarians librarians = new Librarians();
@@ -126,12 +155,19 @@ public class MainWindow extends JFrame {
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
-        panel.add(librarians);
+        if(userMod == UserMods.ADMINISTRATOR) {
+            panel.add(librarians);
+        }
 
         //Читатели
         Readers readers = new Readers();
         layout.putConstraint(SpringLayout.WEST, readers, 5, SpringLayout.WEST, panel);
-        layout.putConstraint(SpringLayout.NORTH, readers, 10, SpringLayout.SOUTH, librarians);
+        if(userMod != UserMods.ADMINISTRATOR){
+            layout.putConstraint(SpringLayout.NORTH, readers, 20, SpringLayout.SOUTH, info);
+        }
+        else{
+            layout.putConstraint(SpringLayout.NORTH, readers, 10, SpringLayout.SOUTH, librarians);
+        }
         layout.putConstraint(SpringLayout.EAST, readers, -this.getWidth()/2, SpringLayout.EAST, panel);
         layout.putConstraint(SpringLayout.SOUTH, readers, 100, SpringLayout.NORTH, readers);
         readers.getOpenButton().addActionListener(e -> {
@@ -239,7 +275,11 @@ public class MainWindow extends JFrame {
 
         exit.addActionListener(e -> {
             try {
-                connection.close();
+                if(userMod == UserMods.ADMINISTRATOR){
+                    connection.close();
+                }else{
+                    connection.getConn().close();
+                }
             } catch (SQLException ex) {
                 ex.printStackTrace();
             }

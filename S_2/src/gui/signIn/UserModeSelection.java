@@ -1,32 +1,29 @@
 package gui.signIn;
 
-import connection.DBConnection;
 import gui.signIn.usersMods.Admin;
+import gui.signIn.usersMods.Librarian;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
 import java.util.Objects;
+import java.util.Properties;
 
 public class UserModeSelection extends JDialog {
-    private final DBConnection connection;
+    private final String nameServer;
+    private final Properties properties;
     private final String url;
 
-    public UserModeSelection(DBConnection connection, String url) {
-        this.connection = connection;
+    public UserModeSelection(String nameServer, Properties properties, String url) {
+        this.properties = properties;
+        this.nameServer = nameServer;
         this.url = url;
     }
 
     public void openSelectionPane(){
         this.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
-                try {
-                    connection.getConn().close();
-                } catch (SQLException ex) {
-                    ex.printStackTrace();
-                }
                 setVisible(false);
                 ConnectionFrame connectionFrame = new ConnectionFrame();
                 connectionFrame.singIn();
@@ -36,7 +33,7 @@ public class UserModeSelection extends JDialog {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
         this.setBounds(dimension.width/2 - 150, dimension.height/2 - 120, 300, 240);
-        this.setTitle(url);
+        this.setTitle(nameServer);
 
         JPanel panel = new JPanel();
         SpringLayout layout = new SpringLayout();
@@ -74,16 +71,19 @@ public class UserModeSelection extends JDialog {
         singIn.addActionListener(e -> {
             switch (Objects.requireNonNull(userModeField.getSelectedItem()).toString()){
                 case "Администратор":{
-                    Admin admin = new Admin(connection, url);
+                    this.setVisible(false);
+                    Admin admin = new Admin(nameServer, properties, url);
                     admin.openSecurityCheckWindow();
                     break;
                 }
                 case "Библиотекарь":{
-
+                    this.setVisible(false);
+                    Librarian librarian = new Librarian(nameServer, properties, url);
+                    librarian.openSecurityCheckWindow();
                     break;
                 }
                 case "Читатель":{
-
+                    this.setVisible(false);
                     break;
                 }
             }

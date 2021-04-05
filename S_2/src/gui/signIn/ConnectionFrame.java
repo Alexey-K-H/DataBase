@@ -2,6 +2,7 @@ package gui.signIn;
 
 import connection.DBConnection;
 import gui.MainWindow;
+import gui.UserMods;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,20 +33,13 @@ public class ConnectionFrame extends JFrame {
         JButton nsu = new JButton("NSU server:@84.237.50.81");
         nsu.setFont(new Font(nsu.getFont().getName(), Font.BOLD, 16));
         nsu.addActionListener(e -> {
-            try {
-                String url = "jdbc:oracle:thin:@84.237.50.81:1521:XE";
-                Properties props = new Properties();
-                props.setProperty("user", "18204_KHOROSHAVIN");
-                props.setProperty("password", "442768");
-                DBConnection connection = new DBConnection(url, props);
-                this.setVisible(false);
-                MainWindow mainWindow = new MainWindow(connection, nsu.getText());
-                mainWindow.run();
-            } catch (SQLException ex) {
-                JLabel error = new JLabel("Ошибка подключения! " + ex.getMessage());
-                error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
-                JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
+            String url = "jdbc:oracle:thin:@84.237.50.81:1521:XE";
+            Properties props = new Properties();
+            props.setProperty("user", "18204_KHOROSHAVIN");
+            props.setProperty("password", "442768");
+            this.setVisible(false);
+            UserModeSelection userModeSelection = new UserModeSelection(nsu.getText(), props, url);
+            userModeSelection.openSelectionPane();
         });
         layout.putConstraint(SpringLayout.NORTH, nsu, 10, SpringLayout.SOUTH, connectionInfo);
         layout.putConstraint(SpringLayout.WEST, nsu, 10, SpringLayout.WEST, jPanel);
@@ -55,23 +49,15 @@ public class ConnectionFrame extends JFrame {
         JButton localhost = new JButton("localhost server:@127.0.0.1");
         localhost.setFont(new Font(localhost.getFont().getName(), Font.BOLD, 16));
         localhost.addActionListener(e -> {
-            try {
-                String url = "jdbc:oracle:thin:@127.0.0.1:1521:orcl";
-                Properties props = new Properties();
-                props.setProperty("user", "c##alexey");
-                props.setProperty("password", "nsu");
-                DBConnection connection = new DBConnection(url, props);
-                this.setVisible(false);
-//                MainWindow mainWindow = new MainWindow(connection, localhost.getText());
-//                mainWindow.run();
-                UserModeSelection userModeSelection = new UserModeSelection(connection, localhost.getText());
-                userModeSelection.openSelectionPane();
-            } catch (SQLException ex) {
-                JLabel error = new JLabel("Ошибка подключения! " + ex.getMessage());
-                error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
-                JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
-            }
+            String url = "jdbc:oracle:thin:@127.0.0.1:1521:orcl";
+            Properties props = new Properties();
+            props.setProperty("user", "c##alexey");
+            props.setProperty("password", "nsu");
+            this.setVisible(false);
+            UserModeSelection userModeSelection = new UserModeSelection(localhost.getText(), props, url);
+            userModeSelection.openSelectionPane();
         });
+
         layout.putConstraint(SpringLayout.NORTH, localhost, 10, SpringLayout.SOUTH, nsu);
         layout.putConstraint(SpringLayout.WEST, localhost, 10, SpringLayout.WEST, jPanel);
         layout.putConstraint(SpringLayout.EAST, localhost, -10, SpringLayout.EAST, jPanel);
@@ -151,7 +137,7 @@ public class ConnectionFrame extends JFrame {
             try {
                 connection = new DBConnection(url, props);
                 this.setVisible(false);
-                MainWindow mainWindow = new MainWindow(connection, localhost.getText());
+                MainWindow mainWindow = new MainWindow(connection, localhost.getText(), UserMods.ADMINISTRATOR);
                 mainWindow.run();
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка подключения! " + exception.getMessage());

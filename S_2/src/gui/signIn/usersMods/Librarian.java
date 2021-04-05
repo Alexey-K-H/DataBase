@@ -6,16 +6,19 @@ import gui.UserMods;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class Admin extends UserMod{
-    public Admin(String nameServer, Properties properties, String url) {
+public class Librarian extends UserMod{
+
+    public Librarian(String nameServer, Properties properties, String url) {
         super(nameServer, properties, url);
     }
 
     @Override
-    public boolean checkSecurity(String identity, String key){
+    public boolean checkSecurity(String identity, String key) {
         return identity.equals(key);
     }
 
@@ -24,15 +27,14 @@ public class Admin extends UserMod{
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
         this.setBounds(dimension.width/2 - 150, dimension.height/2 - 120, 300, 240);
-        this.setTitle("Вход как администратор");
+        this.setTitle("Вход как библиотекарь");
 
         JPanel panel = new JPanel();
         SpringLayout layout = new SpringLayout();
         panel.setLayout(layout);
         this.add(panel);
 
-
-        JLabel info = new JLabel("<html>Введите пароль<br>администратора</html>");
+        JLabel info = new JLabel("<html>Введите идентификатор<br>библиотекаря<br>ID-числовая последовательность</html>");
         Font labelFont = info.getFont();
         info.setFont(new Font(labelFont.getName(), Font.PLAIN, 16));
         layout.putConstraint(SpringLayout.WEST, info, 20, SpringLayout.WEST, panel);
@@ -41,7 +43,6 @@ public class Admin extends UserMod{
         panel.add(info);
 
         JPasswordField passwordValue = new JPasswordField(15);
-        passwordValue.setText(getProperties().getProperty("password"));
         passwordValue.setFont(new Font(passwordValue.getFont().getName(), Font.PLAIN, 16));
         layout.putConstraint(SpringLayout.NORTH, passwordValue, 10, SpringLayout.SOUTH, info);
         layout.putConstraint(SpringLayout.WEST, passwordValue, 20, SpringLayout.WEST, panel);
@@ -59,15 +60,25 @@ public class Admin extends UserMod{
             }
 
             try {
-                if(checkSecurity(pwd.toString(), getProperties().getProperty("password"))){
+                DBConnection connection = new DBConnection(getUrl(), getProperties());
+                PreparedStatement preStatement = connection.getConn().prepareStatement("select count(*) from LIBRARIANS where ID_LIBRARIAN = " + pwd.toString());
+                ResultSet resultSet = preStatement.executeQuery();
+
+                int count = 0;
+                while (resultSet.next()){
+                    count = resultSet.getInt(1);
+                }
+
+                if(count > 0){
                     System.out.println("Success!");
                     this.setVisible(false);
-                    DBConnection connection = new DBConnection(getUrl(), getProperties());
-                    MainWindow mainWindow = new MainWindow(connection, getNameServer(), UserMods.ADMINISTRATOR);
+
+                    MainWindow mainWindow = new MainWindow(connection, getNameServer(), UserMods.LIBRARIAN);
                     mainWindow.run();
                 }
                 else {
-                    throw new SQLException("Неверный пароль администратора!");
+                    connection.getConn().close();
+                    throw new SQLException("Неверный идентификатор бибилиотекаря!");
                 }
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка подключения! " + exception.getMessage());
@@ -81,5 +92,4 @@ public class Admin extends UserMod{
         this.setModal(true);
         this.setVisible(true);
     }
-
 }
