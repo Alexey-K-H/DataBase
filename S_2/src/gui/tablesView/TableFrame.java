@@ -16,11 +16,16 @@ public class TableFrame extends JDialog {
     private final String tableName;
     DBConnection connection;
     private final TableController tableController;
+    private String userId;
 
     public TableFrame(TableController tableController){
         this.tableName = tableController.getTableName();
         this.connection = tableController.getConnection();
         this.tableController = tableController;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     private String translateTableName(){
@@ -46,7 +51,7 @@ public class TableFrame extends JDialog {
         }
     }
 
-    public void openTable() throws SQLException {
+    public void openTable(boolean isForUser) throws SQLException {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
         this.setBounds(dimension.width/2 - 500, dimension.height/2 - 400, 1000, 800);
@@ -57,9 +62,22 @@ public class TableFrame extends JDialog {
         jPanel.setLayout(layout);
         this.add(jPanel);
 
-        DefaultTableModel tableModel = tableController.getTableSet();
+        DefaultTableModel tableModel;
+        if(!isForUser){
+            tableModel = tableController.getTableSet();
+        }else {
+            tableModel = tableController.getUserTableSet(userId);
+        }
 
-        JLabel tableTitle = new JLabel("Таблица \""+ translateTableName() + "\"");
+
+        JLabel tableTitle = new JLabel();
+        if(!isForUser){
+            tableTitle.setText("Таблица \""+ translateTableName() + "\"");
+        }
+        else{
+            tableTitle.setText("Выданные вам книги");
+        }
+
         tableTitle.setFont(new Font(tableTitle.getFont().getName(), Font.BOLD, 16));
         layout.putConstraint(SpringLayout.NORTH, tableTitle, 20, SpringLayout.NORTH, jPanel);
         layout.putConstraint(SpringLayout.WEST, tableTitle, 20, SpringLayout.WEST, jPanel);
@@ -97,8 +115,9 @@ public class TableFrame extends JDialog {
         infoTable.setFont(new Font(infoTable.getFont().getName(), Font.BOLD, 16));
         layout.putConstraint(SpringLayout.NORTH, infoTable, 50, SpringLayout.NORTH, jPanel);
         layout.putConstraint(SpringLayout.WEST, infoTable, 10, SpringLayout.EAST, scrollPane);
-        jPanel.add(infoTable);
-
+        if(!isForUser){
+            jPanel.add(infoTable);
+        }
 
         //ввод данных в таблицу
         JButton insert = new JButton("Добавить запись");
@@ -152,7 +171,9 @@ public class TableFrame extends JDialog {
 
         });
 
-        jPanel.add(insert);
+        if(!isForUser) {
+            jPanel.add(insert);
+        }
 
         String beforeDelOdUpdateStr;
         if(!tableName.equals("Halls") && !tableName.equals("Rules")){
@@ -173,7 +194,10 @@ public class TableFrame extends JDialog {
         layout.putConstraint(SpringLayout.NORTH, beforeDelOrUpdateInfo, 70, SpringLayout.NORTH, insert);
         layout.putConstraint(SpringLayout.WEST, beforeDelOrUpdateInfo, 10, SpringLayout.EAST, scrollPane);
         layout.putConstraint(SpringLayout.EAST, beforeDelOrUpdateInfo, -10, SpringLayout.EAST, jPanel);
-        jPanel.add(beforeDelOrUpdateInfo);
+        if(!isForUser){
+            jPanel.add(beforeDelOrUpdateInfo);
+        }
+
 
         //Удаление данных из таблицы
         JButton delete = new JButton("Удалить запись");
@@ -202,7 +226,9 @@ public class TableFrame extends JDialog {
                 }
             }
         });
-        jPanel.add(delete);
+        if(!isForUser) {
+            jPanel.add(delete);
+        }
         delete.setVisible(false);
 
         //Модификация данных таблицы
@@ -256,7 +282,7 @@ public class TableFrame extends JDialog {
                 }
             }
         });
-        if(!tableName.equals("Halls") && !tableName.equals("Rules")){
+        if(!tableName.equals("Halls") && !tableName.equals("Rules") && !isForUser){
             jPanel.add(modify);
             modify.setVisible(false);
         }

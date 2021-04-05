@@ -39,4 +39,8 @@ public class IssuedBooksAndTerms extends JPanel {
     public JButton getRulesButton() {
         return rulesButton;
     }
+
+    public void removeRules(){
+        this.remove(rulesButton);
+    }
 }

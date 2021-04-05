@@ -17,11 +17,16 @@ public class MainWindow extends JFrame {
     private final DBConnection connection;
     private final String url;
     private final UserMods userMod;
+    private String userId;
 
     public MainWindow(DBConnection connection, String url, UserMods userMod){
         this.connection = connection;
         this.url = url;
         this.userMod = userMod;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public void run(){
@@ -58,7 +63,13 @@ public class MainWindow extends JFrame {
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
-        this.setBounds(dimension.width/2 - 500, dimension.height/2 - 450, 1000, 900);
+        if(userMod != UserMods.USER){
+            this.setBounds(dimension.width/2 - 500, dimension.height/2 - 450, 1000, 900);
+        }
+        else{
+            this.setBounds(dimension.width/2 - 500, dimension.height/2 - 150, 1000, 300);
+        }
+
         this.setTitle(url);
 
         JPanel panel = new JPanel();
@@ -105,7 +116,7 @@ public class MainWindow extends JFrame {
             TableController tableController = new TableController("Libraries", connection);
             TableFrame tableFrame = new TableFrame(tableController);
             try {
-                tableFrame.openTable();
+                tableFrame.openTable(false);
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка!" + exception.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
@@ -127,7 +138,7 @@ public class MainWindow extends JFrame {
             TableController tableController = new TableController("Halls", connection);
             TableFrame tableFrame = new TableFrame(tableController);
             try {
-                tableFrame.openTable();
+                tableFrame.openTable(false);
             }catch (SQLException exception){
                 JLabel error = new JLabel("Ошибка!" + exception.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
@@ -148,7 +159,7 @@ public class MainWindow extends JFrame {
             TableController tableController = new TableController("Librarians", connection);
             TableFrame tableFrame = new TableFrame(tableController);
             try {
-                tableFrame.openTable();
+                tableFrame.openTable(false);
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка!" + exception.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
@@ -174,14 +185,16 @@ public class MainWindow extends JFrame {
             TableController tableController = new TableController("Readers", connection);
             TableFrame tableFrame = new TableFrame(tableController);
             try {
-                tableFrame.openTable();
+                tableFrame.openTable(false);
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка!" + exception.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
-        panel.add(readers);
+        if(userMod != UserMods.USER){
+            panel.add(readers);
+        }
 
         //Кнопки-категории
         CategoryReaders categoryReaders = new CategoryReaders(connection);
@@ -189,7 +202,9 @@ public class MainWindow extends JFrame {
         layout.putConstraint(SpringLayout.WEST, categoryReaders, 5, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.EAST, categoryReaders, -this.getWidth()/2, SpringLayout.EAST, panel);
         layout.putConstraint(SpringLayout.SOUTH, categoryReaders, 320, SpringLayout.NORTH, categoryReaders);
-        panel.add(categoryReaders);
+        if(userMod != UserMods.USER) {
+            panel.add(categoryReaders);
+        }
 
         Productions productions = new Productions();
         layout.putConstraint(SpringLayout.EAST, productions, -20, SpringLayout.EAST, panel);
@@ -200,14 +215,16 @@ public class MainWindow extends JFrame {
             TableController tableController = new TableController("Compositions", connection);
             TableFrame tableFrame = new TableFrame(tableController);
             try {
-                tableFrame.openTable();
+                tableFrame.openTable(false);
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка!" + exception.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
-        panel.add(productions);
+        if(userMod != UserMods.USER) {
+            panel.add(productions);
+        }
 
         Editions editions = new Editions();
         layout.putConstraint(SpringLayout.EAST, editions, -20, SpringLayout.EAST, panel);
@@ -218,25 +235,38 @@ public class MainWindow extends JFrame {
             TableController tableController = new TableController("Editions", connection);
             TableFrame tableFrame = new TableFrame(tableController);
             try {
-                tableFrame.openTable();
+                tableFrame.openTable(false);
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка!" + exception.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
-        panel.add(editions);
+        if(userMod != UserMods.USER) {
+            panel.add(editions);
+        }
 
         IssuedBooksAndTerms issuedBooksAndTerms = new IssuedBooksAndTerms();
-        layout.putConstraint(SpringLayout.EAST, issuedBooksAndTerms, -20, SpringLayout.EAST, panel);
-        layout.putConstraint(SpringLayout.NORTH, issuedBooksAndTerms, 10, SpringLayout.SOUTH, editions);
-        layout.putConstraint(SpringLayout.WEST, issuedBooksAndTerms, -this.getWidth()/2 + 20, SpringLayout.EAST, panel);
-        layout.putConstraint(SpringLayout.SOUTH, issuedBooksAndTerms, 210, SpringLayout.NORTH, issuedBooksAndTerms);
+        if(userMod == UserMods.USER){
+            layout.putConstraint(SpringLayout.WEST, issuedBooksAndTerms, 20, SpringLayout.WEST, panel);
+            layout.putConstraint(SpringLayout.NORTH, issuedBooksAndTerms, 10, SpringLayout.SOUTH, info);
+            layout.putConstraint(SpringLayout.EAST, issuedBooksAndTerms, this.getWidth()/2 - 20, SpringLayout.WEST, panel);
+            layout.putConstraint(SpringLayout.SOUTH, issuedBooksAndTerms, 130, SpringLayout.NORTH, issuedBooksAndTerms);
+        }else {
+            layout.putConstraint(SpringLayout.EAST, issuedBooksAndTerms, -20, SpringLayout.EAST, panel);
+            layout.putConstraint(SpringLayout.NORTH, issuedBooksAndTerms, 10, SpringLayout.SOUTH, editions);
+            layout.putConstraint(SpringLayout.WEST, issuedBooksAndTerms, -this.getWidth()/2 + 20, SpringLayout.EAST, panel);
+            layout.putConstraint(SpringLayout.SOUTH, issuedBooksAndTerms, 210, SpringLayout.NORTH, issuedBooksAndTerms);
+        }
+
         issuedBooksAndTerms.getOpenButton().addActionListener(e -> {
             TableController tableController = new TableController("Issued_Books", connection);
             TableFrame tableFrame = new TableFrame(tableController);
+            if(userMod == UserMods.USER){
+                tableFrame.setUserId(userId);
+            }
             try {
-                tableFrame.openTable();
+                tableFrame.openTable(userMod == UserMods.USER);
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка! " + exception.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
@@ -247,13 +277,16 @@ public class MainWindow extends JFrame {
             TableController tableController = new TableController("Rules", connection);
             TableFrame tableFrame = new TableFrame(tableController);
             try {
-                tableFrame.openTable();
+                tableFrame.openTable(false);
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка!" + exception.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
+        if(userMod == UserMods.USER){
+            issuedBooksAndTerms.removeRules();
+        }
         panel.add(issuedBooksAndTerms);
 
         JButton select = new JButton("Отчеты по пользователям");
@@ -265,12 +298,14 @@ public class MainWindow extends JFrame {
             MainQueryWindow mainQueryWindow = new MainQueryWindow(queryController);
             mainQueryWindow.openQueryConsole();
         });
-        panel.add(select);
+        if(userMod != UserMods.USER) {
+            panel.add(select);
+        }
 
         JButton exit = new JButton("Выйти из фонда");
         exit.setFont(new Font(exit.getFont().getName(), Font.BOLD, 20));
         layout.putConstraint(SpringLayout.EAST, exit, -20, SpringLayout.EAST, panel);
-        layout.putConstraint(SpringLayout.NORTH, exit, 20, SpringLayout.SOUTH, select);
+        layout.putConstraint(SpringLayout.SOUTH, exit, -20, SpringLayout.SOUTH, panel);
         panel.add(exit);
 
         exit.addActionListener(e -> {

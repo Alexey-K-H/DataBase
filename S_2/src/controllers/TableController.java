@@ -236,6 +236,41 @@ public class TableController {
         return tableModel;
     }
 
+    public DefaultTableModel getUserTableSet(String readerId) throws SQLException{
+        Object[] columnsHeaders = createColumnsHeaders();
+        if(columnsHeaders == null){
+            throw new SQLException("Нет таблицы с таким названием!");
+        }
+
+        DefaultTableModel tableModel = new DefaultTableModel(){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tableModel.setColumnIdentifiers(columnsHeaders);
+
+        String sql = "select * from ISSUED_BOOKS where ID_READER = " + readerId;
+        PreparedStatement preStatement = connection.getConn().prepareStatement(sql);
+        ResultSet result = preStatement.executeQuery();
+
+        while (result.next()){
+            tableModel.addRow(new Object[]{
+                    result.getInt("id_record"),
+                    result.getInt("id_librarian"),
+                    result.getInt("id_edition"),
+                    result.getInt("id_composition"),
+                    result.getInt("id_reader"),
+                    result.getDate("date_of_issue"),
+                    result.getDate("return_date"),
+                    result.getString("is_returned")
+            });
+        }
+        result.close();
+
+        return tableModel;
+    }
+
     public void insertNewRecord(String sql) throws SQLException {
         Statement statement = connection.getConn().createStatement();
         statement.executeUpdate(sql);

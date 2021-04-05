@@ -2,6 +2,7 @@ package gui.signIn;
 
 import gui.signIn.usersMods.Admin;
 import gui.signIn.usersMods.Librarian;
+import gui.signIn.usersMods.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -84,6 +85,8 @@ public class UserModeSelection extends JDialog {
                 }
                 case "Читатель":{
                     this.setVisible(false);
+                    User user = new User(nameServer, properties, url);
+                    user.openSecurityCheckWindow();
                     break;
                 }
             }

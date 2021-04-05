@@ -11,15 +11,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class Librarian extends UserMod{
+public class User extends UserMod{
 
-    public Librarian(String nameServer, Properties properties, String url) {
+    public User(String nameServer, Properties properties, String url) {
         super(nameServer, properties, url);
     }
 
     @Override
     public boolean checkSecurity(String identity, String key) {
-        return identity.equals(key);
+        return false;
     }
 
     @Override
@@ -27,14 +27,14 @@ public class Librarian extends UserMod{
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
         this.setBounds(dimension.width/2 - 150, dimension.height/2 - 120, 300, 240);
-        this.setTitle("Вход как библиотекарь");
+        this.setTitle("Вход как читатель");
 
         JPanel panel = new JPanel();
         SpringLayout layout = new SpringLayout();
         panel.setLayout(layout);
         this.add(panel);
 
-        JLabel info = new JLabel("<html>Введите идентификатор<br>библиотекаря.<br>ID-числовая последовательность</html>");
+        JLabel info = new JLabel("<html>Введите идентификатор<br>читателя.<br>ID-числовая последовательность</html>");
         Font labelFont = info.getFont();
         info.setFont(new Font(labelFont.getName(), Font.PLAIN, 16));
         layout.putConstraint(SpringLayout.WEST, info, 20, SpringLayout.WEST, panel);
@@ -61,7 +61,7 @@ public class Librarian extends UserMod{
 
             try {
                 DBConnection connection = new DBConnection(getUrl(), getProperties());
-                PreparedStatement preStatement = connection.getConn().prepareStatement("select count(*) from LIBRARIANS where ID_LIBRARIAN = " + pwd.toString());
+                PreparedStatement preStatement = connection.getConn().prepareStatement("select count(*) from READERS where ID_READER = " + pwd.toString());
                 ResultSet resultSet = preStatement.executeQuery();
 
                 int count = 0;
@@ -74,13 +74,14 @@ public class Librarian extends UserMod{
                 if(count > 0){
                     System.out.println("Success!");
                     this.setVisible(false);
-
-                    MainWindow mainWindow = new MainWindow(connection, getNameServer(), UserMods.LIBRARIAN);
+                    connection.getConn().setReadOnly(true);
+                    MainWindow mainWindow = new MainWindow(connection, getNameServer(), UserMods.USER);
+                    mainWindow.setUserId(pwd.toString());
                     mainWindow.run();
                 }
                 else {
                     connection.getConn().close();
-                    throw new SQLException("Неверный идентификатор бибилиотекаря!");
+                    throw new SQLException("Неверный идентификатор читателя!");
                 }
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка подключения! " + exception.getMessage());
