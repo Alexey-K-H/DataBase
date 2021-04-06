@@ -8,6 +8,7 @@ import gui.queryWindow.query2.SecondQuery;
 import gui.queryWindow.query3.ThirdQuery;
 import gui.queryWindow.query4.ForthQuery;
 import gui.queryWindow.query5.FifthQuery;
+import gui.queryWindow.query6.SixthQuery;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +38,7 @@ public class MainQueryWindow extends JDialog {
         jPanel.add(firstQueryLabel);
 
         JButton firstQuery = new JButton("<html>Список читателей с заданными характеристиками</html>");
-        firstQuery.setFont(new Font(firstQuery.getFont().getName(), Font.BOLD, 14));
+        firstQuery.setFont(new Font(firstQuery.getFont().getName(), Font.PLAIN, 14));
         firstQuery.setPreferredSize(new Dimension(this.getWidth()/2 - 20, 30));
         layout.putConstraint(SpringLayout.NORTH, firstQuery, 10, SpringLayout.SOUTH, firstQueryLabel);
         layout.putConstraint(SpringLayout.WEST, firstQuery, 20, SpringLayout.WEST, jPanel);
@@ -55,7 +56,7 @@ public class MainQueryWindow extends JDialog {
         jPanel.add(secondQueryLabel);
 
         JButton secondQuery = new JButton("<html>Читатели, на руках у которых находится указанное произведение</html>");
-        secondQuery.setFont(new Font(secondQuery.getFont().getName(), Font.BOLD, 14));
+        secondQuery.setFont(new Font(secondQuery.getFont().getName(), Font.PLAIN, 14));
         secondQuery.setPreferredSize(new Dimension(this.getWidth()/2 - 20, 40));
         layout.putConstraint(SpringLayout.NORTH, secondQuery, 10, SpringLayout.SOUTH, secondQueryLabel);
         layout.putConstraint(SpringLayout.WEST, secondQuery, 20, SpringLayout.WEST, jPanel);
@@ -72,7 +73,7 @@ public class MainQueryWindow extends JDialog {
         jPanel.add(thirdQueryLabel);
 
         JButton thirdQuery = new JButton("<html>Читатели, на руках у которых находится указанное издание</html>");
-        thirdQuery.setFont(new Font(thirdQuery.getFont().getName(), Font.BOLD, 14));
+        thirdQuery.setFont(new Font(thirdQuery.getFont().getName(), Font.PLAIN, 14));
         thirdQuery.setPreferredSize(new Dimension(this.getWidth()/2 - 20, 40));
         layout.putConstraint(SpringLayout.NORTH, thirdQuery, 10, SpringLayout.SOUTH, thirdQueryLabel);
         layout.putConstraint(SpringLayout.WEST, thirdQuery, 20, SpringLayout.WEST, jPanel);
@@ -89,7 +90,7 @@ public class MainQueryWindow extends JDialog {
         jPanel.add(twelveQuery);
 
         JButton twelveQueryButton = new JButton("<html>Библиотекари, работающие в указанном читальном зале некоторой библиотеки</html>");
-        twelveQueryButton.setFont(new Font(twelveQueryButton.getFont().getName(), Font.BOLD, 14));
+        twelveQueryButton.setFont(new Font(twelveQueryButton.getFont().getName(), Font.PLAIN, 14));
         twelveQueryButton.setPreferredSize(new Dimension(this.getWidth()/2 - 20, 40));
         layout.putConstraint(SpringLayout.NORTH, twelveQueryButton, 10, SpringLayout.SOUTH, twelveQuery);
         layout.putConstraint(SpringLayout.WEST, twelveQueryButton, 20, SpringLayout.WEST, jPanel);
@@ -106,7 +107,7 @@ public class MainQueryWindow extends JDialog {
         jPanel.add(sixteenthQuery);
 
         JButton sixteenthQueryButton = new JButton("<html>Список самых популярных произведений</html>");
-        sixteenthQueryButton.setFont(new Font(sixteenthQueryButton.getFont().getName(), Font.BOLD, 14));
+        sixteenthQueryButton.setFont(new Font(sixteenthQueryButton.getFont().getName(), Font.PLAIN, 14));
         sixteenthQueryButton.setPreferredSize(new Dimension(this.getWidth()/2 - 20, 40));
         layout.putConstraint(SpringLayout.NORTH, sixteenthQueryButton, 10, SpringLayout.SOUTH, sixteenthQuery);
         layout.putConstraint(SpringLayout.WEST, sixteenthQueryButton, 20, SpringLayout.WEST, jPanel);
@@ -124,7 +125,7 @@ public class MainQueryWindow extends JDialog {
 
         JButton forthQueryButton = new JButton("<html>Перечень читателей, которые в течение указанного промежутка" +
                 " времени получали<br>издание с некоторым произведением</html>");
-        forthQueryButton.setFont(new Font(forthQueryButton.getFont().getName(), Font.BOLD, 14));
+        forthQueryButton.setFont(new Font(forthQueryButton.getFont().getName(), Font.PLAIN, 14));
         forthQueryButton.setPreferredSize(new Dimension(this.getWidth()/2 - 20, 70));
         layout.putConstraint(SpringLayout.NORTH, forthQueryButton, 10, SpringLayout.SOUTH, forthQuery);
         layout.putConstraint(SpringLayout.WEST, forthQueryButton, 20, SpringLayout.WEST, jPanel);
@@ -142,8 +143,8 @@ public class MainQueryWindow extends JDialog {
 
         JButton fifthQueryButton = new JButton("<html>Список изданий, которые в течение некоторого времени получал" +
                 "указанный читатель из фонда библиотеки," +
-                "где он зарегистрирован</html>");
-        fifthQueryButton.setFont(new Font(fifthQueryButton.getFont().getName(), Font.BOLD, 14));
+                " где он зарегистрирован</html>");
+        fifthQueryButton.setFont(new Font(fifthQueryButton.getFont().getName(), Font.PLAIN, 14));
         fifthQueryButton.setPreferredSize(new Dimension(this.getWidth()/2 - 20, 75));
         layout.putConstraint(SpringLayout.NORTH, fifthQueryButton, 10, SpringLayout.SOUTH, fifthQueryLabel);
         layout.putConstraint(SpringLayout.WEST, fifthQueryButton, 20, SpringLayout.WEST, jPanel);
@@ -153,6 +154,34 @@ public class MainQueryWindow extends JDialog {
         });
         jPanel.add(fifthQueryButton);
 
+        JLabel sixthQueryLabel = new JLabel("Отчет №6");
+        sixthQueryLabel.setFont(new Font(sixthQueryLabel.getFont().getName(), Font.BOLD, 14));
+        layout.putConstraint(SpringLayout.NORTH, sixthQueryLabel, 10, SpringLayout.SOUTH, fifthQueryButton);
+        layout.putConstraint(SpringLayout.WEST, sixthQueryLabel, 20, SpringLayout.WEST, jPanel);
+        jPanel.add(sixthQueryLabel);
+
+        JButton sixthQueryButton = new JButton("<html>Список изданий, которые в течение некоторого времени получал" +
+                "указанный читатель из фонда библиотеки, " +
+                "где он <b>не зарегистрирован</b></html>");
+        sixthQueryButton.setFont(new Font(sixthQueryButton.getFont().getName(), Font.PLAIN, 14));
+        sixthQueryButton.setPreferredSize(new Dimension(this.getWidth()/2 - 20, 75));
+        layout.putConstraint(SpringLayout.NORTH, sixthQueryButton, 10, SpringLayout.SOUTH, sixthQueryLabel);
+        layout.putConstraint(SpringLayout.WEST, sixthQueryButton, 20, SpringLayout.WEST, jPanel);
+        sixthQueryButton.addActionListener(e -> {
+            SixthQuery sixthQueryFrame = new SixthQuery(queryController);
+            sixthQueryFrame.openQueryConfig();
+        });
+        jPanel.add(sixthQueryButton);
+
+
+        JButton exit = new JButton("Выйти");
+        exit.setFont(new Font(exit.getFont().getName(), Font.BOLD, 16));
+        layout.putConstraint(SpringLayout.SOUTH, exit, -10, SpringLayout.SOUTH, jPanel);
+        layout.putConstraint(SpringLayout.EAST, exit, -10, SpringLayout.EAST, jPanel);
+        exit.addActionListener(e->{
+            this.setVisible(false);
+        });
+        jPanel.add(exit);
 
         this.setResizable(false);
         this.setModal(true);

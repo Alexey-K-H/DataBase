@@ -9,12 +9,12 @@ with t1 as (
          from READERS where ID_READER = 1
      ),
      t3 as (
-         --Получить список изданий из библиотеки пользователя
+         --Получить список изданий не из библиотеки пользователя
          select ID_EDITION
-         from EDITIONS inner join t2 on t2.ID_LIBRARY = EDITIONS.ID_LIBRARY
+         from EDITIONS inner join t2 on t2.ID_LIBRARY != EDITIONS.ID_LIBRARY
      ),
      t4 as (
-         --Издания которые выдавались пользователю в его бибилиотеке
+         --Издания которые выдавались пользователю не в его бибилиотеке
          select t1.ID_EDITION, t1.ID_COMPOSITION from t1 inner join t3 on t1.ID_EDITION = t3.ID_EDITION
      ),
      t5 as (

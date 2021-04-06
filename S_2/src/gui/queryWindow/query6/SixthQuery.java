@@ -1,4 +1,4 @@
-package gui.queryWindow.query5;
+package gui.queryWindow.query6;
 
 import controllers.QueryController;
 import gui.queryWindow.QueryFrame;
@@ -14,11 +14,13 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class FifthQuery extends QueryFrame {
-    public FifthQuery(QueryController queryController) {
+public class SixthQuery extends QueryFrame {
+
+    public SixthQuery(QueryController queryController) {
         super(queryController);
     }
 
+    @Override
     public void openQueryConfig() {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
@@ -114,12 +116,12 @@ public class FifthQuery extends QueryFrame {
                         "         from READERS where ID_READER = "+id+"\n" +
                         "     ),\n" +
                         "     t3 as (\n" +
-                        "         --Получить список изданий из библиотеки пользователя\n" +
+                        "         --Получить список изданий не из библиотеки пользователя\n" +
                         "         select ID_EDITION\n" +
-                        "         from EDITIONS inner join t2 on t2.ID_LIBRARY = EDITIONS.ID_LIBRARY\n" +
+                        "         from EDITIONS inner join t2 on t2.ID_LIBRARY != EDITIONS.ID_LIBRARY\n" +
                         "     ),\n" +
                         "     t4 as (\n" +
-                        "         --Издания которые выдавались пользователю в его бибилиотеке\n" +
+                        "         --Издания которые выдавались пользователю не в его бибилиотеке\n" +
                         "         select t1.ID_EDITION, t1.ID_COMPOSITION from t1 inner join t3 on t1.ID_EDITION = t3.ID_EDITION\n" +
                         "     ),\n" +
                         "     t5 as (\n" +
