@@ -12,6 +12,7 @@ import gui.queryWindow.query5.FifthQuery;
 import gui.queryWindow.query6.SixthQuery;
 import gui.queryWindow.query7.SeventhQuery;
 import gui.queryWindow.query8.EighthQuery;
+import gui.queryWindow.query9.NinthQuery;
 
 import javax.swing.*;
 import java.awt.*;
@@ -232,13 +233,29 @@ public class MainQueryWindow extends JDialog {
         jPanel.add(eighthQueryButton);
 
 
+        JLabel ninthQueryLabel = new JLabel("Отчет №9");
+        ninthQueryLabel.setFont(new Font(ninthQueryLabel.getFont().getName(), Font.BOLD, 14));
+        layout.putConstraint(SpringLayout.NORTH, ninthQueryLabel, 10, SpringLayout.SOUTH, eighthQueryButton);
+        layout.putConstraint(SpringLayout.WEST, ninthQueryLabel, 10, SpringLayout.EAST, firstQuery);
+        jPanel.add(ninthQueryLabel);
+
+        JButton ninthQueryButton = new JButton("<html>Данные о выработке библиотекарей (число обслуженных читателей в указанный период времени)</html>");
+        ninthQueryButton.setPreferredSize(new Dimension(this.getWidth()/2-40, 40));
+        ninthQueryButton.setFont(new Font(ninthQueryButton.getFont().getName(), Font.PLAIN, 14));
+        layout.putConstraint(SpringLayout.NORTH, ninthQueryButton, 10, SpringLayout.SOUTH, ninthQueryLabel);
+        layout.putConstraint(SpringLayout.WEST, ninthQueryButton, 10, SpringLayout.EAST, firstQuery);
+        ninthQueryButton.addActionListener(e->{
+            NinthQuery ninthQueryFrame = new NinthQuery(queryController);
+            ninthQueryFrame.openQueryConfig();
+        });
+        jPanel.add(ninthQueryButton);
+
+
         JButton exit = new JButton("Выйти");
         exit.setFont(new Font(exit.getFont().getName(), Font.BOLD, 16));
         layout.putConstraint(SpringLayout.SOUTH, exit, -10, SpringLayout.SOUTH, jPanel);
         layout.putConstraint(SpringLayout.EAST, exit, -10, SpringLayout.EAST, jPanel);
-        exit.addActionListener(e->{
-            this.setVisible(false);
-        });
+        exit.addActionListener(e-> this.setVisible(false));
         jPanel.add(exit);
 
         this.setResizable(false);
