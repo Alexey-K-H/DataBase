@@ -11,6 +11,7 @@ import gui.queryWindow.query4.ForthQuery;
 import gui.queryWindow.query5.FifthQuery;
 import gui.queryWindow.query6.SixthQuery;
 import gui.queryWindow.query7.SeventhQuery;
+import gui.queryWindow.query8.EighthQuery;
 
 import javax.swing.*;
 import java.awt.*;
@@ -211,6 +212,24 @@ public class MainQueryWindow extends JDialog {
             seventhQueryFrame.openQueryConfig();
         });
         jPanel.add(seventhQueryButton);
+
+
+        JLabel eighthQueryLabel = new JLabel("Отчет №8");
+        eighthQueryLabel.setFont(new Font(eighthQueryLabel.getFont().getName(), Font.BOLD, 14));
+        layout.putConstraint(SpringLayout.NORTH, eighthQueryLabel, 10, SpringLayout.SOUTH, seventhQueryButton);
+        layout.putConstraint(SpringLayout.WEST, eighthQueryLabel, 10, SpringLayout.EAST, firstQuery);
+        jPanel.add(eighthQueryLabel);
+
+        JButton eighthQueryButton = new JButton("<html>Список читателей, которые в течение обозначенного периода были обслужены указанным библиотекарем</html>");
+        eighthQueryButton.setPreferredSize(new Dimension(this.getWidth()/2-40, 40));
+        eighthQueryButton.setFont(new Font(eighthQueryButton.getFont().getName(), Font.PLAIN, 14));
+        layout.putConstraint(SpringLayout.NORTH, eighthQueryButton, 10, SpringLayout.SOUTH, eighthQueryLabel);
+        layout.putConstraint(SpringLayout.WEST, eighthQueryButton, 10, SpringLayout.EAST, firstQuery);
+        eighthQueryButton.addActionListener(e->{
+            EighthQuery eighthQueryFrame = new EighthQuery(queryController);
+            eighthQueryFrame.openQueryConfig();
+        });
+        jPanel.add(eighthQueryButton);
 
 
         JButton exit = new JButton("Выйти");
