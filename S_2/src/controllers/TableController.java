@@ -28,7 +28,7 @@ public class TableController {
     private String[] createColumnsHeaders(){
         switch (tableName){
             case "Libraries":
-                return new String[]{"Идентификатор", "Количество книг"};
+                return new String[]{"Идентификатор", "Количество книг", "Название"};
             case "Halls":
                 return new String[]{"Номер зала", "Id-библиотека"};
             case "Librarians":
@@ -83,7 +83,8 @@ public class TableController {
                 while (result.next()) {
                     tableModel.addRow(new Object[]{
                             result.getInt("id_library"),
-                            result.getInt("quantity_books")});
+                            result.getInt("quantity_books"),
+                            result.getString("name")});
                 }
                 break;
             }

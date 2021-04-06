@@ -67,6 +67,7 @@ public class DBConnection{
         statement.executeUpdate(
                 "create table Libraries(id_library integer primary key," +
                 " quantity_books integer not null," +
+                        "name varchar(100) not null, " +
                         "check ( quantity_books >= 0 ))"
         );
         statement.executeUpdate("create sequence lib_seq start with 1 increment by 1 nomaxvalue");
@@ -280,12 +281,12 @@ public class DBConnection{
                 ")"
         );
 
-        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS) values (5)");
-        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS) values (10)");
-        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS) values (7)");
-        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS) values (15)");
-        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS) values (12)");
-        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS) values (10)");
+        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS, NAME) values (5, 'Центральная библиотека')");
+        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS, NAME) values (10, 'Школьная библиотека')");
+        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS, NAME) values (7, 'Детская библиотека')");
+        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS, NAME) values (15, 'Научная библиотека')");
+        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS, NAME) values (12, 'Общая библиотека')");
+        statement.executeUpdate("insert into Libraries(QUANTITY_BOOKS, NAME) values (10, 'Пригородная библиотека')");
 
         statement.executeUpdate("insert into HALLS values (1,1)");
         statement.executeUpdate("insert into HALLS values (2,1)");

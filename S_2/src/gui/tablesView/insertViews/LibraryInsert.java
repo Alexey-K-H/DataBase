@@ -62,22 +62,38 @@ public class LibraryInsert extends JDialog implements InsertFrame {
         jPanel.add(quantityBooksTextField);
 
 
+        JLabel nameLabel = new JLabel("Название библиотеки");
+        nameLabel.setFont(new Font(nameLabel.getFont().getName(), Font.PLAIN, 16));
+        layout.putConstraint(SpringLayout.NORTH, nameLabel, 20, SpringLayout.SOUTH, quantityBooksTextField);
+        layout.putConstraint(SpringLayout.WEST, nameLabel, 20, SpringLayout.WEST, jPanel);
+        jPanel.add(nameLabel);
+
+        JTextField nameTextField = new JTextField(30);
+        nameTextField.setFont(new Font(nameTextField.getFont().getName(), Font.PLAIN, 16));
+        layout.putConstraint(SpringLayout.NORTH, nameTextField, 10, SpringLayout.SOUTH, nameLabel);
+        layout.putConstraint(SpringLayout.WEST, nameTextField, 20, SpringLayout.WEST, jPanel);
+        jPanel.add(nameTextField);
+
+
         JButton confirmInsert = new JButton("Добавить запись");
         confirmInsert.setFont(new Font(confirmInsert.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.NORTH, confirmInsert, 50, SpringLayout.SOUTH, quantityBooksTextField);
+        layout.putConstraint(SpringLayout.NORTH, confirmInsert, 50, SpringLayout.SOUTH, nameTextField);
         layout.putConstraint(SpringLayout.EAST, confirmInsert, -20, SpringLayout.EAST, jPanel);
         confirmInsert.addActionListener(e -> {
             currValues = new ArrayList<>();
             //currValues.add(idLibTextField.getText());
             currValues.add(quantityBooksTextField.getText());
-            String sql = "insert into LIBRARIES(QUANTITY_BOOKS) values (" + currValues.get(0) + ")";
+            currValues.add(nameTextField.getText());
+            String sql = "insert into LIBRARIES(QUANTITY_BOOKS, NAME) values (" + currValues.get(0) + ",'" + currValues.get(1) + "')";
             try {
                 performInsertOperation(sql);
                 quantityBooksTextField.setText("");
+                nameTextField.setText("");
                 Object[] values = new Object[]{tableController.getTableSet().getValueAt(
                         tableController.getTableSet().getRowCount() - 1, 0),
                         tableController.getTableSet().getValueAt(
-                                tableController.getTableSet().getRowCount() - 1, 1)};
+                                tableController.getTableSet().getRowCount() - 1, 1),
+                tableController.getTableSet().getValueAt(tableController.getTableSet().getRowCount()-1, 2)};
                 tableModel.addRow(values);
                 JLabel success = new JLabel("Запись добавлена успешно!");
                 tableController.getConnection().getConn().createStatement().executeUpdate("COMMIT ");
@@ -92,6 +108,10 @@ public class LibraryInsert extends JDialog implements InsertFrame {
                     }
                     case 2290:{
                         error.setText("Ошибка добавления записи! Количество книг в библиотеке не может быть отрицательным!");
+                        break;
+                    }
+                    default:{
+                        error.setText(exception.getMessage());
                         break;
                     }
                 }
@@ -110,11 +130,12 @@ public class LibraryInsert extends JDialog implements InsertFrame {
 
         JButton cleanValues = new JButton("Очистить поля");
         cleanValues.setFont(new Font(cleanValues.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.NORTH, cleanValues, 50, SpringLayout.SOUTH, quantityBooksTextField);
+        layout.putConstraint(SpringLayout.NORTH, cleanValues, 50, SpringLayout.SOUTH, nameTextField);
         layout.putConstraint(SpringLayout.WEST, cleanValues, 20, SpringLayout.WEST, jPanel);
         cleanValues.addActionListener(e -> {
             //idLibTextField.setText("");
             quantityBooksTextField.setText("");
+            nameTextField.setText("");
         });
         jPanel.add(cleanValues);
 

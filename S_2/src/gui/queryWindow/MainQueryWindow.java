@@ -10,6 +10,7 @@ import gui.queryWindow.query3.ThirdQuery;
 import gui.queryWindow.query4.ForthQuery;
 import gui.queryWindow.query5.FifthQuery;
 import gui.queryWindow.query6.SixthQuery;
+import gui.queryWindow.query7.SeventhQuery;
 
 import javax.swing.*;
 import java.awt.*;
@@ -175,6 +176,7 @@ public class MainQueryWindow extends JDialog {
         jPanel.add(sixthQueryButton);
 
 
+        //Второй столбец отчетов
         JLabel tenthQueryLabel = new JLabel("Отчет №10");
         tenthQueryLabel.setFont(new Font(tenthQueryLabel.getFont().getName(), Font.BOLD, 14));
         layout.putConstraint(SpringLayout.NORTH, tenthQueryLabel, 10, SpringLayout.NORTH, jPanel);
@@ -191,6 +193,24 @@ public class MainQueryWindow extends JDialog {
             tenthQueryFrame.openQueryConfig();
         });
         jPanel.add(tenthQueryButton);
+
+
+        JLabel seventhQueryLabel = new JLabel("Отчет №7");
+        seventhQueryLabel.setFont(new Font(seventhQueryLabel.getFont().getName(), Font.BOLD, 14));
+        layout.putConstraint(SpringLayout.NORTH, seventhQueryLabel, 10, SpringLayout.SOUTH, tenthQueryButton);
+        layout.putConstraint(SpringLayout.WEST, seventhQueryLabel, 10, SpringLayout.EAST, firstQuery);
+        jPanel.add(seventhQueryLabel);
+
+        JButton seventhQueryButton = new JButton("<html>Список литературы, которая в настоящий момент выдана с определенной полки некоторой библиотеки</html>");
+        seventhQueryButton.setPreferredSize(new Dimension(this.getWidth()/2-40, 40));
+        seventhQueryButton.setFont(new Font(seventhQueryButton.getFont().getName(), Font.PLAIN, 14));
+        layout.putConstraint(SpringLayout.NORTH, seventhQueryButton, 10, SpringLayout.SOUTH, seventhQueryLabel);
+        layout.putConstraint(SpringLayout.WEST, seventhQueryButton, 10, SpringLayout.EAST, firstQuery);
+        seventhQueryButton.addActionListener(e->{
+            SeventhQuery seventhQueryFrame = new SeventhQuery(queryController);
+            seventhQueryFrame.openQueryConfig();
+        });
+        jPanel.add(seventhQueryButton);
 
 
         JButton exit = new JButton("Выйти");

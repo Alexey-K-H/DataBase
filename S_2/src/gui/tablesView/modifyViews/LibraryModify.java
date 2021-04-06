@@ -25,7 +25,7 @@ public class LibraryModify extends JDialog implements ModifyView {
     public void openModifyWindow() {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
-        this.setBounds(dimension.width/2 - 250, dimension.height/2 - 125, 500, 250);
+        this.setBounds(dimension.width/2 - 250, dimension.height/2 - 150, 500, 300);
         this.setTitle("Изменение данных библиотеки");
 
         JPanel jPanel = new JPanel();
@@ -52,9 +52,22 @@ public class LibraryModify extends JDialog implements ModifyView {
         layout.putConstraint(SpringLayout.WEST, quantityBooksTextField, 20, SpringLayout.WEST, jPanel);
         jPanel.add(quantityBooksTextField);
 
+        JLabel nameLabel = new JLabel("Название библиотеки");
+        nameLabel.setFont(new Font(nameLabel.getFont().getName(), Font.PLAIN, 16));
+        layout.putConstraint(SpringLayout.NORTH, nameLabel, 20, SpringLayout.SOUTH, quantityBooksTextField);
+        layout.putConstraint(SpringLayout.WEST, nameLabel, 20, SpringLayout.WEST, jPanel);
+        jPanel.add(nameLabel);
+
+        JTextField nameTextField = new JTextField(30);
+        nameTextField.setText(currValues.get(2));
+        nameTextField.setFont(new Font(nameTextField.getFont().getName(), Font.PLAIN, 16));
+        layout.putConstraint(SpringLayout.NORTH, nameTextField, 10, SpringLayout.SOUTH, nameLabel);
+        layout.putConstraint(SpringLayout.WEST, nameTextField, 20, SpringLayout.WEST, jPanel);
+        jPanel.add(nameTextField);
+
         JButton confirmUpdates = new JButton("Сохранить изменения");
         confirmUpdates.setFont(new Font(confirmUpdates.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.NORTH, confirmUpdates, 30, SpringLayout.SOUTH, quantityBooksTextField);
+        layout.putConstraint(SpringLayout.NORTH, confirmUpdates, 30, SpringLayout.SOUTH, nameTextField);
         layout.putConstraint(SpringLayout.EAST, confirmUpdates, -20, SpringLayout.EAST, jPanel);
         confirmUpdates.addActionListener(e -> {
             if(quantityBooksTextField.getText().isEmpty()){
@@ -65,10 +78,12 @@ public class LibraryModify extends JDialog implements ModifyView {
             else {
                 ArrayList<String> newValues = new ArrayList<>();
                 newValues.add(quantityBooksTextField.getText());
+                newValues.add(nameTextField.getText());
                 try {
-                    String sqlValuesSet = "set quantity_books = " + newValues.get(0) + " where id_library = " + currValues.get(0);
+                    String sqlValuesSet = "set quantity_books = " + newValues.get(0) + ", name = '" + newValues.get(1) + "' where id_library = " + currValues.get(0);
                     performUpdateOperation(sqlValuesSet);
                     tableModel.setValueAt(newValues.get(0), indexRow, 1);
+                    tableModel.setValueAt(newValues.get(1), indexRow, 2);
                     this.setVisible(false);
                     JLabel success = new JLabel("Изменения сохранены");
                     tableController.getConnection().getConn().createStatement().executeUpdate("COMMIT ");
