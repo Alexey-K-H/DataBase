@@ -2,6 +2,7 @@ package gui.queryWindow;
 
 import controllers.QueryController;
 import gui.queryWindow.query1.FirstQuery;
+import gui.queryWindow.query10.TenthQuery;
 import gui.queryWindow.query12.TwelveQuery;
 import gui.queryWindow.query16.SixteenthQuery;
 import gui.queryWindow.query2.SecondQuery;
@@ -172,6 +173,24 @@ public class MainQueryWindow extends JDialog {
             sixthQueryFrame.openQueryConfig();
         });
         jPanel.add(sixthQueryButton);
+
+
+        JLabel tenthQueryLabel = new JLabel("Отчет №10");
+        tenthQueryLabel.setFont(new Font(tenthQueryLabel.getFont().getName(), Font.BOLD, 14));
+        layout.putConstraint(SpringLayout.NORTH, tenthQueryLabel, 10, SpringLayout.NORTH, jPanel);
+        layout.putConstraint(SpringLayout.WEST, tenthQueryLabel, 10, SpringLayout.EAST, firstQuery);
+        jPanel.add(tenthQueryLabel);
+
+        JButton tenthQueryButton = new JButton("<html>Список читателей с просроченным сроком литературы</html>");
+        tenthQueryButton.setPreferredSize(new Dimension(this.getWidth()/2-40, 30));
+        tenthQueryButton.setFont(new Font(tenthQueryButton.getFont().getName(), Font.PLAIN, 14));
+        layout.putConstraint(SpringLayout.NORTH, tenthQueryButton, 10, SpringLayout.SOUTH, tenthQueryLabel);
+        layout.putConstraint(SpringLayout.WEST, tenthQueryButton, 10, SpringLayout.EAST, firstQuery);
+        tenthQueryButton.addActionListener(e -> {
+            TenthQuery tenthQueryFrame = new TenthQuery(queryController);
+            tenthQueryFrame.openQueryConfig();
+        });
+        jPanel.add(tenthQueryButton);
 
 
         JButton exit = new JButton("Выйти");
