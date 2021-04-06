@@ -7,6 +7,7 @@ import gui.queryWindow.query16.SixteenthQuery;
 import gui.queryWindow.query2.SecondQuery;
 import gui.queryWindow.query3.ThirdQuery;
 import gui.queryWindow.query4.ForthQuery;
+import gui.queryWindow.query5.FifthQuery;
 
 import javax.swing.*;
 import java.awt.*;
@@ -132,6 +133,26 @@ public class MainQueryWindow extends JDialog {
             forthQueryFrame.openQueryConfig();
         });
         jPanel.add(forthQueryButton);
+
+        JLabel fifthQueryLabel = new JLabel("Отчет №5");
+        fifthQueryLabel.setFont(new Font(fifthQueryLabel.getFont().getName(), Font.BOLD, 14));
+        layout.putConstraint(SpringLayout.NORTH, fifthQueryLabel, 10, SpringLayout.SOUTH, forthQueryButton);
+        layout.putConstraint(SpringLayout.WEST, fifthQueryLabel, 20, SpringLayout.WEST, jPanel);
+        jPanel.add(fifthQueryLabel);
+
+        JButton fifthQueryButton = new JButton("<html>Список изданий, которые в течение некоторого времени получал" +
+                "указанный читатель из фонда библиотеки," +
+                "где он зарегистрирован</html>");
+        fifthQueryButton.setFont(new Font(fifthQueryButton.getFont().getName(), Font.BOLD, 14));
+        fifthQueryButton.setPreferredSize(new Dimension(this.getWidth()/2 - 20, 75));
+        layout.putConstraint(SpringLayout.NORTH, fifthQueryButton, 10, SpringLayout.SOUTH, fifthQueryLabel);
+        layout.putConstraint(SpringLayout.WEST, fifthQueryButton, 20, SpringLayout.WEST, jPanel);
+        fifthQueryButton.addActionListener(e -> {
+            FifthQuery fifthQueryFrame = new FifthQuery(queryController);
+            fifthQueryFrame.openQueryConfig();
+        });
+        jPanel.add(fifthQueryButton);
+
 
         this.setResizable(false);
         this.setModal(true);

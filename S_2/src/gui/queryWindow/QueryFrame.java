@@ -12,4 +12,6 @@ public abstract class QueryFrame extends JDialog {
     protected QueryFrame(QueryController queryController) {
         this.queryController = queryController;
     }
+
+    protected abstract void openQueryConfig();
 }
