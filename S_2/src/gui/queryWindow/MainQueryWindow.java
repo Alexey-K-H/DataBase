@@ -3,6 +3,7 @@ package gui.queryWindow;
 import controllers.QueryController;
 import gui.queryWindow.query1.FirstQuery;
 import gui.queryWindow.query10.TenthQuery;
+import gui.queryWindow.query11.EleventhQuery;
 import gui.queryWindow.query12.TwelveQuery;
 import gui.queryWindow.query16.SixteenthQuery;
 import gui.queryWindow.query2.SecondQuery;
@@ -249,6 +250,24 @@ public class MainQueryWindow extends JDialog {
             ninthQueryFrame.openQueryConfig();
         });
         jPanel.add(ninthQueryButton);
+
+
+        JLabel eleventhQueryLabel = new JLabel("Отчет №11");
+        eleventhQueryLabel.setFont(new Font(eleventhQueryLabel.getFont().getName(), Font.BOLD, 14));
+        layout.putConstraint(SpringLayout.NORTH, eleventhQueryLabel, 10, SpringLayout.SOUTH, ninthQueryButton);
+        layout.putConstraint(SpringLayout.WEST, eleventhQueryLabel, 10, SpringLayout.EAST, firstQuery);
+        jPanel.add(eleventhQueryLabel);
+
+        JButton eleventhQueryButton = new JButton("<html>Получить перечень указанной литературы, которая поступила (была списана) в течение некоторого периода.</html>");
+        eleventhQueryButton.setPreferredSize(new Dimension(this.getWidth()/2-40, 60));
+        eleventhQueryButton.setFont(new Font(eleventhQueryButton.getFont().getName(), Font.PLAIN, 14));
+        layout.putConstraint(SpringLayout.NORTH, eleventhQueryButton, 10, SpringLayout.SOUTH, eleventhQueryLabel);
+        layout.putConstraint(SpringLayout.WEST, eleventhQueryButton, 10, SpringLayout.EAST, firstQuery);
+        eleventhQueryButton.addActionListener(e->{
+            EleventhQuery eleventhQueryFrame = new EleventhQuery(queryController);
+            eleventhQueryFrame.openQueryConfig();
+        });
+        jPanel.add(eleventhQueryButton);
 
 
         JButton exit = new JButton("Выйти");
