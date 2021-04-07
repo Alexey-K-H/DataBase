@@ -6,6 +6,7 @@ import gui.queryWindow.query10.TenthQuery;
 import gui.queryWindow.query11.EleventhQuery;
 import gui.queryWindow.query12.TwelveQuery;
 import gui.queryWindow.query13.ThirteenthQuery;
+import gui.queryWindow.query14.FourteenthQuery;
 import gui.queryWindow.query16.SixteenthQuery;
 import gui.queryWindow.query2.SecondQuery;
 import gui.queryWindow.query3.ThirdQuery;
@@ -287,6 +288,23 @@ public class MainQueryWindow extends JDialog {
             thirteenthQueryFrame.openQueryConfig();
         });
         jPanel.add(thirteenthQueryButton);
+
+        JLabel fourteenthQueryLabel = new JLabel("Отчет №14");
+        fourteenthQueryLabel.setFont(new Font(fourteenthQueryLabel.getFont().getName(), Font.BOLD, 14));
+        layout.putConstraint(SpringLayout.NORTH, fourteenthQueryLabel, 10, SpringLayout.SOUTH, thirteenthQueryButton);
+        layout.putConstraint(SpringLayout.WEST, fourteenthQueryLabel, 10, SpringLayout.EAST, firstQuery);
+        jPanel.add(fourteenthQueryLabel);
+
+        JButton fourteenthQueryButton = new JButton("<html>Список инвентарных номеров и названий из библиотечного фонда, в которых содержится указанное произведение.</html>");
+        fourteenthQueryButton.setPreferredSize(new Dimension(this.getWidth()/2-40, 60));
+        fourteenthQueryButton.setFont(new Font(fourteenthQueryButton.getFont().getName(), Font.PLAIN, 14));
+        layout.putConstraint(SpringLayout.NORTH, fourteenthQueryButton, 10, SpringLayout.SOUTH, fourteenthQueryLabel);
+        layout.putConstraint(SpringLayout.WEST, fourteenthQueryButton, 10, SpringLayout.EAST, firstQuery);
+        fourteenthQueryButton.addActionListener(e->{
+            FourteenthQuery fourteenthQueryFrame = new FourteenthQuery(queryController);
+            fourteenthQueryFrame.openQueryConfig();
+        });
+        jPanel.add(fourteenthQueryButton);
 
 
         JButton exit = new JButton("Выйти");
