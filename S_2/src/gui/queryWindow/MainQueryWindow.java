@@ -5,6 +5,7 @@ import gui.queryWindow.query1.FirstQuery;
 import gui.queryWindow.query10.TenthQuery;
 import gui.queryWindow.query11.EleventhQuery;
 import gui.queryWindow.query12.TwelveQuery;
+import gui.queryWindow.query13.ThirteenthQuery;
 import gui.queryWindow.query16.SixteenthQuery;
 import gui.queryWindow.query2.SecondQuery;
 import gui.queryWindow.query3.ThirdQuery;
@@ -268,6 +269,24 @@ public class MainQueryWindow extends JDialog {
             eleventhQueryFrame.openQueryConfig();
         });
         jPanel.add(eleventhQueryButton);
+
+
+        JLabel thirteenthQueryLabel = new JLabel("Отчет №13");
+        thirteenthQueryLabel.setFont(new Font(thirteenthQueryLabel.getFont().getName(), Font.BOLD, 14));
+        layout.putConstraint(SpringLayout.NORTH, thirteenthQueryLabel, 10, SpringLayout.SOUTH, eleventhQueryButton);
+        layout.putConstraint(SpringLayout.WEST, thirteenthQueryLabel, 10, SpringLayout.EAST, firstQuery);
+        jPanel.add(thirteenthQueryLabel);
+
+        JButton thirteenthQueryButton = new JButton("<html>Список читателей, не посещавших библиотеку в течение указанного времени.</html>");
+        thirteenthQueryButton.setPreferredSize(new Dimension(this.getWidth()/2-40, 55));
+        thirteenthQueryButton.setFont(new Font(thirteenthQueryButton.getFont().getName(), Font.PLAIN, 14));
+        layout.putConstraint(SpringLayout.NORTH, thirteenthQueryButton, 10, SpringLayout.SOUTH, thirteenthQueryLabel);
+        layout.putConstraint(SpringLayout.WEST, thirteenthQueryButton, 10, SpringLayout.EAST, firstQuery);
+        thirteenthQueryButton.addActionListener(e->{
+            ThirteenthQuery thirteenthQueryFrame = new ThirteenthQuery(queryController);
+            thirteenthQueryFrame.openQueryConfig();
+        });
+        jPanel.add(thirteenthQueryButton);
 
 
         JButton exit = new JButton("Выйти");
