@@ -7,6 +7,7 @@ import gui.queryWindow.query11.EleventhQuery;
 import gui.queryWindow.query12.TwelveQuery;
 import gui.queryWindow.query13.ThirteenthQuery;
 import gui.queryWindow.query14.FourteenthQuery;
+import gui.queryWindow.query15.FifteenthQuery;
 import gui.queryWindow.query16.SixteenthQuery;
 import gui.queryWindow.query2.SecondQuery;
 import gui.queryWindow.query3.ThirdQuery;
@@ -305,6 +306,24 @@ public class MainQueryWindow extends JDialog {
             fourteenthQueryFrame.openQueryConfig();
         });
         jPanel.add(fourteenthQueryButton);
+
+
+        JLabel fifteenthQueryLabel = new JLabel("Отчет №15");
+        fifteenthQueryLabel.setFont(new Font(fifteenthQueryLabel.getFont().getName(), Font.BOLD, 14));
+        layout.putConstraint(SpringLayout.NORTH, fifteenthQueryLabel, 10, SpringLayout.SOUTH, fourteenthQueryButton);
+        layout.putConstraint(SpringLayout.WEST, fifteenthQueryLabel, 10, SpringLayout.EAST, firstQuery);
+        jPanel.add(fifteenthQueryLabel);
+
+        JButton fifteenthQueryButton = new JButton("<html>Список инвентарных номеров и названий из библиотечного фонда, в которых содержатся произведения указанного автора.</html>");
+        fifteenthQueryButton.setPreferredSize(new Dimension(this.getWidth()/2-40, 60));
+        fifteenthQueryButton.setFont(new Font(fifteenthQueryButton.getFont().getName(), Font.PLAIN, 14));
+        layout.putConstraint(SpringLayout.NORTH, fifteenthQueryButton, 10, SpringLayout.SOUTH, fifteenthQueryLabel);
+        layout.putConstraint(SpringLayout.WEST, fifteenthQueryButton, 10, SpringLayout.EAST, firstQuery);
+        fifteenthQueryButton.addActionListener(e->{
+            FifteenthQuery fifteenthQueryFrame = new FifteenthQuery(queryController);
+            fifteenthQueryFrame.openQueryConfig();
+        });
+        jPanel.add(fifteenthQueryButton);
 
 
         JButton exit = new JButton("Выйти");
