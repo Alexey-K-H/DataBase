@@ -350,14 +350,18 @@ public class DBConnection{
         statement.executeUpdate("insert into EDITIONS(ID_LIBRARY, HALL_NUM, RACK_NUM, SHELF_NUM, DATE_OF_ADMISSION, WRITE_OFF_DATE) values (3, 2, 46, 1, to_date('06.05.2021','dd.mm.yyyy'), to_date('09.09.2021','dd.mm.yyyy'))");
 
 
-        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (1, 'Булгаков И.О.', 'Особенности проблем психики', 0.53, 'Нучная статья')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (1, 'Булгаков И.О.', 'Особенности проблем психики', 0.53, 'Научно-популярная статья')");
         statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (2, 'Иванов И.Р.', 'Физика-2', 0.02, 'Методическое пособие')");
-        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (3, 'Киреев А.И.', 'ЭВМ и Архитектура компьютера', 0.78, 'Учебное пособие')");
-        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (4, 'Киреев А.И.', 'ЭВМ и Архитектура компьютера', 0.59, 'Учебное пособие')");
-        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (5, 'Пушкин А.С.', 'Евгений Онегин', 0.35, 'Роман в стихах')");
-        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (6, 'Кожанов И.А.', 'ДГМА', 0.001, 'Учебное пособие')");
-        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (7, 'Доманова Е.Д.', 'Определенный интеграл', 0.24, 'Учебное пособие')");
-        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (8, 'Демидович Е.П.', 'Сборник задач по мат анализу', 0.8, 'Учебник')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (3, 'Киреев А.И.', 'ЭВМ и Архитектура компьютера', 0.78, 'Учебная литература')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (4, 'Киреев А.И.', 'ЭВМ и Архитектура компьютера', 0.59, 'Учебная литература')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (5, 'Пушкин А.С.', 'Евгений Онегин', 0.35, 'Роман')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (6, 'Кожанов И.А.', 'ДГМА', 0.001, 'Учебная литература')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (7, 'Доманова Е.Д.', 'Определенный интеграл', 0.24, 'Учебная литература')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (8, 'Демидович Е.П.', 'Сборник задач по мат анализу', 0.8, 'Учебная литература')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (9, 'Хрущев Д.С.', 'Размышления о вечном', 0.56, 'Сборник стихов')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (10, 'Воронова А.Ю.', 'Однажды в центре города', 0.68, 'Детектив')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (11, 'Хрущев Д.С.', 'Размышления о вечном', 0.56, 'Сборник стихов')");
+        statement.executeUpdate("insert into COMPOSITIONS(ID_EDITION, AUTHOR, TITLE, POPULARITY, GENRE) values (12, 'Гетманов И.Н.', 'Энциклопедия для детей', 0.43, 'Энциклопедии')");
 
 
         statement.executeUpdate("insert into RULES(ID_EDITION, RULE_TEXT) values (1, 'Не выдается на руки')");

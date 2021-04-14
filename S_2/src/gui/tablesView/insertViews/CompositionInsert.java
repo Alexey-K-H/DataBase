@@ -49,7 +49,7 @@ public class CompositionInsert extends JDialog implements InsertFrame{
         jPanel.add(idEditionField);
 
 
-        JLabel authorLabel = new JLabel("Автор (Фамилия и инфициалы)");
+        JLabel authorLabel = new JLabel("Автор (Фамилия и инициалы)");
         authorLabel.setFont(new Font(authorLabel.getFont().getName(), Font.BOLD, 16));
         layout.putConstraint(SpringLayout.NORTH, authorLabel, 20, SpringLayout.SOUTH, idEditionField);
         layout.putConstraint(SpringLayout.WEST, authorLabel, 20, SpringLayout.WEST, jPanel);
