@@ -4,6 +4,7 @@ import connection.DBConnection;
 import controllers.QueryController;
 import controllers.TableController;
 import gui.menuButtons.*;
+import gui.menuButtons.orderLiterature.OrderLitFrame;
 import gui.queryWindow.MainQueryWindow;
 import gui.signIn.ConnectionFrame;
 import gui.tablesView.TableFrame;
@@ -18,11 +19,13 @@ public class MainWindow extends JFrame {
     private final String url;
     private final UserMods userMod;
     private String userId;
+    private final boolean debug;
 
-    public MainWindow(DBConnection connection, String url, UserMods userMod){
+    public MainWindow(DBConnection connection, String url, UserMods userMod, boolean debug){
         this.connection = connection;
         this.url = url;
         this.userMod = userMod;
+        this.debug = debug;
     }
 
     public void setUserId(String userId) {
@@ -33,7 +36,7 @@ public class MainWindow extends JFrame {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
-                if(userMod == UserMods.ADMINISTRATOR){
+                if(userMod == UserMods.ADMINISTRATOR && debug){
                     try {
                         connection.initSchema();
                     } catch (SQLException ex) {
@@ -47,8 +50,16 @@ public class MainWindow extends JFrame {
             public void windowClosing(WindowEvent e){
                 try {
                     if(userMod == UserMods.ADMINISTRATOR){
-                        connection.close();
-                    } else{
+                        JLabel beforeExit = new JLabel("Очистить схему бд перед выходом? Используется в случае отладки");
+                        beforeExit.setFont(new Font(beforeExit.getFont().getName(), Font.BOLD, 16));
+                        int result = JOptionPane.showConfirmDialog(null, beforeExit, "Выход", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                        if(result == JOptionPane.YES_OPTION){
+                            connection.close();
+                        }
+                        else {
+                            connection.getConn().close();
+                        }
+                    }else{
                         connection.getConn().close();
                     }
                 } catch (SQLException ex) {
@@ -289,6 +300,22 @@ public class MainWindow extends JFrame {
         }
         panel.add(issuedBooksAndTerms);
 
+        if(userMod == UserMods.USER){
+            OrderingLiterature orderingLiterature = new OrderingLiterature();
+            layout.putConstraint(SpringLayout.NORTH, orderingLiterature, 10, SpringLayout.SOUTH, info);
+            layout.putConstraint(SpringLayout.EAST, orderingLiterature, -20, SpringLayout.EAST, panel);
+            layout.putConstraint(SpringLayout.WEST, orderingLiterature, -this.getWidth()/2 + 20, SpringLayout.EAST, panel);
+            layout.putConstraint(SpringLayout.SOUTH, orderingLiterature, 130, SpringLayout.NORTH, orderingLiterature);
+
+            orderingLiterature.getOpenButton().addActionListener(e -> {
+                QueryController queryController = new QueryController(connection);
+                OrderLitFrame orderLitFrame = new OrderLitFrame(userId, queryController);
+                orderLitFrame.openOrderForm();
+            });
+
+            panel.add(orderingLiterature);
+        }
+
         JButton select = new JButton("Отчеты по пользователям");
         select.setFont(new Font(select.getFont().getName(), Font.BOLD, 20));
         layout.putConstraint(SpringLayout.EAST, select, -20, SpringLayout.EAST, panel);
@@ -311,7 +338,15 @@ public class MainWindow extends JFrame {
         exit.addActionListener(e -> {
             try {
                 if(userMod == UserMods.ADMINISTRATOR){
-                    connection.close();
+                    JLabel beforeExit = new JLabel("Очистить схему бд перед выходом? Используется в случае отладки");
+                    beforeExit.setFont(new Font(beforeExit.getFont().getName(), Font.BOLD, 16));
+                    int result = JOptionPane.showConfirmDialog(null, beforeExit, "Выход", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    if(result == JOptionPane.YES_OPTION){
+                        connection.close();
+                    }
+                    else {
+                        connection.getConn().close();
+                    }
                 }else{
                     connection.getConn().close();
                 }

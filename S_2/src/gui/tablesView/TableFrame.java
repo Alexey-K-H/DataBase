@@ -289,7 +289,7 @@ public class TableFrame extends JDialog {
 
 
         //Выход из окна просмотра
-        JButton exit = new JButton("Закрыть таблицу");
+        JButton exit = new JButton("Закрыть");
         exit.setFont(new Font(exit.getFont().getName(), Font.BOLD, 16));
         layout.putConstraint(SpringLayout.EAST, exit, -20, SpringLayout.EAST, jPanel);
         layout.putConstraint(SpringLayout.SOUTH, exit, -20, SpringLayout.SOUTH, jPanel);

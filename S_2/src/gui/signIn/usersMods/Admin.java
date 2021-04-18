@@ -47,9 +47,14 @@ public class Admin extends UserMod{
         layout.putConstraint(SpringLayout.WEST, passwordValue, 20, SpringLayout.WEST, panel);
         panel.add(passwordValue);
 
+        JCheckBox initSchema = new JCheckBox("<html>Создать начальную схему<br>(Использовать в случае отладки!)</html>");
+        layout.putConstraint(SpringLayout.NORTH, initSchema, 10, SpringLayout.SOUTH, passwordValue);
+        layout.putConstraint(SpringLayout.WEST, initSchema, 20, SpringLayout.WEST, panel);
+        panel.add(initSchema);
+
         JButton confirm = new JButton("Подтвердить");
         confirm.setFont(new Font(confirm.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.NORTH, confirm, 20, SpringLayout.SOUTH, passwordValue);
+        layout.putConstraint(SpringLayout.SOUTH, confirm, -10, SpringLayout.SOUTH, panel);
         layout.putConstraint(SpringLayout.WEST, confirm, 30, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.EAST, confirm, -30, SpringLayout.EAST, panel);
         confirm.addActionListener(e -> {
@@ -62,8 +67,17 @@ public class Admin extends UserMod{
                 if(checkSecurity(pwd.toString(), getProperties().getProperty("password"))){
                     System.out.println("Success!");
                     this.setVisible(false);
+                    boolean debug;
+                    if(initSchema.isSelected()){
+                        System.out.println("Checked");
+                        debug = true;
+                    }
+                    else {
+                        System.out.println("Unchecked");
+                        debug = false;
+                    }
                     DBConnection connection = new DBConnection(getUrl(), getProperties());
-                    MainWindow mainWindow = new MainWindow(connection, getNameServer(), UserMods.ADMINISTRATOR);
+                    MainWindow mainWindow = new MainWindow(connection, getNameServer(), UserMods.ADMINISTRATOR, debug);
                     mainWindow.run();
                 }
                 else {
@@ -76,6 +90,8 @@ public class Admin extends UserMod{
             }
         });
         panel.add(confirm);
+
+
 
         this.setResizable(false);
         this.setModal(true);

@@ -39,6 +39,7 @@ public class DBConnection{
         statement.executeUpdate("drop table Workers");
         statement.executeUpdate("drop table Others");
         //second level
+        statement.executeUpdate("drop table Orders");
         statement.executeUpdate("drop sequence issued_seq");
         statement.executeUpdate("drop table Issued_books");
         statement.executeUpdate("drop sequence rules_seq");
@@ -185,6 +186,21 @@ public class DBConnection{
                 " foreign key (id_edition) references Editions(id_edition) on delete cascade " +
                 ")"
         );
+
+        statement.executeUpdate("create table Orders(" +
+                "id_reader integer," +
+                "id_edition integer," +
+                "id_librarian integer," +
+                "id_composition integer," +
+                "is_performed varchar(6) not null," +
+                "check ( is_performed = 'да' or is_performed = 'нет' )," +
+                "primary key (id_reader, id_edition, id_composition)," +
+                "foreign key (id_reader) references Readers(ID_READER) on delete cascade ," +
+                "foreign key (id_edition, id_composition) references Compositions(ID_EDITION, ID_RECORD) on delete cascade ," +
+                "foreign key (id_librarian) references Librarians(ID_LIBRARIAN) on delete cascade " +
+                ")"
+        );
+
         statement.executeUpdate("create sequence comp_seq start with 1 increment by 1 nomaxvalue ");
         statement.executeUpdate("create trigger comp_trigger " +
                 "before insert on COMPOSITIONS " +
@@ -202,13 +218,13 @@ public class DBConnection{
                         "id_edition integer not null," +
                         "id_composition integer not null," +
                         "id_reader integer not null," +
-                        "date_of_issue date not null," +
-                        "return_date date not null," +
-                        "is_returned varchar(6) not null," +
+                        "date_of_issue date," +
+                        "return_date date," +
+                        "is_returned varchar(6)," +
                         "check ( is_returned = 'да' or is_returned = 'нет' )," +
-                        "foreign key (id_librarian) references Librarians(id_librarian) on delete cascade ," +
+                        "foreign key (id_librarian) references LIBRARIANS(ID_LIBRARIAN) on delete cascade ," +
                         "foreign key (id_composition, id_edition) references COMPOSITIONS(ID_RECORD, ID_EDITION) on delete cascade ," +
-                        "foreign key (id_reader) references Readers(id_reader) on delete cascade " +
+                        "foreign key (id_reader) references READERS(id_reader) on delete cascade " +
                         ")"
         );
         statement.executeUpdate("create sequence issued_seq start with 1 increment by 1");

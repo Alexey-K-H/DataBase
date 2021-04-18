@@ -27,4 +27,7 @@ public class QueryController {
         currResultSet.close();
     }
 
+    public DBConnection getConnection() {
+        return connection;
+    }
 }

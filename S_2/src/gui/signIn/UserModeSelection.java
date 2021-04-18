@@ -33,7 +33,7 @@ public class UserModeSelection extends JDialog {
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
-        this.setBounds(dimension.width/2 - 150, dimension.height/2 - 120, 300, 240);
+        this.setBounds(dimension.width/2 - 150, dimension.height/2 - 135, 300, 270);
         this.setTitle(nameServer);
 
         JPanel panel = new JPanel();
@@ -64,7 +64,7 @@ public class UserModeSelection extends JDialog {
 
         JButton singIn = new JButton("Войти");
         singIn.setFont(new Font(singIn.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.NORTH, singIn, 40, SpringLayout.SOUTH, userModeField);
+        layout.putConstraint(SpringLayout.SOUTH, singIn, -10, SpringLayout.SOUTH, panel);
         layout.putConstraint(SpringLayout.WEST, singIn, 40, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.EAST, singIn, -40, SpringLayout.EAST, panel);
         panel.add(singIn);
