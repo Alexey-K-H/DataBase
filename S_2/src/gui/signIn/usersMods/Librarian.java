@@ -76,6 +76,7 @@ public class Librarian extends UserMod{
                     this.setVisible(false);
 
                     MainWindow mainWindow = new MainWindow(connection, getNameServer(), UserMods.LIBRARIAN, false);
+                    mainWindow.setUserId(pwd.toString());
                     mainWindow.run();
                 }
                 else {

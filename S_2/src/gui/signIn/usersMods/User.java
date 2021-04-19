@@ -74,7 +74,6 @@ public class User extends UserMod{
                 if(count > 0){
                     System.out.println("Success!");
                     this.setVisible(false);
-                    connection.getConn().setReadOnly(true);
                     MainWindow mainWindow = new MainWindow(connection, getNameServer(), UserMods.USER, false);
                     mainWindow.setUserId(pwd.toString());
                     mainWindow.run();

@@ -137,6 +137,10 @@ public class OrderLitFrame extends JDialog {
 
             authorChoose.addItemListener(e1 -> {
                 if (e1.getStateChange() == ItemEvent.SELECTED) {
+                    DefaultTableModel dm = (DefaultTableModel)table.getModel();
+                    while(dm.getRowCount() > 0) {
+                        dm.removeRow(0);
+                    }
                     scrollPane.setVisible(false);
                     makeOrder.setVisible(false);
                     for (ActionListener al : makeOrder.getActionListeners()) {
@@ -189,6 +193,7 @@ public class OrderLitFrame extends JDialog {
                         listSearch.add(resultSet.getObject(i).toString());
                     }
                     tableModel.addRow(listSearch.toArray());
+                    listSearch.clear();
                 }
             }
             catch (SQLException exception) {

@@ -5,6 +5,7 @@ import controllers.QueryController;
 import controllers.TableController;
 import gui.menuButtons.*;
 import gui.menuButtons.orderLiterature.OrderLitFrame;
+import gui.menuButtons.orderLiterature.OrderServiceFrame;
 import gui.queryWindow.MainQueryWindow;
 import gui.signIn.ConnectionFrame;
 import gui.tablesView.TableFrame;
@@ -217,6 +218,8 @@ public class MainWindow extends JFrame {
             panel.add(categoryReaders);
         }
 
+
+
         Productions productions = new Productions();
         layout.putConstraint(SpringLayout.EAST, productions, -20, SpringLayout.EAST, panel);
         layout.putConstraint(SpringLayout.NORTH, productions, 20, SpringLayout.SOUTH, info);
@@ -329,6 +332,19 @@ public class MainWindow extends JFrame {
             panel.add(select);
         }
 
+        JButton orders = new JButton("Заказы литературы");
+        orders.setFont(new Font(orders.getFont().getName(), Font.BOLD, 20));
+        layout.putConstraint(SpringLayout.EAST, orders, -20, SpringLayout.EAST, panel);
+        layout.putConstraint(SpringLayout.NORTH, orders, 10, SpringLayout.SOUTH, select);
+        orders.addActionListener(e -> {
+            QueryController queryController = new QueryController(connection);
+            OrderServiceFrame orderServiceFrame = new OrderServiceFrame(userId, queryController);
+            orderServiceFrame.openWindowFrame();
+        });
+        if(userMod == UserMods.LIBRARIAN){
+            panel.add(orders);
+        }
+
         JButton exit = new JButton("Выйти из фонда");
         exit.setFont(new Font(exit.getFont().getName(), Font.BOLD, 20));
         layout.putConstraint(SpringLayout.EAST, exit, -20, SpringLayout.EAST, panel);
@@ -340,7 +356,8 @@ public class MainWindow extends JFrame {
                 if(userMod == UserMods.ADMINISTRATOR){
                     JLabel beforeExit = new JLabel("Очистить схему бд перед выходом? Используется в случае отладки");
                     beforeExit.setFont(new Font(beforeExit.getFont().getName(), Font.BOLD, 16));
-                    int result = JOptionPane.showConfirmDialog(null, beforeExit, "Выход", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    int result = JOptionPane.showConfirmDialog(null, beforeExit, "Выход",
+                            JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                     if(result == JOptionPane.YES_OPTION){
                         connection.close();
                     }
