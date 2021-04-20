@@ -5,6 +5,7 @@ import java.awt.*;
 
 public class OrderingLiterature extends JPanel {
     private final JButton openButton;
+    private final JButton personalOrderButton;
 
     public OrderingLiterature(){
         SpringLayout layout = new SpringLayout();
@@ -23,10 +24,22 @@ public class OrderingLiterature extends JPanel {
         layout.putConstraint(SpringLayout.NORTH, this.openButton, 5, SpringLayout.SOUTH, infoText);
 
         add(openButton);
+
+        personalOrderButton = new JButton("Ваши заказы");
+        personalOrderButton.setFont(new Font(personalOrderButton.getFont().getName(), Font.BOLD, 20));
+        layout.putConstraint(SpringLayout.WEST, personalOrderButton, 20, SpringLayout.WEST, this);
+        layout.putConstraint(SpringLayout.NORTH, personalOrderButton, 5, SpringLayout.SOUTH, infoText);
+
+        add(personalOrderButton);
+
         add(infoText);
     }
 
     public JButton getOpenButton() {
         return openButton;
+    }
+
+    public JButton getPersonalOrderButton() {
+        return personalOrderButton;
     }
 }

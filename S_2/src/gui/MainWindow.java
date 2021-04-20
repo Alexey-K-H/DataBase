@@ -6,6 +6,7 @@ import controllers.TableController;
 import gui.menuButtons.*;
 import gui.menuButtons.orderLiterature.OrderLitFrame;
 import gui.menuButtons.orderLiterature.OrderServiceFrame;
+import gui.menuButtons.orderLiterature.UserOrders;
 import gui.queryWindow.MainQueryWindow;
 import gui.signIn.ConnectionFrame;
 import gui.tablesView.TableFrame;
@@ -316,6 +317,12 @@ public class MainWindow extends JFrame {
                 orderLitFrame.openOrderForm();
             });
 
+            orderingLiterature.getPersonalOrderButton().addActionListener(e -> {
+                QueryController queryController = new QueryController(connection);
+                UserOrders userOrders = new UserOrders(queryController, userId);
+                userOrders.showOrders();
+            });
+
             panel.add(orderingLiterature);
         }
 
@@ -344,6 +351,8 @@ public class MainWindow extends JFrame {
         if(userMod == UserMods.LIBRARIAN){
             panel.add(orders);
         }
+
+
 
         JButton exit = new JButton("Выйти из фонда");
         exit.setFont(new Font(exit.getFont().getName(), Font.BOLD, 20));
