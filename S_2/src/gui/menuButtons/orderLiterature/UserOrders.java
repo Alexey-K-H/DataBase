@@ -62,11 +62,12 @@ public class UserOrders extends JDialog {
                 "),\n" +
                 "     t2 as(\n" +
                 "         --Уточнение информации о заказе\n" +
-                "         select t1.ID_EDITION as \"Издание\", TITLE as \"Название\", t1.IS_PERFORMED as \"Заказ обработан\" from COMPOSITIONS\n" +
+                "         select t1.ID_EDITION as \"Издание\", TITLE as \"Название\", t1.IS_PERFORMED as \"Заказ обработан\", t1.DATE_ORDER as \"Дата заказа\" from COMPOSITIONS\n" +
                 "         inner join t1 on t1.ID_EDITION = COMPOSITIONS.ID_EDITION\n" +
                 "     )\n" +
                 "select *\n" +
-                "from t2";
+                "from t2 " +
+                "order by \"Дата заказа\" desc";
 
         try {
             queryController.performSQLQuery(querySql);

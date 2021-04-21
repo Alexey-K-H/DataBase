@@ -56,6 +56,7 @@ public class OrderMakeFrame extends JDialog {
         layout.putConstraint(SpringLayout.WEST, confirm, this.getWidth()/2 - confirm.getPreferredSize().width/2, SpringLayout.WEST, jPanel);
         confirm.addActionListener(e -> {
             try {
+                this.setVisible(false);
                 queryController.getConnection().getConn().prepareStatement(
                         "update ORDERS set IS_PERFORMED = 'да' where (ID_READER = "+ reader +" " +
                                 "and ID_COMPOSITION = "+composition+" and ID_EDITION = "+edition+")"
