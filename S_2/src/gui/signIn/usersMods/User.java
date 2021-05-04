@@ -74,6 +74,10 @@ public class User extends UserMod{
                 if(count > 0){
                     System.out.println("Success!");
                     this.setVisible(false);
+
+                    System.out.println("Set role USER");
+                    connection.setRole(UserMods.USER);
+
                     MainWindow mainWindow = new MainWindow(connection, getNameServer(), UserMods.USER, false);
                     mainWindow.setUserId(pwd.toString());
                     mainWindow.run();

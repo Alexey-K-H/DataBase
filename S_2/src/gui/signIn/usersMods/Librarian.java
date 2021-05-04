@@ -75,6 +75,9 @@ public class Librarian extends UserMod{
                     System.out.println("Success!");
                     this.setVisible(false);
 
+                    System.out.println("Set role LIBRARIAN");
+                    connection.setRole(UserMods.LIBRARIAN);
+
                     MainWindow mainWindow = new MainWindow(connection, getNameServer(), UserMods.LIBRARIAN, false);
                     mainWindow.setUserId(pwd.toString());
                     mainWindow.run();

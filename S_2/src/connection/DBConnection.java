@@ -1,5 +1,7 @@
 package connection;
 
+import gui.UserMods;
+
 import java.sql.*;
 import java.util.Locale;
 import java.util.Properties;
@@ -59,6 +61,23 @@ public class DBConnection{
         statement.executeUpdate("drop table Libraries");
         System.out.println("Close connection...");
         conn.close();
+    }
+
+    public void setRole(UserMods userMod) throws SQLException {
+        Statement statement = conn.createStatement();
+        switch (userMod){
+            case USER:{
+                statement.executeUpdate("set role c##reader");
+                break;
+            }
+            case LIBRARIAN:{
+                statement.executeUpdate("set role c##librarian");
+                break;
+            }
+            default:{
+                break;
+            }
+        }
     }
 
     public void initSchema() throws SQLException{
