@@ -32,6 +32,11 @@ public class DBConnection{
     public void close() throws SQLException {
         System.out.println("Delete tmp data...");
         Statement statement = conn.createStatement();
+
+        //delete roles
+        statement.executeUpdate("drop role c##reader");
+        statement.executeUpdate("drop role c##librarian");
+
         //category
         statement.executeUpdate("drop table Teachers");
         statement.executeUpdate("drop table Researchers");
@@ -428,6 +433,43 @@ public class DBConnection{
             statement.executeUpdate("insert into ISSUED_BOOKS(ID_LIBRARIAN, ID_EDITION, id_composition, ID_READER,  DATE_OF_ISSUE, RETURN_DATE) values (1, 8, 8, 5, to_date('12.02.2020','dd.mm.yyyy'),to_date('01.03.2020','dd.mm.yyyy'))");
             statement.executeUpdate("insert into ISSUED_BOOKS(ID_LIBRARIAN, ID_EDITION, id_composition, ID_READER, DATE_OF_ISSUE, RETURN_DATE) values (4, 3, 3, 1, to_date('04.11.2020','dd.mm.yyyy'),to_date('20.11.2020','dd.mm.yyyy'))");
             statement.executeUpdate("commit ");
+
+            statement.executeUpdate("create role c##librarian");
+            statement.executeUpdate("create role c##reader");
+
+            statement.executeUpdate("grant select on COMPOSITIONS to c##reader");
+            statement.executeUpdate("grant select on EDITIONS to c##reader");
+            statement.executeUpdate("grant select on ORDERS to c##reader");
+            statement.executeUpdate("grant insert, update on ORDERS to c##reader");
+
+            statement.executeUpdate("grant insert, delete, update on COMPOSITIONS to c##librarian");
+            statement.executeUpdate("grant insert, delete, update on EDITIONS to c##librarian");
+            statement.executeUpdate("grant insert, delete, update on READERS to c##librarian");
+            statement.executeUpdate("grant insert, delete, update on TEACHERS to c##librarian");
+            statement.executeUpdate("grant insert, delete, update on STUDENTS to c##librarian");
+            statement.executeUpdate("grant insert, delete, update on SCHOOLCHILD to c##librarian");
+            statement.executeUpdate("grant insert, delete, update on RESEARCHERS to c##librarian");
+            statement.executeUpdate("grant insert, delete, update on WORKERS to c##librarian");
+            statement.executeUpdate("grant insert, delete, update on PENSIONERS to c##librarian");
+            statement.executeUpdate("grant insert, delete, update on ORDERS to c##librarian");
+            statement.executeUpdate("grant insert, delete, update on RULES to c##librarian");
+            statement.executeUpdate("grant insert, delete, update on ISSUED_BOOKS to c##librarian");
+            statement.executeUpdate("grant select on COMPOSITIONS to c##librarian");
+            statement.executeUpdate("grant select on EDITIONS to c##librarian");
+            statement.executeUpdate("grant select on HALLS to c##librarian");
+            statement.executeUpdate("grant select on ISSUED_BOOKS to c##librarian");
+            statement.executeUpdate("grant select on LIBRARIANS to c##librarian");
+            statement.executeUpdate("grant select on LIBRARIES to c##librarian");
+            statement.executeUpdate("grant select on ORDERS to c##librarian");
+            statement.executeUpdate("grant select on OTHERS to c##librarian");
+            statement.executeUpdate("grant select on PENSIONERS to c##librarian");
+            statement.executeUpdate("grant select on READERS to c##librarian");
+            statement.executeUpdate("grant select on RESEARCHERS to c##librarian");
+            statement.executeUpdate("grant select on RULES to c##librarian");
+            statement.executeUpdate("grant select on SCHOOLCHILD to c##librarian");
+            statement.executeUpdate("grant select on STUDENTS to c##librarian");
+            statement.executeUpdate("grant select on TEACHERS to c##librarian");
+            statement.executeUpdate("grant select on WORKERS to c##librarian");
         }
         catch (SQLException e){
             e.printStackTrace();
