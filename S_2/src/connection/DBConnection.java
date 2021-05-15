@@ -34,6 +34,7 @@ public class DBConnection{
         Statement statement = conn.createStatement();
 
         //delete roles
+        statement.executeUpdate("drop role c##admin");
         statement.executeUpdate("drop role c##reader");
         statement.executeUpdate("drop role c##librarian");
 
@@ -79,7 +80,8 @@ public class DBConnection{
                 statement.executeUpdate("set role c##librarian");
                 break;
             }
-            default:{
+            case ADMINISTRATOR:{
+                statement.executeUpdate("set role c##admin");
                 break;
             }
         }
@@ -470,6 +472,13 @@ public class DBConnection{
             statement.executeUpdate("grant select on STUDENTS to c##librarian");
             statement.executeUpdate("grant select on TEACHERS to c##librarian");
             statement.executeUpdate("grant select on WORKERS to c##librarian");
+
+            statement.executeUpdate("create role c##admin");
+            statement.executeUpdate("grant c##librarian to c##admin;");
+            statement.executeUpdate("grant insert, delete, update on HALLS to c##admin");
+            statement.executeUpdate("grant insert, delete, update on LIBRARIANS to c##admin");
+            statement.executeUpdate("grant insert, delete, update on LIBRARIES to c##admin");
+
         }
         catch (SQLException e){
             e.printStackTrace();
