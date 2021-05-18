@@ -59,6 +59,8 @@ public class DBConnection{
         statement.executeUpdate("drop table Readers");
         statement.executeUpdate("drop sequence edit_seq");
         statement.executeUpdate("drop table Editions");
+        statement.executeUpdate("drop sequence USER_SEQ");
+        statement.executeUpdate("drop table USERS");
         statement.executeUpdate("drop table HALLS");
         //Delete independent tables
         statement.executeUpdate("drop sequence lib_seq");

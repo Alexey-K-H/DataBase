@@ -7,6 +7,8 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -24,7 +26,7 @@ public class ReaderInsert extends JDialog implements InsertFrame{
     public void openInsertWindow() {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
-        this.setBounds(dimension.width/2 - 250, dimension.height/2 - 400, 500, 600);
+        this.setBounds(dimension.width/2 - 250, dimension.height/2 - 400, 500, 800);
         this.setTitle("Добавление нового читателя");
 
         JPanel jPanel = new JPanel();
@@ -38,9 +40,21 @@ public class ReaderInsert extends JDialog implements InsertFrame{
         layout.putConstraint(SpringLayout.WEST, info, 20, SpringLayout.WEST, jPanel);
         jPanel.add(info);
 
+        JLabel pwdLabel = new JLabel("Пароль пользователя");
+        pwdLabel.setFont(new Font(pwdLabel.getFont().getName(), Font.BOLD, 16));
+        layout.putConstraint(SpringLayout.NORTH, pwdLabel, 20, SpringLayout.SOUTH, info);
+        layout.putConstraint(SpringLayout.WEST, pwdLabel, 20, SpringLayout.WEST, jPanel);
+        jPanel.add(pwdLabel);
+
+        JTextField pwdTextField = new JTextField(10);
+        pwdTextField.setFont(new Font(pwdTextField.getFont().getName(), Font.PLAIN, 16));
+        layout.putConstraint(SpringLayout.NORTH, pwdTextField, 10, SpringLayout.SOUTH, pwdLabel);
+        layout.putConstraint(SpringLayout.WEST, pwdTextField, 20, SpringLayout.WEST, jPanel);
+        jPanel.add(pwdTextField);
+
         JLabel idLibLabel = new JLabel("Идентификатор библиотеки");
         idLibLabel.setFont(new Font(idLibLabel.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.NORTH, idLibLabel, 20, SpringLayout.SOUTH, info);
+        layout.putConstraint(SpringLayout.NORTH, idLibLabel, 20, SpringLayout.SOUTH, pwdTextField);
         layout.putConstraint(SpringLayout.WEST, idLibLabel, 20, SpringLayout.WEST, jPanel);
         jPanel.add(idLibLabel);
 
@@ -128,19 +142,36 @@ public class ReaderInsert extends JDialog implements InsertFrame{
             }
             else {
                 currValues = new ArrayList<>();
-                //currValues.add("'" + idTextField.getText() + "'");
+
+                //for USERS
+                currValues.add(pwdTextField.getText());
+                String sql1 = "insert into USERS(password, user_mod) values ('"+currValues.get(0)+"', 'Читатель')";
+
                 currValues.add("'" + idLibTexField.getText() + "'");
                 currValues.add("'" + surnameTexFiled.getText() + "'");
                 currValues.add("'" + nameTextField.getText() + "'");
                 currValues.add("'" + patronymicTextField.getText() + "'");
                 currValues.add("'" + statusTextField.getSelectedItem() + "'");
-                String sql = "insert into READERS(ID_LIBRARY, SURNAME, NAME, PATRONYMIC, STATUS) values (" + currValues.get(0) + "," +
-                        currValues.get(1) + "," +
-                        currValues.get(2) + "," +
-                        currValues.get(3) + "," +
-                        currValues.get(4) + ")";
+
                 try {
-                    performInsertOperation(sql);
+
+                    performInsertOperation(sql1);
+                    PreparedStatement preStatement = tableController.getConnection().getConn().prepareStatement(
+                            "select user_id from users where password = '" + currValues.get(0) + "'");
+                    ResultSet resultSet = preStatement.executeQuery();
+
+                    int newUserId = 0;
+                    if(resultSet.next()){
+                        newUserId = resultSet.getInt(1);
+                    }
+
+                    String sql2 = "insert into READERS values (" + newUserId + "," + currValues.get(1) + "," +
+                            currValues.get(2) + "," +
+                            currValues.get(3) + "," +
+                            currValues.get(4) + "," +
+                            currValues.get(5) + ")";
+
+                    performInsertOperation(sql2);
 
                     switch (statusTextField.getSelectedItem().toString()){
                         case "учитель":{

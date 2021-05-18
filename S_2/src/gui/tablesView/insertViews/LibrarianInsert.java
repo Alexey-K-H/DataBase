@@ -5,6 +5,8 @@ import controllers.TableController;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -22,7 +24,7 @@ public class LibrarianInsert extends JDialog implements InsertFrame {
     public void openInsertWindow() {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
-        this.setBounds(dimension.width/2 - 250, dimension.height/2 - 200, 500, 400);
+        this.setBounds(dimension.width/2 - 250, dimension.height/2 - 300, 500, 600);
         this.setTitle("Добавление нового сотрудника бибилиотеки");
 
         JPanel jPanel = new JPanel();
@@ -36,21 +38,21 @@ public class LibrarianInsert extends JDialog implements InsertFrame {
         layout.putConstraint(SpringLayout.WEST, info, 20, SpringLayout.WEST, jPanel);
         jPanel.add(info);
 
-//        JLabel idLabel = new JLabel("Идентификатор сотрудника");
-//        idLabel.setFont(new Font(idLabel.getFont().getName(), Font.BOLD, 16));
-//        layout.putConstraint(SpringLayout.NORTH, idLabel, 50, SpringLayout.SOUTH, info);
-//        layout.putConstraint(SpringLayout.WEST, idLabel, 20, SpringLayout.WEST, jPanel);
-//        jPanel.add(idLabel);
-//
-//        JTextField idTextField = new JTextField(10);
-//        idTextField.setFont(new Font(idTextField.getFont().getName(), Font.PLAIN, 16));
-//        layout.putConstraint(SpringLayout.NORTH, idTextField, 10, SpringLayout.SOUTH, idLabel);
-//        layout.putConstraint(SpringLayout.WEST, idTextField, 20, SpringLayout.WEST, jPanel);
-//        jPanel.add(idTextField);
+        JLabel pwdLabel = new JLabel("Пароль пользователя");
+        pwdLabel.setFont(new Font(pwdLabel.getFont().getName(), Font.BOLD, 16));
+        layout.putConstraint(SpringLayout.NORTH, pwdLabel, 50, SpringLayout.SOUTH, info);
+        layout.putConstraint(SpringLayout.WEST, pwdLabel, 20, SpringLayout.WEST, jPanel);
+        jPanel.add(pwdLabel);
+
+        JTextField pwdTextField = new JTextField(10);
+        pwdTextField.setFont(new Font(pwdTextField.getFont().getName(), Font.PLAIN, 16));
+        layout.putConstraint(SpringLayout.NORTH, pwdTextField, 10, SpringLayout.SOUTH, pwdLabel);
+        layout.putConstraint(SpringLayout.WEST, pwdTextField, 20, SpringLayout.WEST, jPanel);
+        jPanel.add(pwdTextField);
 
         JLabel idLibLabel = new JLabel("Идентификатор библиотеки");
         idLibLabel.setFont(new Font(idLibLabel.getFont().getName(), Font.BOLD, 16));
-        layout.putConstraint(SpringLayout.NORTH, idLibLabel, 20, SpringLayout.SOUTH, info);
+        layout.putConstraint(SpringLayout.NORTH, idLibLabel, 20, SpringLayout.SOUTH, pwdTextField);
         layout.putConstraint(SpringLayout.WEST, idLibLabel, 20, SpringLayout.WEST, jPanel);
         jPanel.add(idLibLabel);
 
@@ -78,13 +80,31 @@ public class LibrarianInsert extends JDialog implements InsertFrame {
         layout.putConstraint(SpringLayout.EAST, confirm, -20, SpringLayout.EAST, jPanel);
         confirm.addActionListener(e->{
             currValues = new ArrayList<>();
-            //currValues.add(idTextField.getText());
+
+            //for USERS
+            currValues.add(pwdTextField.getText());
+
+            //for LIBRARIANS
             currValues.add(idLibTexField.getText());
             currValues.add(hallNumTexFiled.getText());
-            String sql = "insert into LIBRARIANS(ID_LIBRARY, HALL_NUM) values (" + currValues.get(0) + "," + currValues.get(1) + ")";
+
+            String sql1 = "insert into USERS(password, user_mod) values ('"+currValues.get(0)+"', 'Библиотекарь')";
+
             try {
-                performInsertOperation(sql);
-                //idTextField.setText("");
+                performInsertOperation(sql1);
+
+                PreparedStatement preStatement = tableController.getConnection().getConn().prepareStatement(
+                        "select user_id from users where password = '" + currValues.get(0) + "'");
+                ResultSet resultSet = preStatement.executeQuery();
+
+                int newUserId = 0;
+                if(resultSet.next()){
+                    newUserId = resultSet.getInt(1);
+                }
+
+                String sql2 = "insert into LIBRARIANS values ("+ newUserId + "," + currValues.get(1) + "," + currValues.get(2) + ")";
+                performInsertOperation(sql2);
+
                 idLibTexField.setText("");
                 hallNumTexFiled.setText("");
 
@@ -110,6 +130,10 @@ public class LibrarianInsert extends JDialog implements InsertFrame {
                     }
                     case 2291:{
                         error.setText("Ошибка добваления записи! Нет библиотеки с таким ID!");
+                        break;
+                    }
+                    default:{
+                        error.setText(exception.getMessage());
                         break;
                     }
                 }

@@ -222,6 +222,7 @@ public class TableFrame extends JDialog {
                 } catch (SQLException exception) {
                     JLabel error = new JLabel();
                     error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                    error.setText(exception.getMessage());
                     JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
                 }
             }
