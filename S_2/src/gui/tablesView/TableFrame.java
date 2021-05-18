@@ -214,7 +214,8 @@ public class TableFrame extends JDialog {
             else{
                 Object rowDataKey = table.getValueAt(i,0);
                 try {
-                    tableController.deleteRecord(rowDataKey);
+                    tableController.deleteRecord(rowDataKey, tableController.getTableName().equals("Readers") ||
+                            tableController.getTableName().equals("Librarians"));
                     tableModel.removeRow(i);
                     JLabel success = new JLabel("Запись удалена успешно!");
                     success.setFont(new Font(success.getFont().getName(), Font.BOLD, 16));

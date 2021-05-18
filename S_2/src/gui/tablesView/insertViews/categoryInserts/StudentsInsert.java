@@ -155,8 +155,8 @@ public class StudentsInsert extends JDialog implements InsertFrame {
 
             if(result == JOptionPane.YES_OPTION){
                 try {
-                    tableController.deleteRecord(tableController.getTableSet().getValueAt(
-                            tableController.getTableSet().getRowCount() - 1, 0));
+
+                    tableController.getConnection().getConn().createStatement().executeUpdate("ROLLBACK ");
 
                     this.setVisible(false);
                 } catch (SQLException exception) {

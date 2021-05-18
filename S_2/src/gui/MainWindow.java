@@ -120,6 +120,14 @@ public class MainWindow extends JFrame {
         layout.putConstraint(SpringLayout.NORTH, userMode, 10, SpringLayout.NORTH, panel);
         panel.add(userMode);
 
+        //Пользователи
+        JButton users = new JButton("Пользователи");
+        layout.putConstraint(SpringLayout.NORTH, users, 5, SpringLayout.NORTH, panel);
+        layout.putConstraint(SpringLayout.EAST, users, -5, SpringLayout.EAST, panel);
+        if(userMod == UserMods.ADMINISTRATOR || userMod == UserMods.ADMINISTRATOR_DB){
+            panel.add(users);
+        }
+
         //Библиотеки
         Libraries lib = new Libraries();
         layout.putConstraint(SpringLayout.WEST, lib, 5, SpringLayout.WEST, panel);

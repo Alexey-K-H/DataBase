@@ -311,10 +311,22 @@ public class TableController {
         return null;
     }
 
-    public void deleteRecord(Object rowKey) throws SQLException {
+    public void deleteRecord(Object rowKey, boolean isDeleteSystemUser) throws SQLException {
         Statement statement = connection.getConn().createStatement();
         String sql = "delete from " + tableName + " where " + getPrimaryKeyNameByTableName() + " = " + rowKey;
         //System.out.println(sql);
+        statement.executeUpdate(sql);
+        statement.executeUpdate("commit ");
+
+        if(isDeleteSystemUser){
+            System.out.println("Delete from USERS...");
+            deleteUserById(rowKey);
+        }
+    }
+
+    public void deleteUserById(Object id) throws SQLException{
+        Statement statement = connection.getConn().createStatement();
+        String sql = "delete from USERS where user_id = " + id;
         statement.executeUpdate(sql);
         statement.executeUpdate("commit ");
     }
