@@ -1,6 +1,7 @@
 package gui.signIn;
 
 import gui.signIn.usersMods.Admin;
+import gui.signIn.usersMods.AdminDB;
 import gui.signIn.usersMods.Librarian;
 import gui.signIn.usersMods.User;
 
@@ -50,6 +51,7 @@ public class UserModeSelection extends JDialog {
         panel.add(info);
 
         String[] items = {
+                "Администратор БД",
                 "Администратор",
                 "Библиотекарь",
                 "Читатель"
@@ -71,6 +73,12 @@ public class UserModeSelection extends JDialog {
 
         singIn.addActionListener(e -> {
             switch (Objects.requireNonNull(userModeField.getSelectedItem()).toString()){
+                case "Администратор БД":{
+                    this.setVisible(false);
+                    AdminDB adminDB = new AdminDB(nameServer, properties, url);
+                    adminDB.openSecurityCheckWindow();
+                    break;
+                }
                 case "Администратор":{
                     this.setVisible(false);
                     Admin admin = new Admin(nameServer, properties, url);

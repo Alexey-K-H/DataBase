@@ -26,7 +26,7 @@ public class User extends UserMod{
     public void openSecurityCheckWindow() {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
-        this.setBounds(dimension.width/2 - 150, dimension.height/2 - 120, 300, 240);
+        this.setBounds(dimension.width/2 - 150, dimension.height/2 - 150, 300, 300);
         this.setTitle("Вход как читатель");
 
         JPanel panel = new JPanel();
@@ -34,7 +34,7 @@ public class User extends UserMod{
         panel.setLayout(layout);
         this.add(panel);
 
-        JLabel info = new JLabel("<html>Введите идентификатор<br>читателя.<br>ID-числовая последовательность</html>");
+        JLabel info = new JLabel("<html>Введите идентификатор и пароль читателя.</html>");
         Font labelFont = info.getFont();
         info.setFont(new Font(labelFont.getName(), Font.PLAIN, 16));
         layout.putConstraint(SpringLayout.WEST, info, 20, SpringLayout.WEST, panel);
@@ -42,9 +42,27 @@ public class User extends UserMod{
         layout.putConstraint(SpringLayout.NORTH, info, 20, SpringLayout.NORTH, panel);
         panel.add(info);
 
+        JLabel loginLabel = new JLabel("ID");
+        loginLabel.setFont(new Font(loginLabel.getFont().getName(), Font.PLAIN, 16));
+        layout.putConstraint(SpringLayout.NORTH, loginLabel, 10, SpringLayout.SOUTH, info);
+        layout.putConstraint(SpringLayout.WEST, loginLabel, 20, SpringLayout.WEST, panel);
+        panel.add(loginLabel);
+
+        JTextField login = new JTextField(15);
+        login.setFont(new Font(login.getFont().getName(), Font.PLAIN, 16));
+        layout.putConstraint(SpringLayout.NORTH, login, 10, SpringLayout.SOUTH, loginLabel);
+        layout.putConstraint(SpringLayout.WEST, login, 20, SpringLayout.WEST, panel);
+        panel.add(login);
+
+        JLabel passwordLabel = new JLabel("Пароль");
+        passwordLabel.setFont(new Font(passwordLabel.getFont().getName(), Font.PLAIN, 16));
+        layout.putConstraint(SpringLayout.NORTH, passwordLabel, 10, SpringLayout.SOUTH, login);
+        layout.putConstraint(SpringLayout.WEST, passwordLabel, 20, SpringLayout.WEST, panel);
+        panel.add(passwordLabel);
+
         JPasswordField passwordValue = new JPasswordField(15);
         passwordValue.setFont(new Font(passwordValue.getFont().getName(), Font.PLAIN, 16));
-        layout.putConstraint(SpringLayout.NORTH, passwordValue, 10, SpringLayout.SOUTH, info);
+        layout.putConstraint(SpringLayout.NORTH, passwordValue, 10, SpringLayout.SOUTH, passwordLabel);
         layout.putConstraint(SpringLayout.WEST, passwordValue, 20, SpringLayout.WEST, panel);
         panel.add(passwordValue);
 
@@ -54,6 +72,8 @@ public class User extends UserMod{
         layout.putConstraint(SpringLayout.WEST, confirm, 30, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.EAST, confirm, -30, SpringLayout.EAST, panel);
         confirm.addActionListener(e -> {
+            String loginValue = login.getText();
+
             StringBuilder pwd = new StringBuilder();
             for(int i = 0; i < passwordValue.getPassword().length; i++){
                 pwd.append(passwordValue.getPassword()[i]);
@@ -61,7 +81,9 @@ public class User extends UserMod{
 
             try {
                 DBConnection connection = new DBConnection(getUrl(), getProperties());
-                PreparedStatement preStatement = connection.getConn().prepareStatement("select count(*) from READERS where ID_READER = " + pwd.toString());
+                PreparedStatement preStatement = connection.getConn().prepareStatement("select count(*)" +
+                        " from USERS where USER_ID = " + loginValue + " and PASSWORD = '"+pwd.toString()+"' and " +
+                        "USER_MOD = 'Читатель'");
                 ResultSet resultSet = preStatement.executeQuery();
 
                 int count = 0;
@@ -79,7 +101,7 @@ public class User extends UserMod{
                     connection.setRole(UserMods.USER);
 
                     MainWindow mainWindow = new MainWindow(connection, getNameServer(), UserMods.USER, false);
-                    mainWindow.setUserId(pwd.toString());
+                    mainWindow.setUserId(loginValue);
                     mainWindow.run();
                 }
                 else {

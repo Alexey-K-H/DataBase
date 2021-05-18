@@ -38,7 +38,7 @@ public class MainWindow extends JFrame {
         this.addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
-                if(userMod == UserMods.ADMINISTRATOR && debug){
+                if(userMod == UserMods.ADMINISTRATOR_DB && debug){
                     try {
                         connection.initSchema();
                     } catch (SQLException ex) {
@@ -51,7 +51,7 @@ public class MainWindow extends JFrame {
         this.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
                 try {
-                    if(userMod == UserMods.ADMINISTRATOR){
+                    if(userMod == UserMods.ADMINISTRATOR_DB){
                         JLabel beforeExit = new JLabel("Очистить схему бд перед выходом? Используется в случае отладки");
                         beforeExit.setFont(new Font(beforeExit.getFont().getName(), Font.BOLD, 16));
                         int result = JOptionPane.showConfirmDialog(null, beforeExit, "Выход", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -99,7 +99,8 @@ public class MainWindow extends JFrame {
 
         String userModeStr = "";
         switch (userMod){
-            case ADMINISTRATOR:{
+            case ADMINISTRATOR:
+            case ADMINISTRATOR_DB:{
                 userModeStr = userModeStr.concat("Администратор");
                 break;
             }
@@ -136,7 +137,7 @@ public class MainWindow extends JFrame {
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
-        if(userMod == UserMods.ADMINISTRATOR){
+        if(userMod == UserMods.ADMINISTRATOR || userMod == UserMods.ADMINISTRATOR_DB){
             panel.add(lib);
         }
 
@@ -158,7 +159,7 @@ public class MainWindow extends JFrame {
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
-        if(userMod == UserMods.ADMINISTRATOR) {
+        if(userMod == UserMods.ADMINISTRATOR || userMod == UserMods.ADMINISTRATOR_DB) {
             panel.add(halls);
         }
 
@@ -179,14 +180,14 @@ public class MainWindow extends JFrame {
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
-        if(userMod == UserMods.ADMINISTRATOR) {
+        if(userMod == UserMods.ADMINISTRATOR || userMod == UserMods.ADMINISTRATOR_DB) {
             panel.add(librarians);
         }
 
         //Читатели
         Readers readers = new Readers();
         layout.putConstraint(SpringLayout.WEST, readers, 5, SpringLayout.WEST, panel);
-        if(userMod != UserMods.ADMINISTRATOR){
+        if(userMod != UserMods.ADMINISTRATOR && userMod != UserMods.ADMINISTRATOR_DB){
             layout.putConstraint(SpringLayout.NORTH, readers, 20, SpringLayout.SOUTH, info);
         }
         else{
@@ -362,7 +363,7 @@ public class MainWindow extends JFrame {
 
         exit.addActionListener(e -> {
             try {
-                if(userMod == UserMods.ADMINISTRATOR){
+                if(userMod == UserMods.ADMINISTRATOR_DB){
                     JLabel beforeExit = new JLabel("Очистить схему бд перед выходом? Используется в случае отладки");
                     beforeExit.setFont(new Font(beforeExit.getFont().getName(), Font.BOLD, 16));
                     int result = JOptionPane.showConfirmDialog(null, beforeExit, "Выход",
