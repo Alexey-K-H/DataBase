@@ -460,7 +460,7 @@ public class DBConnection{
 
             statement.executeUpdate("insert into ISSUED_BOOKS(ID_LIBRARIAN, ID_EDITION, id_composition, ID_READER,  DATE_OF_ISSUE, RETURN_DATE) values (3, 8, 8, 8, to_date('12.02.2020','dd.mm.yyyy'),to_date('01.03.2020','dd.mm.yyyy'))");
             statement.executeUpdate("insert into ISSUED_BOOKS(ID_LIBRARIAN, ID_EDITION, id_composition, ID_READER, DATE_OF_ISSUE, RETURN_DATE) values (4, 3, 3, 14, to_date('04.11.2020','dd.mm.yyyy'),to_date('20.11.2020','dd.mm.yyyy'))");
-            statement.executeUpdate("commit ");
+
 
             statement.executeUpdate("create role c##librarian");
             statement.executeUpdate("create role c##reader");
@@ -502,9 +502,11 @@ public class DBConnection{
             statement.executeUpdate("create role c##admin");
             statement.executeUpdate("grant c##librarian to c##admin");
             statement.executeUpdate("grant insert, delete, update on HALLS to c##admin");
+            statement.executeUpdate("grant insert, delete, update on USERS to c##admin");
             statement.executeUpdate("grant insert, delete, update on LIBRARIANS to c##admin");
             statement.executeUpdate("grant insert, delete, update on LIBRARIES to c##admin");
 
+            statement.executeUpdate("commit ");
         }
         catch (SQLException e){
             e.printStackTrace();
