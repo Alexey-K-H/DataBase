@@ -10,6 +10,7 @@ import gui.menuButtons.orderLiterature.UserOrders;
 import gui.queryWindow.MainQueryWindow;
 import gui.signIn.ConnectionFrame;
 import gui.tablesView.TableFrame;
+import gui.tablesView.UsersTableFrame;
 
 import javax.swing.*;
 import java.awt.*;
@@ -124,6 +125,17 @@ public class MainWindow extends JFrame {
         JButton users = new JButton("Пользователи");
         layout.putConstraint(SpringLayout.NORTH, users, 5, SpringLayout.NORTH, panel);
         layout.putConstraint(SpringLayout.EAST, users, -5, SpringLayout.EAST, panel);
+        users.addActionListener(e->{
+            TableController tableController = new TableController("Users", connection);
+            UsersTableFrame usersTableFrame = new UsersTableFrame(tableController);
+            try{
+                usersTableFrame.openTable();
+            }catch (SQLException exception){
+                JLabel error = new JLabel("Ошибка!" + exception.getMessage());
+                error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
+                JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
+            }
+        });
         if(userMod == UserMods.ADMINISTRATOR || userMod == UserMods.ADMINISTRATOR_DB){
             panel.add(users);
         }
@@ -138,7 +150,7 @@ public class MainWindow extends JFrame {
             TableController tableController = new TableController("Libraries", connection);
             TableFrame tableFrame = new TableFrame(tableController);
             try {
-                tableFrame.openTable(false);
+                tableFrame.openTable(false, false);
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка!" + exception.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
@@ -160,7 +172,7 @@ public class MainWindow extends JFrame {
             TableController tableController = new TableController("Halls", connection);
             TableFrame tableFrame = new TableFrame(tableController);
             try {
-                tableFrame.openTable(false);
+                tableFrame.openTable(false, false);
             }catch (SQLException exception){
                 JLabel error = new JLabel("Ошибка!" + exception.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
@@ -181,7 +193,7 @@ public class MainWindow extends JFrame {
             TableController tableController = new TableController("Librarians", connection);
             TableFrame tableFrame = new TableFrame(tableController);
             try {
-                tableFrame.openTable(false);
+                tableFrame.openTable(false, false);
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка!" + exception.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
@@ -207,7 +219,7 @@ public class MainWindow extends JFrame {
             TableController tableController = new TableController("Readers", connection);
             TableFrame tableFrame = new TableFrame(tableController);
             try {
-                tableFrame.openTable(false);
+                tableFrame.openTable(false, userMod == UserMods.LIBRARIAN);
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка!" + exception.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
@@ -239,7 +251,7 @@ public class MainWindow extends JFrame {
             TableController tableController = new TableController("Compositions", connection);
             TableFrame tableFrame = new TableFrame(tableController);
             try {
-                tableFrame.openTable(false);
+                tableFrame.openTable(false, false);
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка!" + exception.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
@@ -259,7 +271,7 @@ public class MainWindow extends JFrame {
             TableController tableController = new TableController("Editions", connection);
             TableFrame tableFrame = new TableFrame(tableController);
             try {
-                tableFrame.openTable(false);
+                tableFrame.openTable(false, false);
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка!" + exception.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
@@ -290,7 +302,7 @@ public class MainWindow extends JFrame {
                 tableFrame.setUserId(userId);
             }
             try {
-                tableFrame.openTable(userMod == UserMods.USER);
+                tableFrame.openTable(userMod == UserMods.USER, false);
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка! " + exception.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
@@ -301,7 +313,7 @@ public class MainWindow extends JFrame {
             TableController tableController = new TableController("Rules", connection);
             TableFrame tableFrame = new TableFrame(tableController);
             try {
-                tableFrame.openTable(false);
+                tableFrame.openTable(false, false);
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка!" + exception.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));

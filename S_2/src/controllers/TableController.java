@@ -55,6 +55,8 @@ public class TableController {
                 return new String[]{"Идентификатор", "Id-издание", "Текст"};
             case "Issued_Books":
                 return new String[]{"Идентификатор", "Id-бибилотекарь", "Id-издание", "Id-произведения", "Id-читатель", "Дата выдачи", "Дата возврата", "Возврат выполнен"};
+            case "Users":
+                return new String[]{"Идентификатор", "Пароль", "Уровень доступа"};
             default:
                 return null;
         }
@@ -79,6 +81,15 @@ public class TableController {
         ResultSet result = preStatement.executeQuery();
 
         switch (tableName){
+            case "Users":{
+                while (result.next()){
+                    tableModel.addRow(new Object[]{
+                            result.getInt("user_id"),
+                            result.getString("password"),
+                            result.getString("user_mod")
+                    });
+                }
+            }
             case "Libraries":{
                 while (result.next()) {
                     tableModel.addRow(new Object[]{
@@ -306,6 +317,9 @@ public class TableController {
             }
             case "Rules":{
                 return "id_rule";
+            }
+            case "Users":{
+                return "user_id";
             }
         }
         return null;
