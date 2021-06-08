@@ -77,7 +77,7 @@ public class MainWindow extends JFrame {
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
-        if(userMod != UserMods.USER){
+        if(userMod != UserMods.READER){
             this.setBounds(dimension.width/2 - 500, dimension.height/2 - 450, 1000, 900);
         }
         else{
@@ -109,7 +109,7 @@ public class MainWindow extends JFrame {
                 userModeStr = userModeStr.concat("Библиотекарь");
                 break;
             }
-            case USER:{
+            case READER:{
                 userModeStr = userModeStr.concat("Читатель");
                 break;
             }
@@ -226,7 +226,7 @@ public class MainWindow extends JFrame {
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
-        if(userMod != UserMods.USER){
+        if(userMod != UserMods.READER){
             panel.add(readers);
         }
 
@@ -236,7 +236,7 @@ public class MainWindow extends JFrame {
         layout.putConstraint(SpringLayout.WEST, categoryReaders, 5, SpringLayout.WEST, panel);
         layout.putConstraint(SpringLayout.EAST, categoryReaders, -this.getWidth()/2, SpringLayout.EAST, panel);
         layout.putConstraint(SpringLayout.SOUTH, categoryReaders, 320, SpringLayout.NORTH, categoryReaders);
-        if(userMod != UserMods.USER) {
+        if(userMod != UserMods.READER) {
             panel.add(categoryReaders);
         }
 
@@ -258,7 +258,7 @@ public class MainWindow extends JFrame {
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
-        if(userMod != UserMods.USER) {
+        if(userMod != UserMods.READER) {
             panel.add(productions);
         }
 
@@ -278,12 +278,12 @@ public class MainWindow extends JFrame {
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
-        if(userMod != UserMods.USER) {
+        if(userMod != UserMods.READER) {
             panel.add(editions);
         }
 
         IssuedBooksAndTerms issuedBooksAndTerms = new IssuedBooksAndTerms();
-        if(userMod == UserMods.USER){
+        if(userMod == UserMods.READER){
             layout.putConstraint(SpringLayout.WEST, issuedBooksAndTerms, 20, SpringLayout.WEST, panel);
             layout.putConstraint(SpringLayout.NORTH, issuedBooksAndTerms, 10, SpringLayout.SOUTH, info);
             layout.putConstraint(SpringLayout.EAST, issuedBooksAndTerms, this.getWidth()/2 - 20, SpringLayout.WEST, panel);
@@ -298,11 +298,11 @@ public class MainWindow extends JFrame {
         issuedBooksAndTerms.getOpenButton().addActionListener(e -> {
             TableController tableController = new TableController("Issued_Books", connection);
             TableFrame tableFrame = new TableFrame(tableController);
-            if(userMod == UserMods.USER){
+            if(userMod == UserMods.READER){
                 tableFrame.setUserId(userId);
             }
             try {
-                tableFrame.openTable(userMod == UserMods.USER, false);
+                tableFrame.openTable(userMod == UserMods.READER, false);
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка! " + exception.getMessage());
                 error.setFont(new Font(error.getFont().getName(), Font.BOLD, 16));
@@ -320,12 +320,12 @@ public class MainWindow extends JFrame {
                 JOptionPane.showMessageDialog(null, error, "ERROR", JOptionPane.ERROR_MESSAGE);
             }
         });
-        if(userMod == UserMods.USER){
+        if(userMod == UserMods.READER){
             issuedBooksAndTerms.removeRules();
         }
         panel.add(issuedBooksAndTerms);
 
-        if(userMod == UserMods.USER){
+        if(userMod == UserMods.READER){
             OrderingLiterature orderingLiterature = new OrderingLiterature();
             layout.putConstraint(SpringLayout.NORTH, orderingLiterature, 10, SpringLayout.SOUTH, info);
             layout.putConstraint(SpringLayout.EAST, orderingLiterature, -20, SpringLayout.EAST, panel);
@@ -356,7 +356,7 @@ public class MainWindow extends JFrame {
             MainQueryWindow mainQueryWindow = new MainQueryWindow(queryController);
             mainQueryWindow.openQueryConsole();
         });
-        if(userMod != UserMods.USER) {
+        if(userMod != UserMods.READER) {
             panel.add(select);
         }
 

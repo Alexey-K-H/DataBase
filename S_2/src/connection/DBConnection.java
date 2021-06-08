@@ -72,7 +72,7 @@ public class DBConnection{
     public void setRole(UserMods userMod) throws SQLException {
         Statement statement = conn.createStatement();
         switch (userMod){
-            case USER:{
+            case READER:{
                 statement.executeUpdate("set role c##reader");
                 break;
             }

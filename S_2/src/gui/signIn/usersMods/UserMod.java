@@ -1,6 +1,5 @@
 package gui.signIn.usersMods;
-
-import gui.signIn.UserModeSelection;
+import gui.signIn.ConnectionFrame;
 
 import javax.swing.*;
 import java.awt.event.WindowAdapter;
@@ -20,8 +19,8 @@ public abstract class UserMod extends JDialog {
         this.addWindowListener(new WindowAdapter(){
             public void windowClosing(WindowEvent e){
                 setVisible(false);
-                UserModeSelection userModeSelection = new UserModeSelection(nameServer, properties, url);
-                userModeSelection.openSelectionPane();
+                ConnectionFrame connectionFrame = new ConnectionFrame();
+                connectionFrame.singIn();
             }
         });
     }
@@ -37,8 +36,6 @@ public abstract class UserMod extends JDialog {
     public String getUrl() {
         return url;
     }
-
-    public abstract boolean checkSecurity(String identity, String key);
 
     public abstract void openSecurityCheckWindow();
 }

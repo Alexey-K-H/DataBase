@@ -1,5 +1,7 @@
 package gui.signIn;
 
+import gui.signIn.usersMods.User;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Properties;
@@ -33,8 +35,9 @@ public class ConnectionFrame extends JFrame {
             props.setProperty("user", "18204_KHOROSHAVIN");
             props.setProperty("password", "442768");
             this.setVisible(false);
-            UserModeSelection userModeSelection = new UserModeSelection(nsu.getText(), props, url);
-            userModeSelection.openSelectionPane();
+
+            User user = new User(nsu.getText(), props, url);
+            user.openSecurityCheckWindow();
         });
         layout.putConstraint(SpringLayout.NORTH, nsu, 10, SpringLayout.SOUTH, connectionInfo);
         layout.putConstraint(SpringLayout.WEST, nsu, 10, SpringLayout.WEST, jPanel);
@@ -49,8 +52,9 @@ public class ConnectionFrame extends JFrame {
             props.setProperty("user", "c##alexey");
             props.setProperty("password", "nsu");
             this.setVisible(false);
-            UserModeSelection userModeSelection = new UserModeSelection(localhost.getText(), props, url);
-            userModeSelection.openSelectionPane();
+
+            User user = new User(localhost.getText(), props, url);
+            user.openSecurityCheckWindow();
         });
 
         layout.putConstraint(SpringLayout.NORTH, localhost, 10, SpringLayout.SOUTH, nsu);
@@ -129,8 +133,9 @@ public class ConnectionFrame extends JFrame {
             props.setProperty("user", loginValue.getText());
             props.setProperty("password", pwd.toString());
             this.setVisible(false);
-            UserModeSelection userModeSelection = new UserModeSelection(localhost.getText(), props, url);
-            userModeSelection.openSelectionPane();
+
+            User user = new User(localhost.getText(), props, url);
+            user.openSecurityCheckWindow();
         });
         jPanel.add(singIn);
 
