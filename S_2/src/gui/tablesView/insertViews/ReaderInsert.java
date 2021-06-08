@@ -224,6 +224,7 @@ public class ReaderInsert extends JDialog implements InsertFrame{
                         }
                     }
 
+                    pwdTextField.setText("");
                     idLibTexField.setText("");
                     surnameTexFiled.setText("");
                     nameTextField.setText("");
