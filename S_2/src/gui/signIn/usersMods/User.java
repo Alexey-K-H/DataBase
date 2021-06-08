@@ -18,11 +18,6 @@ public class User extends UserMod{
     }
 
     @Override
-    public boolean checkSecurity(String identity, String key) {
-        return false;
-    }
-
-    @Override
     public void openSecurityCheckWindow() {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension dimension = toolkit.getScreenSize();
@@ -34,7 +29,7 @@ public class User extends UserMod{
         panel.setLayout(layout);
         this.add(panel);
 
-        JLabel info = new JLabel("<html>Введите идентификатор и пароль читателя.</html>");
+        JLabel info = new JLabel("<html>Введите идентификатор и пароль пользователя.</html>");
         Font labelFont = info.getFont();
         info.setFont(new Font(labelFont.getName(), Font.PLAIN, 16));
         layout.putConstraint(SpringLayout.WEST, info, 20, SpringLayout.WEST, panel);
@@ -81,14 +76,17 @@ public class User extends UserMod{
 
             try {
                 DBConnection connection = new DBConnection(getUrl(), getProperties());
-                PreparedStatement preStatement = connection.getConn().prepareStatement("select count(*)" +
-                        " from USERS where USER_ID = " + loginValue + " and PASSWORD = '"+pwd.toString()+"' and " +
-                        "USER_MOD = 'Читатель'");
+                PreparedStatement preStatement = connection.getConn().prepareStatement("select USER_ID, PASSWORD," +
+                        "USER_MOD" +
+                        " from USERS where USER_ID = " + loginValue + " and PASSWORD = '"+ pwd +"'");
                 ResultSet resultSet = preStatement.executeQuery();
 
                 int count = 0;
+                String userModStr = "";
+                UserMods userMod = UserMods.READER;
                 while (resultSet.next()){
-                    count = resultSet.getInt(1);
+                    count++;
+                    userModStr = resultSet.getString("user_mod");
                 }
 
                 resultSet.close();
@@ -97,16 +95,33 @@ public class User extends UserMod{
                     System.out.println("Success!");
                     this.setVisible(false);
 
-                    System.out.println("Set role USER");
-                    connection.setRole(UserMods.USER);
+                    System.out.println("Set role...");
 
-                    MainWindow mainWindow = new MainWindow(connection, getNameServer(), UserMods.USER, false);
+                    switch (userModStr){
+                        case "Администратор":{
+                            connection.setRole(UserMods.ADMINISTRATOR);
+                            userMod = UserMods.ADMINISTRATOR;
+                            break;
+                        }
+                        case "Библиотекарь":{
+                            connection.setRole(UserMods.LIBRARIAN);
+                            userMod = UserMods.LIBRARIAN;
+                            break;
+                        }
+                        case "Читатель":{
+                            connection.setRole(UserMods.READER);
+                            userMod = UserMods.READER;
+                            break;
+                        }
+                    }
+
+                    MainWindow mainWindow = new MainWindow(connection, getNameServer(), userMod, false);
                     mainWindow.setUserId(loginValue);
                     mainWindow.run();
                 }
                 else {
                     connection.getConn().close();
-                    throw new SQLException("Неверный идентификатор читателя!");
+                    throw new SQLException("Неверный идентификатор пользователя или пароль!");
                 }
             } catch (SQLException exception) {
                 JLabel error = new JLabel("Ошибка подключения! " + exception.getMessage());
